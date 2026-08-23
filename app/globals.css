@@ -60,3 +60,6 @@
 
 .filterLabel{font-size:10px;font-weight:800;letter-spacing:.12em;color:#535d58}.regionRow .filterLabel{color:#1a251f}
 @media(max-width:760px){.filterLabel{display:none}}
+
+.coverageRegions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:28px}.coverageRegions button{min-height:58px;border:1px solid #4b5852;background:transparent;color:#b7c1bc;display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto;text-align:left;align-items:center;padding:10px 12px;cursor:pointer}.coverageRegions button small{font-size:8px;letter-spacing:.12em;color:#7f8e87}.coverageRegions button b{grid-row:1/3;grid-column:2;font-size:21px;color:#8f9b95;margin-left:10px}.coverageRegions button.active{background:var(--acid);border-color:var(--acid);color:var(--ink)}.coverageRegions button.active small,.coverageRegions button.active b{color:#354038}.coverageRegions button:hover{border-color:var(--acid)}
+@media(max-width:760px){.coverageRegions{display:flex;overflow-x:auto}.coverageRegions button{min-width:135px}}

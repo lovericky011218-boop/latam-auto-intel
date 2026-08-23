@@ -43,6 +43,8 @@ test("server-renders the four-region strategic-market dashboard", async () => {
   assert.match(html, /XPENG/);
   assert.match(html, /NIO/);
   assert.match(html, /驱动/);
+  assert.match(html, /覆盖密度大区选择/);
+  assert.match(html, /南美<!-- --> · 集团覆盖密度/);
 });
 
 test("keeps expanded group data, region filters, and official source links in source", async () => {
@@ -69,6 +71,9 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.match(page, /"全部驱动","前驱","后驱","四驱"/);
   assert.match(page, /"全部能源","纯电","插混","增程","混动","燃油"/);
   assert.match(page, /"全部区域",\.\.\.regionCountries\.map/);
+  assert.match(page, /coverageRegion,setCoverageRegion\]=useState\("南美"\)/);
+  assert.match(page, /coverageCountries=countries\.filter/);
+  assert.match(page, /className="coverageRegions"/);
   assert.match(page, /DONGFENG/);
   assert.match(css, /repeat\(9,1fr\)/);
   assert.match(layout, /南美、欧洲、澳新与东南亚 25 个重点国家/);
