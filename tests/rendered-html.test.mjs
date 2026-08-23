@@ -74,6 +74,7 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.match(page, /coverageRegion,setCoverageRegion\]=useState\("南美"\)/);
   assert.match(page, /coverageCountries=countries\.filter/);
   assert.match(page, /className="coverageRegions"/);
+  assert.doesNotMatch(page, /"--heat"/);
   assert.match(page, /DONGFENG/);
   assert.match(css, /repeat\(9,1fr\)/);
   assert.match(layout, /南美、欧洲、澳新与东南亚 25 个重点国家/);
