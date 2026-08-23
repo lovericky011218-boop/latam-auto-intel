@@ -18,8 +18,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const host = requestHeaders.get("x-forwarded-host") || requestHeaders.get("host") || "localhost:3000";
   const protocol = requestHeaders.get("x-forwarded-proto") || (host.includes("localhost") ? "http" : "https");
   const image = `${protocol}://${host}/og.png`;
-  const title = "LATAM Auto Intel｜中国汽车品牌南美市场看板";
-  const description = "覆盖巴西、阿根廷、智利、乌拉圭、玻利维亚、厄瓜多尔与秘鲁的中国汽车品牌车型、价格、参数、驱动、电池与安全评级。";
+  const title = "东风集团主要战略市场竞品车型看板";
+  const description = "覆盖南美、欧洲、澳新与东南亚 25 个重点国家的中国汽车集团车型、配置价格、参数、动力、驱动、电池续航与碰撞安全评级。";
   return {
     title,
     description,
