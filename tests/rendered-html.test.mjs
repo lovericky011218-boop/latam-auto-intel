@@ -47,6 +47,8 @@ test("server-renders the four-region strategic-market dashboard", async () => {
   assert.match(html, /覆盖密度大区选择/);
   assert.match(html, /南美<!-- --> · 集团覆盖密度/);
   assert.match(html, /单一品牌车型投放规模/);
+  assert.match(html, /全市场 · 单一品牌车型投放规模/);
+  assert.match(html, /不随上方大区选择变化/);
   assert.match(html, /相同车型的多个动力形式只计 1 款/);
 });
 
@@ -83,6 +85,9 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.match(page, /Song Plus":"BYD Song Plus \/ Seal U \/ Sealion 6/);
   assert.match(page, /new Set\(cars\.filter/);
   assert.match(page, /className="brandFootprint"/);
+  assert.match(page, /cars\.filter\(c=>c\.brand===item\.brand\)/);
+  assert.match(page, /setRegion\("全部区域"\);setCountry\("全部市场"\)/);
+  assert.doesNotMatch(page, /coverageCountryNames/);
   assert.doesNotMatch(page, /"--heat"/);
   assert.match(page, /DONGFENG/);
   assert.match(css, /repeat\(9,1fr\)/);
