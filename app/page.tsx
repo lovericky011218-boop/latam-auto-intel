@@ -579,6 +579,37 @@ const cnyPrice = (price:string) => {
   return `约 ¥${rounded.toLocaleString("zh-CN")}`;
 };
 
+const modelIdentityAliases: Record<string,string> = {
+  "BYD|Dolphin Mini":"BYD Seagull family",
+  "BYD|Dolphin Surf":"BYD Seagull family",
+  "BYD|Atto 1":"BYD Seagull family",
+  "BYD|Yuan Plus":"BYD Atto 3 / Yuan Plus",
+  "BYD|Atto 3":"BYD Atto 3 / Yuan Plus",
+  "BYD|Yuan Up":"BYD Atto 2 / Yuan Up",
+  "BYD|Atto 2":"BYD Atto 2 / Yuan Up",
+  "BYD|Song Plus":"BYD Song Plus / Seal U / Sealion 6",
+  "BYD|Seal U DM-i":"BYD Song Plus / Seal U / Sealion 6",
+  "BYD|Sealion 6 DM-i":"BYD Song Plus / Seal U / Sealion 6",
+  "BYD|Song Pro":"BYD Song Pro / Sealion 5",
+  "BYD|Sealion 5 DM-i":"BYD Song Pro / Sealion 5",
+  "BYD|Atto 8":"BYD Atto 8 / Sealion 8",
+  "BYD|Sealion 8 DM-i":"BYD Atto 8 / Sealion 8",
+  "Chery|Tiggo 5X":"Chery Tiggo 4 / Tiggo 5X",
+  "Chery|Tiggo 4":"Chery Tiggo 4 / Tiggo 5X",
+  "Chery|Tiggo 4 CSH":"Chery Tiggo 4 / Tiggo 5X",
+  "Chery|Omoda 5":"Omoda 5 family",
+  "Chery|Omoda E5":"Omoda 5 family",
+  "Omoda|Omoda 5":"Omoda 5 family",
+  "Omoda|Omoda E5":"Omoda 5 family",
+  "Dongfeng|BOX":"Dongfeng BOX / Nammi",
+  "Dongfeng|Nammi":"Dongfeng BOX / Nammi",
+  "Dongfeng|Mage":"Dongfeng Mage family",
+  "Dongfeng|Mage HEV":"Dongfeng Mage family",
+  "Dongfeng|Mage EV":"Dongfeng Mage family",
+};
+const canonicalModel = (brand:string,model:string) => modelIdentityAliases[`${brand}|${model}`] || model.replace(/\s+(DM-i|CSH|HEV|EV)$/i,"").trim();
+const brandCatalog = Object.entries(brandsByGroup).flatMap(([group,brands])=>brands.map(brand=>({group,brand})));
+
 export default function Home(){
   const [coverageRegion,setCoverageRegion]=useState("南美"),[region,setRegion]=useState("全部区域"),[country,setCountry]=useState("全部市场"),[group,setGroup]=useState("全部集团"),[brand,setBrand]=useState("全部品牌"),[energy,setEnergy]=useState("全部能源"),[drive,setDrive]=useState("全部驱动"),[safe,setSafe]=useState(false),[query,setQuery]=useState(""),[selected,setSelected]=useState<Car|null>(null),[compare,setCompare]=useState<string[]>([]),[showCompare,setShowCompare]=useState(false),[showSources,setShowSources]=useState(false),[visible,setVisible]=useState(24);
   const brandOptions=group==="全部集团"?Object.values(brandsByGroup).flat():brandsByGroup[group]||[];
@@ -590,11 +621,17 @@ export default function Home(){
   const toggleCompare=(id:string)=>setCompare(v=>v.includes(id)?v.filter(x=>x!==id):v.length<3?[...v,id]:v);
   const coverageCountries=countries.filter(([name])=>regionOfCountry(name)===coverageRegion);
   const coverage=coverageCountries.map(([name,flag])=>({name,flag,...Object.fromEntries(groups.map(g=>[g,cars.filter(c=>c.country===name&&c.group===g).length]))}));
+  const coverageCountryNames=new Set(coverageCountries.map(([name])=>name));
+  const brandFootprint=brandCatalog.map(item=>{
+    const models=[...new Set(cars.filter(c=>coverageCountryNames.has(c.country)&&c.brand===item.brand).map(c=>canonicalModel(c.brand,c.model)))];
+    return {...item,models,count:models.length};
+  }).filter(item=>item.count>0).sort((a,b)=>b.count-a.count||a.brand.localeCompare(b.brand));
   return <main className="shell">
     <header className="topbar"><button className="wordmark" onClick={reset}><span>DONGFENG</span> MARKET INTEL</button><nav><button onClick={()=>document.getElementById("lineup")?.scrollIntoView({behavior:"smooth"})}>车型库</button><button onClick={()=>document.getElementById("coverage")?.scrollIntoView({behavior:"smooth"})}>市场覆盖</button><button onClick={()=>setShowSources(true)}>数据来源</button></nav><div className="fresh"><i/>核验至 2026.08.23</div></header>
     <section className="heroStrategy" aria-label="东风集团主要战略市场竞品车型看板"><div><p>GLOBAL COMPETITOR VEHICLE INTELLIGENCE</p><h1>主要战略市场<br/><em>竞品车型看板</em></h1><span>覆盖南美、欧洲、澳新与东南亚，按市场、集团、子品牌、动力和驱动形式拆分官方在售车型。</span></div><aside>{regionCountries.map(item=><div key={item.name}><small>{item.code}</small><b>{String(item.countries.length).padStart(2,"0")}</b><span>{item.name}市场</span></div>)}</aside></section>
     <section className="pulse"><div><small>官方价格可见</small><b>{priced}</b><span>/ {cars.length} 条</span></div><div><small>已确认五星</small><b>{five}</b><span>条动力记录</span></div><div><small>本地在售品牌</small><b>{uniqueBrands}</b><span>个品牌</span></div><button onClick={()=>setShowSources(true)}>查看方法与来源 <span>↗</span></button></section>
     <section className="coverage coverageTop" id="coverage"><div className="coverageTitle"><p>MARKET COVERAGE</p><h2>{coverageRegion} · 集团覆盖密度</h2><span>按大区切换市场；数字表示该集团在当地官方目录可识别的车型动力记录数。点击单元格可直接筛选。</span><div className="coverageRegions" aria-label="覆盖密度大区选择">{regionCountries.map(item=><button className={coverageRegion===item.name?"active":""} onClick={()=>setCoverageRegion(item.name)} key={item.name}><small>{item.code}</small>{item.name}<b>{item.countries.length}</b></button>)}</div></div><div className="coverageTable"><div className="covRow head"><span>市场</span>{groups.map(x=><span key={x}>{groupLabels[x]}</span>)}</div>{coverage.map(r=><div className="covRow" key={r.name}><strong>{r.flag} {r.name}</strong>{groups.map(g=><button onClick={()=>{setRegion(regionOfCountry(r.name));setCountry(r.name);setGroup(g);setBrand("全部品牌");document.getElementById("lineup")?.scrollIntoView({behavior:"smooth"})}} key={g}><b>{String((r as Record<string,unknown>)[g])}</b></button>)}</div>)}</div></section>
+    <section className="brandFootprint" aria-label="单一品牌车型投放规模"><div className="brandFootprintHead"><p>BRAND MODEL FOOTPRINT</p><h2>{coverageRegion} · 单一品牌车型投放规模</h2><span>统计所选大区内各品牌投放的独立车型数。相同车型的多个动力形式只计 1 款；不同市场名称指向同一实际车型时合并计数。</span></div><div className="brandFootprintGrid">{brandFootprint.map(item=><button key={`${item.group}-${item.brand}`} title={item.models.join(" · ")} onClick={()=>{setRegion(coverageRegion);setCountry("全部市场");setGroup(item.group);setBrand(item.brand);setVisible(24);document.getElementById("lineup")?.scrollIntoView({behavior:"smooth"})}}><small>{groupLabels[item.group]} GROUP</small><b>{item.brand}</b><strong>{item.count}<em>款</em></strong><span>查看该品牌车型 →</span></button>)}</div><p className="brandFootprintNote">归一示例：Dolphin Mini / Dolphin Surf / Atto 1、Yuan Plus / Atto 3、Song Plus / Seal U / Sealion 6、Omoda 5 / E5、Dongfeng BOX / Nammi。</p></section>
     <section className="filterPanel" id="lineup">
       <div className="search"><span>⌕</span><input value={query} onChange={e=>{setQuery(e.target.value);setVisible(24)}} placeholder="搜索品牌或车型…"/><kbd>{filtered.length} 条结果</kbd></div>
       <div className="filterRow regionRow"><span className="filterLabel">区域</span><div className="pills">{["全部区域",...regionCountries.map(x=>x.name)].map(x=><button className={region===x?"active":""} onClick={()=>{setRegion(x);setCountry("全部市场");setVisible(24)}} key={x}>{x.replace("全部区域","全部")}</button>)}</div></div>

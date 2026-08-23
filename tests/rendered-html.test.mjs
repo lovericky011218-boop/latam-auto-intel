@@ -46,6 +46,8 @@ test("server-renders the four-region strategic-market dashboard", async () => {
   assert.match(html, /驱动/);
   assert.match(html, /覆盖密度大区选择/);
   assert.match(html, /南美<!-- --> · 集团覆盖密度/);
+  assert.match(html, /单一品牌车型投放规模/);
+  assert.match(html, /相同车型的多个动力形式只计 1 款/);
 });
 
 test("keeps expanded group data, region filters, and official source links in source", async () => {
@@ -75,13 +77,24 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.match(page, /coverageRegion,setCoverageRegion\]=useState\("南美"\)/);
   assert.match(page, /coverageCountries=countries\.filter/);
   assert.match(page, /className="coverageRegions"/);
+  assert.match(page, /modelIdentityAliases/);
+  assert.match(page, /Dolphin Mini":"BYD Seagull family/);
+  assert.match(page, /Yuan Plus":"BYD Atto 3 \/ Yuan Plus/);
+  assert.match(page, /Song Plus":"BYD Song Plus \/ Seal U \/ Sealion 6/);
+  assert.match(page, /new Set\(cars\.filter/);
+  assert.match(page, /className="brandFootprint"/);
   assert.doesNotMatch(page, /"--heat"/);
   assert.match(page, /DONGFENG/);
   assert.match(css, /repeat\(9,1fr\)/);
-  assert.match(css, /--acid:#8b5e3c/);
-  assert.doesNotMatch(css, /--acid:#dcff45/);
-  assert.match(css, /\.heroStrategy\{background:#e9e8df;color:var\(--ink\)/);
-  assert.match(css, /\.coverage\{background:#e9e8df;color:var\(--ink\)/);
+  assert.match(css, /--ink:#22272c/);
+  assert.match(css, /--paper:#eeeeee/);
+  assert.match(css, /--panel:#ffffff/);
+  assert.match(css, /--primary:#009c9d/);
+  assert.match(css, /--aqua:#4cc9c5/);
+  assert.match(css, /--acid:#ffbb00/);
+  assert.match(css, /--line:#dcdddd/);
+  assert.doesNotMatch(css, /--acid:#8b5e3c/);
+  assert.match(css, /\.heroStrategy,\.coverage\{background:var\(--paper\)/);
   assert.match(layout, /南美、欧洲、澳新与东南亚 25 个重点国家/);
   assert.match(strategic, /\{ name: "欧洲"[^\n]+\["匈牙利","🇭🇺"\]/);
   assert.match(strategic, /\{ name: "澳新"[^\n]+\["澳大利亚","🇦🇺"\],\["新西兰","🇳🇿"\]/);
