@@ -30,6 +30,7 @@ test("server-renders the four-region strategic-market dashboard", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>东风集团主要战略市场竞品车型看板/);
+  assert.match(html, /<h1>主要战略市场/);
   assert.match(html, /集团覆盖密度/);
   assert.match(html, /DONGFENG/);
   assert.match(html, /LEAPMOTOR/);
@@ -77,6 +78,8 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.doesNotMatch(page, /"--heat"/);
   assert.match(page, /DONGFENG/);
   assert.match(css, /repeat\(9,1fr\)/);
+  assert.match(css, /--acid:#8b5e3c/);
+  assert.doesNotMatch(css, /--acid:#dcff45/);
   assert.match(css, /\.heroStrategy\{background:#e9e8df;color:var\(--ink\)/);
   assert.match(css, /\.coverage\{background:#e9e8df;color:var\(--ink\)/);
   assert.match(layout, /南美、欧洲、澳新与东南亚 25 个重点国家/);
