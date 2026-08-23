@@ -77,6 +77,8 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.doesNotMatch(page, /"--heat"/);
   assert.match(page, /DONGFENG/);
   assert.match(css, /repeat\(9,1fr\)/);
+  assert.match(css, /\.heroStrategy\{background:#e9e8df;color:var\(--ink\)/);
+  assert.match(css, /\.coverage\{background:#e9e8df;color:var\(--ink\)/);
   assert.match(layout, /南美、欧洲、澳新与东南亚 25 个重点国家/);
   assert.match(strategic, /\{ name: "欧洲"[^\n]+\["匈牙利","🇭🇺"\]/);
   assert.match(strategic, /\{ name: "澳新"[^\n]+\["澳大利亚","🇦🇺"\],\["新西兰","🇳🇿"\]/);

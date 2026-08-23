@@ -63,3 +63,21 @@
 
 .coverageRegions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:28px}.coverageRegions button{min-height:58px;border:1px solid #4b5852;background:transparent;color:#b7c1bc;display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto;text-align:left;align-items:center;padding:10px 12px;cursor:pointer}.coverageRegions button small{font-size:8px;letter-spacing:.12em;color:#7f8e87}.coverageRegions button b{grid-row:1/3;grid-column:2;font-size:21px;color:#8f9b95;margin-left:10px}.coverageRegions button.active{background:var(--acid);border-color:var(--acid);color:var(--ink)}.coverageRegions button.active small,.coverageRegions button.active b{color:#354038}.coverageRegions button:hover{border-color:var(--acid)}
 @media(max-width:760px){.coverageRegions{display:flex;overflow-x:auto}.coverageRegions button{min-width:135px}}
+
+/* Beige editorial treatment for the hero and market-coverage sections */
+.heroStrategy{background:#e9e8df;color:var(--ink);border:1px solid var(--line)}
+.heroStrategy:before{background:radial-gradient(circle at 82% 18%,#ffffff80,transparent 26%),linear-gradient(115deg,transparent 0 58%,#aeb4aa18 58% 59%,transparent 59%)}
+.heroStrategy p,.heroStrategy>div>span{color:var(--muted)}
+.heroStrategy aside{border-left-color:var(--line)}
+.heroStrategy aside div{border-bottom-color:var(--line)}
+.heroStrategy aside small{color:#7b847f}.heroStrategy aside b{color:var(--ink)}.heroStrategy aside span{color:#4f5954}
+.coverage{background:#e9e8df;color:var(--ink)}
+.coverageTitle p,.coverageTitle span{color:var(--muted)}
+.coverageTable{border-top-color:#bfc4bc}
+.covRow{border-bottom-color:#bfc4bc}
+.covRow>span{color:#747e78}
+.covRow button{border-left-color:#bfc4bc;color:var(--ink)}
+.covRow button:hover{background:#dde0d8}
+.coverageRegions button{border-color:#b8beb5;color:#505a55}
+.coverageRegions button small,.coverageRegions button b{color:#737d77}
+@media(max-width:760px){.heroStrategy aside{border-top-color:var(--line)}.heroStrategy aside div{border-bottom-color:var(--line)}}
