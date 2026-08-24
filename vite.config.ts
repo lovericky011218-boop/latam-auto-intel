@@ -11,6 +11,8 @@ const { d1, r2 } = hostingConfig;
 // macOS Seatbelt blocks FSEvents, so Codex previews need polling for HMR.
 const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
 const isGitHubPages = process.env.GITHUB_PAGES === "true";
+const isCloudflarePages = process.env.CF_PAGES === "1";
+const isStaticHosting = isGitHubPages || isCloudflarePages;
 
 const localBindingConfig = {
   main: "./worker/index.ts",
@@ -41,11 +43,16 @@ export default defineConfig(async () => {
   process.env.WRANGLER_LOG_PATH ??= ".wrangler/logs";
   process.env.MINIFLARE_REGISTRY_PATH ??= ".wrangler/registry";
 
-  // GitHub Pages uses a static export; the existing Sites deployment keeps
-  // the Sites and Cloudflare plugins below.
-  if (isGitHubPages) {
-    const publicBasePath = process.env.NEXT_PUBLIC_BASE_PATH || "/latam-auto-intel";
-    return { base: `${publicBasePath}/`, plugins: [vinext()] };
+  // GitHub Pages and Cloudflare Pages use the same static export. GitHub is
+  // hosted below a repository path; Cloudflare serves the export at `/`.
+  if (isStaticHosting) {
+    const publicBasePath =
+      process.env.NEXT_PUBLIC_BASE_PATH ||
+      (isGitHubPages ? "/latam-auto-intel" : "");
+    return {
+      base: publicBasePath ? `${publicBasePath}/` : "/",
+      plugins: [vinext()],
+    };
   }
 
   // Wrangler snapshots its log path while the Cloudflare plugin is imported.

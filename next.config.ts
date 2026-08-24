@@ -1,7 +1,8 @@
-const isGitHubPages = process.env.GITHUB_PAGES === "true";
+const isStaticHosting =
+  process.env.GITHUB_PAGES === "true" || process.env.CF_PAGES === "1";
 
 export default {
-  ...(isGitHubPages
+  ...(isStaticHosting
     ? {
         output: "export" as const,
         trailingSlash: true,

@@ -3,10 +3,15 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 const isGitHubPages = process.env.GITHUB_PAGES === "true";
+const isCloudflarePages = process.env.CF_PAGES === "1";
 const publicBasePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
-const siteOrigin = isGitHubPages
-  ? `https://${process.env.GITHUB_REPOSITORY_OWNER || "github"}.github.io${publicBasePath}`
-  : "https://latam-auto-intel.lovericky011218.chatgpt.site";
+const siteOrigin =
+  process.env.NEXT_PUBLIC_SITE_ORIGIN ||
+  (isGitHubPages
+    ? `https://${process.env.GITHUB_REPOSITORY_OWNER || "github"}.github.io${publicBasePath}`
+    : isCloudflarePages && process.env.CF_PAGES_URL
+      ? process.env.CF_PAGES_URL
+      : "https://latam-auto-intel.lovericky011218.chatgpt.site");
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
