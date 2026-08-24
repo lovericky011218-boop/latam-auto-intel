@@ -6,6 +6,7 @@
 
 ## 在线访问
 
+- [Cloudflare](https://latam-auto-intel.lovericky011218.workers.dev/)
 - [GitHub Pages](https://lovericky011218-boop.github.io/latam-auto-intel/)
 - [Sites 版本](https://latam-auto-intel.lovericky011218.chatgpt.site/)
 
@@ -24,4 +25,4 @@ pnpm dev
 pnpm test
 ```
 
-推送到 `main` 分支后，`.github/workflows/pages.yml` 会自动生成静态版本并发布到 GitHub Pages。原有 Sites 配置保留在 `.openai/hosting.json`。
+推送到 `main` 分支后，Cloudflare Workers Builds 与 `.github/workflows/pages.yml` 会分别自动更新 Cloudflare 和 GitHub Pages 版本。原有 Sites 配置保留在 `.openai/hosting.json`。
