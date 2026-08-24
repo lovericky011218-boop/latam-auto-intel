@@ -54,7 +54,7 @@ test("server-renders the four-region strategic-market dashboard", async () => {
 
 test("keeps expanded group data, region filters, and official source links in source", async () => {
   const [page, css, layout, strategic] = await Promise.all([
-    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/dashboard.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/strategic-market-data.ts", import.meta.url), "utf8"),
