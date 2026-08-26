@@ -87,6 +87,16 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.match(page, /className="brandFootprint"/);
   assert.match(page, /cars\.filter\(c=>c\.brand===item\.brand\)/);
   assert.match(page, /setRegion\("全部区域"\);setCountry\("全部市场"\)/);
+  assert.match(page, /setOverviewBrand\(item\.brand\)/);
+  assert.match(page, /全市场 · \$\{overviewBrand\} 车型总览/);
+  assert.match(page, /每款车型仅显示一次/);
+  assert.match(page, /动力与主要配置/);
+  assert.match(page, /投放大区/);
+  assert.match(page, /投放国家/);
+  assert.match(page, /当地销售名/);
+  assert.match(page, /EBRO s700/);
+  assert.match(page, /OMODA C7/);
+  assert.match(page, /OMODA C9/);
   assert.doesNotMatch(page, /coverageCountryNames/);
   assert.doesNotMatch(page, /"--heat"/);
   assert.match(page, /DONGFENG/);
@@ -106,4 +116,8 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.doesNotMatch(strategic, /\{ name: "澳新"[^\n]+匈牙利/);
   assert.match(strategic, /"XPENG集团"/);
   assert.match(strategic, /"NIO集团"/);
+  assert.match(strategic, /Chery集团","Chery","Tiggo 7","ebro-es"/);
+  assert.match(strategic, /Chery集团","Omoda","Omoda 7"/);
+  assert.match(strategic, /Chery集团","Omoda","Omoda 9"/);
+  assert.match(strategic, /ebroauto\.com\/modelos/);
 });

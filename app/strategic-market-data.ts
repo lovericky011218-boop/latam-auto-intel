@@ -28,6 +28,8 @@ export const strategicSpecs: Record<string, StrategicSpec> = {
   "Sealion 8 DM-i": {dims:"5,040 × 1,996 × 1,760 mm",wheelbase:"2,950 mm",energy:"插混 PHEV",use:"当地官网未公布",range:"约 1,000 km 综合*",safety:"未查到当地版本有效五星成绩",rating:"unknown"},
   "M6": {dims:"4,710 × 1,810 × 1,690 mm",wheelbase:"2,800 mm",energy:"纯电 BEV",use:"约 17.5 kWh/100km*",range:"420–530 km NEDC",safety:"未查到当地版本有效五星成绩",rating:"unknown"},
   "M6 DM-i": {dims:"4,710 × 1,810 × 1,690 mm",wheelbase:"2,800 mm",energy:"插混 PHEV",use:"当地官网未公布",range:"45 km 纯电 NEDC",safety:"未查到当地版本有效五星成绩",rating:"unknown"},
+  "Omoda 7": {dims:"4,660 × 1,875 × 1,670 mm",wheelbase:"2,720 mm",energy:"汽油 ICE / 插混 PHEV",use:"PHEV 约 2.3 L/100km WLTP*",range:"PHEV 90–92 km 纯电 / 约 1,200 km 综合*",safety:"未查到可对应的 Euro NCAP / ANCAP 五星成绩",rating:"unknown"},
+  "Omoda 9": {dims:"4,775 × 1,920 × 1,671 mm",wheelbase:"2,800 mm",energy:"汽油 ICE / 插混 PHEV",use:"PHEV 约 1.4–1.7 L/100km WLTP*",range:"PHEV 145 km 纯电 / 约 1,100 km 综合 WLTP*",safety:"5★ Euro NCAP / ANCAP",rating:"yes"},
   "B05": {dims:"4,430 × 1,880 × 1,520 mm",wheelbase:"2,735 mm",energy:"纯电 BEV",use:"当地官网未公布",range:"最高约 460 km WLTP*",safety:"未查到当地版本有效五星成绩",rating:"unknown"},
   "Deepal S05": {dims:"4,620 × 1,900 × 1,600 mm",wheelbase:"2,880 mm",energy:"纯电 BEV / 增程 REEV",use:"依动力版本",range:"BEV 447–488 km WLTP / REEV 约 1,129 km 综合*",safety:"5★ Euro NCAP（BEV 欧洲版）",rating:"yes"},
   "Zeekr 7X": {dims:"4,825 × 1,930 × 1,656 mm",wheelbase:"2,925 mm",energy:"纯电 BEV",use:"约 16.4–18.7 kWh/100km*",range:"480–615 km WLTP",safety:"5★ Euro NCAP",rating:"yes"},
@@ -106,6 +108,8 @@ const deepalEu = (source="changan-eu"):R[] => [
 export const strategicRaw: Record<string,string[]> = {
   "意大利": rs([
     ...bydEu(),...ojCore(),...lynkEu(),...voyahEu(),...deepalEu(),...xpengEu(),
+    ["Chery集团","Omoda","Omoda 7","oj-it","€ 38.900","PHEV Pure FWD:€ 38.900,PHEV Premium FWD:€ 41.900,PHEV Premium Pro Pack FWD:€ 43.400"],
+    ["Chery集团","Omoda","Omoda 9","oj-it","询价","PHEV AWD:询价"],
     ...leapEu().map(x => x[2]==="T03"?reprice(x,"€ 18.900","BEV:€ 18.900"):x[2]==="B10"?reprice(x,"€ 29.900","BEV Life:询价,REEV Life:€ 29.900"):x[2]==="C10"?reprice(x,"€ 37.400","BEV Style:询价,REEV Life:€ 37.400"):x[2]==="B05"?reprice(x,"€ 26.900","BEV Life:€ 26.900"):x),
   ]),
   "挪威": rs([
@@ -115,24 +119,35 @@ export const strategicRaw: Record<string,string[]> = {
   ]),
   "荷兰": rs([
     ...bydEu(),...ojCore(),...lynkEu(),...voyahEu(),...leapEu(),...deepalEu(),
+    ["Chery集团","Omoda","Omoda 9","oj-nl","€ 53.490","PHEV SHS-P AWD:€ 53.490"],
     ...xpengEu("xpeng-nl").map(x=>x[2]==="XPENG G6"?reprice(x,"€ 43.990","RWD Standard Range:€ 43.990,RWD Long Range:€ 48.990,AWD Performance:€ 53.990"):x),
     ...nioEu("nio-nl"),
     ["Geely集团","Zeekr","Zeekr X","zeekr-eu"],["Geely集团","Zeekr","Zeekr 001","zeekr-eu"],["Geely集团","Zeekr","Zeekr 7X","zeekr-eu","询价","RWD Long Range:询价,AWD Performance:询价"],
   ]),
   "西班牙": rs([
     ...bydEu(),...lynkEu(),...leapEu(),...deepalEu(),...xpengEu(),...voyahEu(),
+    ["Chery集团","Chery","Tiggo 4 CSH","ebro-es","€ 19.990","HEV EBRO s400 Premium FWD:€ 19.990,HEV EBRO s400 Excellence FWD:€ 21.990"],
+    ["Chery集团","Chery","Tiggo 7","ebro-es","€ 26.990","ICE EBRO s700 Comfort FWD:€ 26.990,ICE EBRO s700 Luxury FWD:€ 28.990,HEV EBRO s700 Comfort FWD:€ 26.990,HEV EBRO s700 Luxury FWD:€ 28.990,PHEV EBRO s700 Premium FWD:€ 26.990"],
+    ["Chery集团","Chery","Tiggo 8 Pro","ebro-es","€ 31.990","ICE EBRO s800 Premium FWD:€ 31.990,ICE EBRO s800 Luxury FWD:询价,PHEV EBRO s800 Premium FWD:€ 31.990"],
+    ["Chery集团","Chery","Tiggo 9","ebro-es","询价","PHEV EBRO s900 Luxury AWD:询价"],
     ["Chery集团","Omoda","Omoda 5","oj-es","€ 22.890","ICE Comfort:€ 22.890,HEV Premium:询价"],
     ["Chery集团","Omoda","Omoda E5","oj-es"],
+    ["Chery集团","Omoda","Omoda 7","oj-es","€ 32.990","PHEV SHS FWD:€ 32.990"],
+    ["Chery集团","Omoda","Omoda 9","oj-es","€ 40.750","PHEV SHS AWD:€ 40.750"],
     ["Chery集团","Jaecoo","Jaecoo 5","oj-es"],
     ["Chery集团","Jaecoo","Jaecoo 7","oj-es","€ 27.990","ICE FWD:询价,PHEV FWD:€ 27.990"],
     ["Chery集团","Jaecoo","Jaecoo 8","oj-es","€ 44.190","PHEV AWD:€ 44.190"],
   ]),
   "法国": rs([
     ...bydEu(),...ojCore(),...lynkEu(),...leapEu(),...xpengEu(),
+    ["Chery集团","Omoda","Omoda 7","oj-fr","€ 38.990","PHEV FWD:€ 38.990"],
+    ["Chery集团","Omoda","Omoda 9","oj-fr","€ 49.990","PHEV AWD:€ 49.990"],
     ["Geely集团","Zeekr","Zeekr X","zeekr-eu"],["Geely集团","Zeekr","Zeekr 001","zeekr-eu"],["Geely集团","Zeekr","Zeekr 7X","zeekr-eu","询价","RWD Long Range:询价,AWD Performance:询价"],
   ]),
   "以色列": rs([
     ...bydEu(),...xpengEu(),
+    ["Chery集团","Omoda","Omoda 7","oj-il","ILS 179.900","PHEV Elevate FWD:ILS 179.900,PHEV Harmony FWD:ILS 189.900,PHEV Vision FWD:ILS 199.900"],
+    ["Chery集团","Omoda","Omoda 9","oj-il","ILS 229.900","PHEV Harmony AWD:ILS 229.900,PHEV Vision AWD:ILS 244.900"],
     ["Chery集团","Chery","Tiggo 7","chery-il","询价","ICE:询价,PHEV:询价"],
     ["Chery集团","Chery","Tiggo 8 Pro","chery-il","询价","ICE:询价,PHEV:询价"],
     ["Geely集团","Geely","EX5","geely-il"],
@@ -141,11 +156,13 @@ export const strategicRaw: Record<string,string[]> = {
   ]),
   "瑞典": rs([
     ...bydEu(),...ojCore(),...lynkEu(),...voyahEu(),...leapEu(),...xpengEu(),...nioEu("nio-se"),
+    ["Chery集团","Omoda","Omoda 9","oj-se","询价","PHEV AWD:询价"],
     ["Geely集团","Zeekr","Zeekr X","zeekr-eu"],["Geely集团","Zeekr","Zeekr 001","zeekr-eu"],["Geely集团","Zeekr","Zeekr 7X","zeekr-eu","询价","RWD Long Range:询价,AWD Performance:询价"],
     ["GWM集团","GWM","WEY 03","gwm-eu"],["GWM集团","GWM","WEY 05","gwm-eu"],["GWM集团","GWM","Ora 03","gwm-eu"],
   ]),
   "德国": rs([
     ...bydEu(),...ojCore(),...lynkEu(),...voyahEu(),...leapEu(),...deepalEu(),...xpengEu(),...nioEu("nio-de"),
+    ["Chery集团","Omoda","Omoda 9","oj-de","€ 52.900","PHEV AWD:€ 52.900"],
     ["Geely集团","Zeekr","Zeekr X","zeekr-de","€ 37.990","RWD:€ 37.990,AWD Privilege:询价"],
     ["Geely集团","Zeekr","Zeekr 001","zeekr-de","€ 59.990","RWD Long Range:€ 59.990,AWD Performance:询价"],
     ["Geely集团","Zeekr","Zeekr 7X","zeekr-de","询价","RWD Long Range:询价,AWD Performance:询价"],
@@ -153,24 +170,30 @@ export const strategicRaw: Record<string,string[]> = {
   ]),
   "波兰": rs([
     ...bydEu(),...ojCore(),...lynkEu(),...voyahEu(),...leapEu(),...xpengEu(),
+    ["Chery集团","Omoda","Omoda 7","oj-pl","PLN 169.900","PHEV Super Hybrid FWD:PLN 169.900"],
+    ["Chery集团","Omoda","Omoda 9","oj-pl","PLN 214.900","PHEV Super Hybrid AWD:PLN 214.900"],
   ]),
   "比利时": rs([
     ...bydEu(),...ojCore(),...lynkEu(),...leapEu(),...xpengEu(),
+    ["Chery集团","Omoda","Omoda 9","oj-be","€ 52.900","PHEV SHS-P AWD:€ 52.900"],
     ["NIO集团","firefly","firefly","firefly-eu"],
   ]),
   "英国": rs([
     ...bydEu(),...lynkEu(),...leapEu(),...deepalEu(),
-    ["Chery集团","Omoda","Omoda 5","oj-uk","询价","ICE:询价,HEV:询价"],["Chery集团","Omoda","Omoda E5","oj-uk"],["Chery集团","Jaecoo","Jaecoo 5","oj-uk","询价","ICE:询价,EV:询价"],["Chery集团","Jaecoo","Jaecoo 7","oj-uk","询价","ICE:询价,HEV:询价,PHEV:询价"],["Chery集团","Jaecoo","Jaecoo 8","oj-uk","询价","PHEV AWD:询价"],
+    ["Chery集团","Omoda","Omoda 5","oj-uk","询价","ICE:询价,HEV:询价"],["Chery集团","Omoda","Omoda E5","oj-uk"],["Chery集团","Omoda","Omoda 7","oj-uk","£ 29.965","ICE Knight FWD:£ 29.965,PHEV Knight FWD:£ 32.005,PHEV Noble FWD:£ 35.005,PHEV Noble Tech FWD:£ 35.505"],["Chery集团","Omoda","Omoda 9","oj-uk","£ 44.995","PHEV SHS-P AWD:£ 44.995"],["Chery集团","Jaecoo","Jaecoo 5","oj-uk","询价","ICE:询价,EV:询价"],["Chery集团","Jaecoo","Jaecoo 7","oj-uk","询价","ICE:询价,HEV:询价,PHEV:询价"],["Chery集团","Jaecoo","Jaecoo 8","oj-uk","询价","PHEV AWD:询价"],
     ["GWM集团","GWM","Haval Jolion","gwm-uk","£ 27.995","ICE:询价,HEV:£ 27.995"],["GWM集团","GWM","Ora 03","gwm-uk"],["GWM集团","GWM","Poer","gwm-uk","£ 38.911","POER300 4WD:£ 38.911"],
     ...xpengEu("xpeng-uk").map(x=>x[2]==="XPENG G6"?reprice(x,"£ 39.990","RWD Standard Range:£ 39.990,RWD Long Range:询价,AWD Performance:询价"):x),
   ]),
   "匈牙利": rs([
     ...bydEu(),...ojCore(),...lynkEu(),...leapEu(),
+    ["Chery集团","Omoda","Omoda 7","oj-hu","HUF 14.990.000","PHEV Exclusive FWD:HUF 14.990.000,PHEV Exclusive Plus FWD:HUF 15.490.000"],
+    ["Chery集团","Omoda","Omoda 9","oj-hu","询价","PHEV AWD:询价"],
     ["GWM集团","GWM","WEY 03","gwm-eu"],["GWM集团","GWM","WEY 05","gwm-eu"],["GWM集团","GWM","Ora 03","gwm-eu"],
   ]),
   "澳大利亚": rs([
     ["BYD集团","BYD","Atto 1","byd-au"],["BYD集团","BYD","Atto 2","byd-au"],["BYD集团","BYD","Atto 3","byd-au"],["BYD集团","BYD","Dolphin","byd-au"],["BYD集团","BYD","Seal","byd-au","询价","RWD Dynamic:询价,RWD Premium:询价,AWD Performance:询价"],["BYD集团","BYD","Seal 6 DM-i","byd-au"],["BYD集团","BYD","Seal 6 Touring","byd-au"],["BYD集团","BYD","Sealion 6 DM-i","byd-au"],["BYD集团","BYD","Sealion 7","byd-au","AUD 54.990","RWD Premium:AUD 54.990,AWD Performance:询价"],["BYD集团","BYD","Sealion 8 DM-i","byd-au","AUD 56.990","PHEV AWD:AUD 56.990"],["BYD集团","BYD","Shark","byd-au","AUD 57.900","PHEV AWD:AUD 57.900"],
     ["Chery集团","Chery","Omoda 5","chery-au","AUD 28.990","ICE Urban:AUD 28.990,HEV Ultimate:询价"],["Chery集团","Chery","Omoda E5","chery-au","AUD 37.990","BEV Urban:AUD 37.990"],["Chery集团","Chery","Tiggo 4","chery-au","AUD 23.990","ICE Urban:AUD 23.990,HEV Urban:AUD 29.990"],["Chery集团","Chery","Tiggo 7","chery-au","AUD 29.990","ICE Urban:AUD 29.990,PHEV Urban:AUD 34.990"],["Chery集团","Chery","Tiggo 8 Pro","chery-au","AUD 38.990","ICE Urban:AUD 38.990,PHEV Urban:AUD 45.990"],["Chery集团","Chery","Tiggo 9","chery-au","询价","PHEV AWD:询价"],
+    ["Chery集团","Omoda","Omoda 9","oj-au","AUD 61.990","PHEV SHS Virtue AWD:AUD 61.990"],
     ["Geely集团","Geely","EX5","geely-au"],["Geely集团","Geely","EX5 EM-i","geely-au"],["Geely集团","Zeekr","Zeekr X","zeekr-au"],["Geely集团","Zeekr","Zeekr 7X","zeekr-au","询价","RWD:询价,AWD:询价"],["Geely集团","Zeekr","Zeekr 009","zeekr-au"],
     ["GWM集团","GWM","Ora 03","gwm-au"],["GWM集团","GWM","Haval Jolion","gwm-au","询价","ICE:询价,HEV:询价"],["GWM集团","GWM","Haval H6","gwm-au","询价","ICE FWD:询价,HEV FWD:询价,PHEV AWD:询价"],["GWM集团","GWM","Tank 300","gwm-au","询价","HEV AWD:询价,PHEV AWD:询价"],["GWM集团","GWM","Tank 500","gwm-au"],["GWM集团","GWM","Poer","gwm-au"],
     ["Leapmotor集团","Leapmotor","B10","leap-au","询价","BEV:询价,REEV:询价"],["Leapmotor集团","Leapmotor","C10","leap-au","询价","BEV:询价,REEV:询价"],
@@ -180,6 +203,7 @@ export const strategicRaw: Record<string,string[]> = {
   "新西兰": rs([
     ["BYD集团","BYD","Atto 1","byd-nz"],["BYD集团","BYD","Atto 2","byd-nz"],["BYD集团","BYD","Atto 3","byd-nz"],["BYD集团","BYD","Dolphin","byd-nz"],["BYD集团","BYD","Seal","byd-nz","询价","RWD:询价,AWD:询价"],["BYD集团","BYD","Sealion 6 DM-i","byd-nz"],["BYD集团","BYD","Sealion 7","byd-nz","询价","RWD:询价,AWD:询价"],["BYD集团","BYD","Shark","byd-nz"],
     ["Chery集团","Chery","Omoda 5","chery-nz","询价","ICE:询价,HEV:询价"],["Chery集团","Chery","Omoda E5","chery-nz"],["Chery集团","Chery","Tiggo 7","chery-nz","询价","ICE:询价,PHEV:询价"],["Chery集团","Chery","Tiggo 8 Pro","chery-nz","询价","ICE:询价,PHEV:询价"],
+    ["Chery集团","Omoda","Omoda 9","oj-nz","NZ$ 68.990","PHEV SHS Virtue AWD:NZ$ 68.990"],
     ["Geely集团","Geely","EX5","geely-nz"],["Geely集团","Geely","EX5 EM-i","geely-nz"],
     ["GWM集团","GWM","Ora 03","gwm-nz"],["GWM集团","GWM","Haval Jolion","gwm-nz","询价","ICE:询价,HEV:询价"],["GWM集团","GWM","Haval H6","gwm-nz","询价","ICE:询价,HEV:询价,PHEV AWD:询价"],["GWM集团","GWM","Tank 300","gwm-nz"],["GWM集团","GWM","Poer","gwm-nz"],
     ["Leapmotor集团","Leapmotor","C10","leap-nz","询价","BEV:询价,REEV:询价"],
@@ -208,6 +232,8 @@ export const strategicRaw: Record<string,string[]> = {
   "马来西亚": rs([
     ["BYD集团","BYD","Dolphin","byd-my","MYR 100.000","Dynamic:MYR 100.000,Premium:询价"],["BYD集团","BYD","Atto 2","byd-my"],["BYD集团","BYD","Atto 3","byd-my"],["BYD集团","BYD","Seal","byd-my","询价","RWD:询价,AWD:询价"],["BYD集团","BYD","Seal 6 DM-i","byd-my"],["BYD集团","BYD","Sealion 7","byd-my","询价","RWD:询价,AWD:询价"],["BYD集团","BYD","M6","byd-my"],
     ["Chery集团","Chery","Tiggo 7","chery-my","询价","ICE:询价,PHEV:询价"],["Chery集团","Chery","Tiggo 8 Pro","chery-my","询价","ICE:询价,PHEV:询价"],["Chery集团","Omoda","Omoda 5","chery-my","询价","ICE:询价,HEV:询价"],["Chery集团","Omoda","Omoda E5","chery-my"],["Chery集团","Jaecoo","Jaecoo 7","chery-my","询价","ICE:询价,PHEV:询价"],
+    ["Chery集团","Omoda","Omoda 7","oj-my","询价","ICE C7 官方预售 FWD:询价,PHEV C7 官方预售 FWD:询价"],
+    ["Chery集团","Omoda","Omoda 9","oj-my","MYR 168.800","ICE C9 FWD:MYR 168.800,ICE C9 AWD:MYR 188.800,PHEV C9 AWD:MYR 208.800"],
     ["Geely集团","Zeekr","Zeekr X","zeekr-my"],["Geely集团","Zeekr","Zeekr 7X","zeekr-my","询价","RWD:询价,AWD:询价"],["Geely集团","Zeekr","Zeekr 009","zeekr-my"],
     ["GWM集团","GWM","Ora 03","gwm-my"],["GWM集团","GWM","Haval Jolion","gwm-my","询价","ICE:询价,HEV:询价"],["GWM集团","GWM","Haval H6","gwm-my","询价","HEV:询价,PHEV AWD:询价"],["GWM集团","GWM","Tank 300","gwm-my"],["GWM集团","GWM","Tank 500","gwm-my"],
     ["东风集团","Dongfeng","BOX","dongfeng-my"],["东风集团","VOYAH","VOYAH Dream","dongfeng-my"],
@@ -239,6 +265,19 @@ export const strategicSources: Record<string,{name:string,url:string}> = {
   "oj-eu":{name:"OMODA & JAECOO Europe｜欧洲车型目录",url:"https://www.omodajaecoo.com/"},
   "oj-es":{name:"OMODA & JAECOO España｜官方车型与售价",url:"https://www.omodajaecoo.es/"},
   "oj-uk":{name:"OMODA & JAECOO UK｜官方车型目录",url:"https://omodaauto.co.uk/"},
+  "oj-it":{name:"OMODA & JAECOO Italia｜官方车型与售价",url:"https://www.omodajaecooitalia.com/modelli/"},
+  "oj-fr":{name:"OMODA & JAECOO France｜官方车型与售价",url:"https://omoda-jaecoo.fr/pages/home"},
+  "oj-nl":{name:"OMODA & JAECOO Nederland｜官方车型与售价",url:"https://www.omodajaecoo.nl/"},
+  "oj-de":{name:"OMODA & JAECOO Deutschland｜官方车型与售价",url:"https://www.omodajaecoo-auto.de/"},
+  "oj-pl":{name:"OMODA & JAECOO Polska｜官方车型与售价",url:"https://www.omodajaecoo.pl/"},
+  "oj-be":{name:"OMODA & JAECOO België｜官方车型与售价",url:"https://www.omodajaecoo.be/nl/"},
+  "oj-se":{name:"OMODA & JAECOO Sverige｜官方车型目录",url:"https://omodajaecoo.se/modeller"},
+  "oj-hu":{name:"OMODA & JAECOO Magyarország｜官方车型与价目表",url:"https://www.omodajaecoo.hu/"},
+  "oj-il":{name:"OMODA Israel｜官方车型与售价",url:"https://omoda.co.il/"},
+  "oj-au":{name:"OMODA JAECOO Australia｜OMODA 9 官方车型与售价",url:"https://www.omodajaecoo.com.au/models/omoda-9"},
+  "oj-nz":{name:"OMODA JAECOO New Zealand｜OMODA 9 官方车型与售价",url:"https://www.omodajaecoo.co.nz/models/omoda-9-shs"},
+  "oj-my":{name:"OMODA JAECOO Malaysia｜C7 / C9 官方车型目录",url:"https://www.omodajaecoo.com.my/"},
+  "ebro-es":{name:"EBRO España｜Chery 技术车型的本地品牌目录",url:"https://www.ebroauto.com/modelos"},
   "chery-il":{name:"Chery Israel｜官方车型目录",url:"https://cheryisrael.co.il/"},
   "chery-au":{name:"Chery Australia｜官方车型与起售价",url:"https://cherymotor.com.au/"},
   "chery-nz":{name:"Chery New Zealand｜官方车型目录",url:"https://chery.co.nz/"},
@@ -309,6 +348,8 @@ export const strategicImages: Record<string,string> = {
   "Seal U DM-i":"https://i0.wp.com/www.electrifiedmagazin.de/wp-content/uploads/2024/05/BYD_SEAL_U_DM-I__EXTERIOR_025.jpg?ssl=1",
   "Seal 6 DM-i":"/cars/king.jpg","Seal 6 Touring":"/cars/king.jpg","Sealion 5 DM-i":"/cars/song-pro.jpg","Sealion 6 DM-i":"/cars/song-plus.jpg","Sealion 8 DM-i":"/cars/atto-8.jpg",
   "M6":"https://motomobinews.id/wp-content/uploads/2024/08/BYD-M6_Review-BDG_1.jpg","M6 DM-i":"https://motomobinews.id/wp-content/uploads/2024/08/BYD-M6_Review-BDG_1.jpg",
+  "Omoda 7":"https://cdn.sanity.io/images/ekfudic1/omoda-production/010267cc36022d97433359d45dd9c54c3d05c994-2560x1708.webp?rect=0,182,2560,1344&w=1200&h=630&q=80&fit=crop&auto=format",
+  "Omoda 9":"https://cdn.sanity.io/images/ekfudic1/omoda-production/50c18d13d96a97ca3e0a2120935ebe7ab8919c1e-2560x1356.webp?rect=0,6,2560,1344&w=1200&h=630&q=80&fit=crop&auto=format",
   "B05":"https://www.leapmotor.net/content/dam/leapmotor/cross-regional/eu/b05/B05-homepage-desktop.jpg",
   "Zeekr 7X":"https://builder-io.imgix.net/assets/abf848f2753846b5ba2407de096a5a71/ec06d53112054cf788fe4343d6541376?auto=format&fit=crop&h=649&w=1440",
   "Zeekr 009":"https://www.datocms-assets.com/143770/1730254172-rectangle-46228942.jpg?auto=format",
@@ -331,10 +372,11 @@ export const strategicImages: Record<string,string> = {
 
 export const strategicDriveByModel: Record<string,string> = {
   "Atto 1":"前驱","Atto 2":"前驱","Atto 3":"前驱","Seal U DM-i":"前驱 / 四驱","Seal 6 DM-i":"前驱","Seal 6 Touring":"前驱","Sealion 5 DM-i":"前驱","Sealion 6 DM-i":"前驱 / 四驱","Sealion 8 DM-i":"四驱","M6":"前驱","M6 DM-i":"前驱","B05":"前驱",
+  "Omoda 7":"前驱 / 四驱","Omoda 9":"前驱 / 四驱",
   "Zeekr 7X":"后驱 / 四驱","Zeekr 009":"四驱","Lynk & Co 02":"后驱","Lynk & Co 08":"四驱","WEY 03":"四驱","WEY 05":"四驱","VOYAH Free":"四驱","VOYAH Courage":"后驱 / 四驱","VOYAH Dream":"四驱",
   "XPENG G6":"后驱 / 四驱","XPENG G9":"后驱 / 四驱","XPENG P7+":"后驱 / 四驱","XPENG X9":"前驱 / 四驱","NIO ET5":"四驱","NIO ET5 Touring":"四驱","NIO EL6":"四驱","NIO EL8":"四驱","firefly":"后驱",
 };
 
 export const strategicBatteryByModel: Record<string,string> = {
-  "Dolphin Surf":"30–43.2 kWh*","Atto 1":"30.08–38.88 kWh","Atto 2":"45.1–64.8 kWh*","Atto 3":"60.48 kWh","Seal U DM-i":"18.3–26.6 kWh","Seal 6 DM-i":"10.1–19 kWh*","Seal 6 Touring":"10.1–19 kWh*","Sealion 5 DM-i":"12.9–18.3 kWh","Sealion 6 DM-i":"18.3–26.6 kWh","Sealion 8 DM-i":"约 35.6 kWh*","M6":"55.4–71.8 kWh","M6 DM-i":"7.4–18.3 kWh","B05":"56.2–67.1 kWh*","Zeekr 7X":"75–100 kWh","Zeekr 009":"116 kWh","Lynk & Co 02":"66 kWh","Lynk & Co 08":"39.6 kWh","WEY 03":"34 kWh*","WEY 05":"39.7 kWh*","VOYAH Free":"106.7 kWh","VOYAH Courage":"80 kWh*","VOYAH Dream":"108.7 kWh","XPENG G6":"68.5–80.8 kWh","XPENG G9":"79–98 kWh","XPENG P7+":"74.9 kWh","XPENG X9":"94.8–110 kWh","NIO ET5":"75 / 100 kWh","NIO ET5 Touring":"75 / 100 kWh","NIO EL6":"75 / 100 kWh","NIO EL8":"75 / 100 kWh","firefly":"42.1 kWh",
+  "Dolphin Surf":"30–43.2 kWh*","Atto 1":"30.08–38.88 kWh","Atto 2":"45.1–64.8 kWh*","Atto 3":"60.48 kWh","Seal U DM-i":"18.3–26.6 kWh","Seal 6 DM-i":"10.1–19 kWh*","Seal 6 Touring":"10.1–19 kWh*","Sealion 5 DM-i":"12.9–18.3 kWh","Sealion 6 DM-i":"18.3–26.6 kWh","Sealion 8 DM-i":"约 35.6 kWh*","M6":"55.4–71.8 kWh","M6 DM-i":"7.4–18.3 kWh","Omoda 7":"18.4 kWh","Omoda 9":"34.46 kWh","B05":"56.2–67.1 kWh*","Zeekr 7X":"75–100 kWh","Zeekr 009":"116 kWh","Lynk & Co 02":"66 kWh","Lynk & Co 08":"39.6 kWh","WEY 03":"34 kWh*","WEY 05":"39.7 kWh*","VOYAH Free":"106.7 kWh","VOYAH Courage":"80 kWh*","VOYAH Dream":"108.7 kWh","XPENG G6":"68.5–80.8 kWh","XPENG G9":"79–98 kWh","XPENG P7+":"74.9 kWh","XPENG X9":"94.8–110 kWh","NIO ET5":"75 / 100 kWh","NIO ET5 Touring":"75 / 100 kWh","NIO EL6":"75 / 100 kWh","NIO EL8":"75 / 100 kWh","firefly":"42.1 kWh",
 };
