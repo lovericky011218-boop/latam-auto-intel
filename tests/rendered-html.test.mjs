@@ -50,6 +50,8 @@ test("server-renders the four-region strategic-market dashboard", async () => {
   assert.match(html, /全市场 · 单一品牌车型投放规模/);
   assert.match(html, /不随上方大区选择变化/);
   assert.match(html, /相同车型的多个动力形式只计 1 款/);
+  assert.match(html, /展开动力 \/ 驱动 \/ 安全筛选/);
+  assert.ok(html.indexOf('id="market-insights"') < html.indexOf('id="lineup"'));
 });
 
 test("keeps expanded group data, region filters, and official source links in source", async () => {
@@ -89,7 +91,7 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.match(page, /setRegion\("全部区域"\);setCountry\("全部市场"\)/);
   assert.match(page, /setOverviewBrand\(item\.brand\)/);
   assert.match(page, /全市场 · \$\{overviewBrand\} 车型总览/);
-  assert.match(page, /每款车型仅显示一次/);
+  assert.match(page, /点击车型家族可查看各国名称、动力、配置和价格/);
   assert.match(page, /动力与主要配置/);
   assert.match(page, /投放大区/);
   assert.match(page, /投放国家/);
@@ -97,6 +99,16 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.match(page, /EBRO s700/);
   assert.match(page, /OMODA C7/);
   assert.match(page, /OMODA C9/);
+  assert.doesNotMatch(page, /marketChanges/);
+  assert.doesNotMatch(page, /本轮市场变化/);
+  assert.match(page, /showAdvancedFilters/);
+  assert.match(page, /查看各国版本与配置/);
+  assert.match(page, /className="configChoice"/);
+  assert.match(page, /setFamilyFocus/);
+  assert.match(page, /当前查看/);
+  assert.match(page, /familyMarkets/);
+  assert.match(page, /className="familyDrawer"/);
+  assert.match(page, /aria-modal="true"/);
   assert.doesNotMatch(page, /coverageCountryNames/);
   assert.doesNotMatch(page, /"--heat"/);
   assert.match(page, /DONGFENG/);
