@@ -50,7 +50,12 @@ test("server-renders the four-region strategic-market dashboard", async () => {
   assert.match(html, /全市场 · 单一品牌车型投放规模/);
   assert.match(html, /不随上方大区选择变化/);
   assert.match(html, /相同车型的多个动力形式只计 1 款/);
-  assert.match(html, /展开动力 \/ 驱动 \/ 安全筛选/);
+  assert.match(html, /车身形式构成/);
+  assert.match(html, /车身形式与总车型数使用相同去重口径/);
+  assert.match(html, /展开车身 \/ 价格 \/ 动力 \/ 驱动 \/ 安全筛选/);
+  assert.match(html, /价格：低 → 高/);
+  assert.match(html, /续航：高 → 低/);
+  assert.match(html, /上市时间（待补齐）/);
   assert.ok(html.indexOf('id="market-insights"') < html.indexOf('id="lineup"'));
 });
 
@@ -77,6 +82,13 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.match(page, /Changan集团\|Deepal\|Deepal S07/);
   assert.match(page, /"全部驱动","前驱","后驱","四驱"/);
   assert.match(page, /"全部能源","纯电","插混","增程","混动","燃油"/);
+  assert.match(page, /"全部车身","轿车","SUV","MPV","皮卡"/);
+  assert.match(page, /const bodyTypeOf/);
+  assert.match(page, /const carPriceValue/);
+  assert.match(page, /const carRangeValue/);
+  assert.match(page, /sortBy==="priceAsc"/);
+  assert.match(page, /sortBy==="rangeAsc"/);
+  assert.match(page, /资料更新时间：新 → 旧/);
   assert.match(page, /"全部区域",\.\.\.regionCountries\.map/);
   assert.match(page, /coverageRegion,setCoverageRegion\]=useState\("南美"\)/);
   assert.match(page, /coverageCountries=countries\.filter/);
@@ -84,10 +96,14 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.match(page, /modelIdentityAliases/);
   assert.match(page, /Dolphin Mini":"BYD Seagull family/);
   assert.match(page, /Yuan Plus":"BYD Atto 3 \/ Yuan Plus/);
+  assert.match(page, /Yuan Up DM-i":"BYD Atto 2 \/ Yuan Up/);
   assert.match(page, /Song Plus":"BYD Song Plus \/ Seal U \/ Sealion 6/);
-  assert.match(page, /new Set\(cars\.filter/);
+  assert.match(page, /EX5 EM-i":"Geely EX5 family/);
   assert.match(page, /className="brandFootprint"/);
   assert.match(page, /cars\.filter\(c=>c\.brand===item\.brand\)/);
+  assert.match(page, /const modelFamilies=new Map<string,Car>/);
+  assert.match(page, /const bodyCounts:Record<BodyType,number>/);
+  assert.doesNotMatch(page, /sort\(\(a,b\)=>b\.count-a\.count/);
   assert.match(page, /setRegion\("全部区域"\);setCountry\("全部市场"\)/);
   assert.match(page, /setOverviewBrand\(item\.brand\)/);
   assert.match(page, /全市场 · \$\{overviewBrand\} 车型总览/);
@@ -120,6 +136,9 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.match(css, /--aqua:#4cc9c5/);
   assert.match(css, /--acid:#ffbb00/);
   assert.match(css, /--line:#dcdddd/);
+  assert.match(css, /\.priceRangeRow/);
+  assert.match(css, /\.sortControl/);
+  assert.match(css, /\.bodyMix/);
   assert.doesNotMatch(css, /--acid:#8b5e3c/);
   assert.match(css, /\.heroStrategy,\.coverage\{background:var\(--paper\)/);
   assert.match(layout, /南美、欧洲、澳新与东南亚 25 个重点国家/);
