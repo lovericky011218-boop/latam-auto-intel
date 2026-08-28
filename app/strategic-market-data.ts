@@ -32,10 +32,14 @@ export const strategicSpecs: Record<string, StrategicSpec> = {
   "Omoda 9": {dims:"4,775 × 1,920 × 1,671 mm",wheelbase:"2,800 mm",energy:"汽油 ICE / 插混 PHEV",use:"PHEV 约 1.4–1.7 L/100km WLTP*",range:"PHEV 145 km 纯电 / 约 1,100 km 综合 WLTP*",safety:"5★ Euro NCAP / ANCAP",rating:"yes"},
   "B05": {dims:"4,430 × 1,880 × 1,520 mm",wheelbase:"2,735 mm",energy:"纯电 BEV",use:"当地官网未公布",range:"最高约 460 km WLTP*",safety:"未查到当地版本有效五星成绩",rating:"unknown"},
   "Deepal S05": {dims:"4,620 × 1,900 × 1,600 mm",wheelbase:"2,880 mm",energy:"纯电 BEV / 增程 REEV",use:"依动力版本",range:"BEV 447–488 km WLTP / REEV 约 1,129 km 综合*",safety:"5★ Euro NCAP（BEV 欧洲版）",rating:"yes"},
-  "Zeekr 7X": {dims:"4,825 × 1,930 × 1,656 mm",wheelbase:"2,925 mm",energy:"纯电 BEV",use:"约 16.4–18.7 kWh/100km*",range:"480–615 km WLTP",safety:"5★ Euro NCAP",rating:"yes"},
+  "Zeekr 7X": {dims:"4,787 × 1,930 × 1,650 mm",wheelbase:"2,900 mm",energy:"纯电 BEV",use:"约 16.4–18.7 kWh/100km*",range:"480–615 km WLTP",safety:"5★ Euro NCAP",rating:"yes"},
+  "Zeekr 7GT": {dims:"4,817 × 2,070 × 1,456 mm（含后视镜）",wheelbase:"2,900 mm",energy:"纯电 BEV",use:"约 15.8–18.5 kWh/100km*",range:"519–655 km WLTP",safety:"5★ Euro NCAP",rating:"yes"},
+  "Zeekr 9X": {dims:"5,239 × 2,029 × 1,819 mm",wheelbase:"3,169 mm",energy:"插混 PHEV",use:"当地官网未公布",range:"179 km 纯电 / 737 km 综合 WLTP*",safety:"未查到适用版本有效五星成绩",rating:"unknown"},
   "Zeekr 009": {dims:"5,209 × 2,024 × 1,848 mm",wheelbase:"3,205 mm",energy:"纯电 BEV",use:"约 23.3 kWh/100km*",range:"最高约 582 km WLTP*",safety:"5★ Euro NCAP（适用版本）",rating:"yes"},
   "Lynk & Co 02": {dims:"4,460 × 1,845 × 1,573 mm",wheelbase:"2,755 mm",energy:"纯电 BEV",use:"约 17.1 kWh/100km*",range:"最高 445 km WLTP",safety:"5★ Euro NCAP",rating:"yes"},
   "Lynk & Co 08": {dims:"4,820 × 1,915 × 1,685 mm",wheelbase:"2,848 mm",energy:"插混 PHEV",use:"约 0.9 L/100km WLTP*",range:"200 km 纯电 / 超过 1,000 km 综合 WLTP*",safety:"5★ Euro NCAP",rating:"yes"},
+  "Lynk & Co 09": {dims:"5,042 × 1,977 × 1,780 mm",wheelbase:"2,984 mm",energy:"轻混 MHEV",use:"当地官网未公布",range:"不适用（非插电）",safety:"未查到适用版本有效五星成绩",rating:"unknown"},
+  "Lynk & Co 03+": {dims:"4,697 × 1,843 × 1,448 mm",wheelbase:"2,730 mm",energy:"汽油 ICE",use:"当地官网未公布",range:"—",safety:"未查到适用版本有效五星成绩",rating:"unknown"},
   "WEY 03": {dims:"4,668 × 1,890 × 1,730 mm",wheelbase:"2,745 mm",energy:"插混 PHEV",use:"约 0.5 L/100km WLTP*",range:"最高 139 km 纯电 WLTP*",safety:"5★ Euro NCAP（同代车型）",rating:"yes"},
   "WEY 05": {dims:"4,870 × 1,960 × 1,690 mm",wheelbase:"2,910 mm",energy:"插混 PHEV",use:"约 0.4 L/100km WLTP*",range:"最高 146 km 纯电 WLTP*",safety:"5★ Euro NCAP（同代车型）",rating:"yes"},
   "VOYAH Free": {dims:"4,905 × 1,950 × 1,645 mm",wheelbase:"2,960 mm",energy:"纯电 BEV",use:"约 20.2 kWh/100km WLTP*",range:"约 500 km WLTP",safety:"未查到有效 Euro NCAP 五星成绩",rating:"unknown"},
@@ -105,6 +109,10 @@ const lynkEu = (source="lynk-eu"):R[] => [
   ["Geely集团","Lynk&Co","Lynk & Co 02",source,"询价","Core RWD:询价,More RWD:询价"],
   ["Geely集团","Lynk&Co","Lynk & Co 08",source],
 ];
+const zeekrEuNew = (source="zeekr-eu"):R[] => [
+  ["Geely集团","Zeekr","Zeekr 7GT",source,"€ 45.990","Business Edition RWD 75 kWh:€ 45.990,Long Range RWD Launch Edition 100 kWh:€ 50.990,Privilege AWD Launch Edition 100 kWh:€ 57.490"],
+  ["Geely集团","Zeekr","Zeekr 9X",source,"询价","PHEV Ultra AWD 55 kWh:询价"],
+];
 const xpengEu = (source="xpeng-eu"):R[] => [
   ["XPENG集团","XPENG","XPENG G6",source,"询价","RWD Standard Range:询价,RWD Long Range:询价,AWD Performance:询价"],
   ["XPENG集团","XPENG","XPENG G9",source,"询价","RWD Standard Range:询价,RWD Long Range:询价,AWD Performance:询价"],
@@ -150,7 +158,7 @@ export const strategicRaw: Record<string,string[]> = {
     ["Chery集团","Omoda","Omoda 9","oj-nl","€ 53.490","PHEV SHS-P AWD:€ 53.490"],
     ...xpengEu("xpeng-nl").map(x=>x[2]==="XPENG G6"?reprice(x,"€ 43.990","RWD Standard Range:€ 43.990,RWD Long Range:€ 48.990,AWD Performance:€ 53.990"):x),
     ...nioEu("nio-nl"),
-    ["Geely集团","Zeekr","Zeekr X","zeekr-eu"],["Geely集团","Zeekr","Zeekr 001","zeekr-eu"],["Geely集团","Zeekr","Zeekr 7X","zeekr-eu","询价","RWD Long Range:询价,AWD Performance:询价"],
+    ["Geely集团","Zeekr","Zeekr X","zeekr-eu"],["Geely集团","Zeekr","Zeekr 001","zeekr-eu"],["Geely集团","Zeekr","Zeekr 7X","zeekr-eu","询价","RWD Long Range:询价,AWD Performance:询价"],...zeekrEuNew(),
   ]),
   "西班牙": rs([
     ...bydEu(),...lynkEu(),...leapEu(),...deepalEu(),...xpengEu(),...voyahEu(),
@@ -170,7 +178,7 @@ export const strategicRaw: Record<string,string[]> = {
     ...bydEu(),...ojCore(),...lynkEu(),...leapEu(),...xpengEu(),
     ["Chery集团","Omoda","Omoda 7","oj-fr","€ 38.990","PHEV FWD:€ 38.990"],
     ["Chery集团","Omoda","Omoda 9","oj-fr","€ 49.990","PHEV AWD:€ 49.990"],
-    ["Geely集团","Zeekr","Zeekr X","zeekr-eu"],["Geely集团","Zeekr","Zeekr 001","zeekr-eu"],["Geely集团","Zeekr","Zeekr 7X","zeekr-eu","询价","RWD Long Range:询价,AWD Performance:询价"],
+    ["Geely集团","Zeekr","Zeekr X","zeekr-eu"],["Geely集团","Zeekr","Zeekr 001","zeekr-eu"],["Geely集团","Zeekr","Zeekr 7X","zeekr-eu","询价","RWD Long Range:询价,AWD Performance:询价"],...zeekrEuNew(),
   ]),
   "以色列": rs([
     ...bydEu(),...xpengEu(),
@@ -185,7 +193,7 @@ export const strategicRaw: Record<string,string[]> = {
   "瑞典": rs([
     ...bydEu(),...ojCore(),...lynkEu(),...voyahEu(),...leapEu(),...xpengEu(),...nioEu("nio-se"),
     ["Chery集团","Omoda","Omoda 9","oj-se","询价","PHEV AWD:询价"],
-    ["Geely集团","Zeekr","Zeekr X","zeekr-eu"],["Geely集团","Zeekr","Zeekr 001","zeekr-eu"],["Geely集团","Zeekr","Zeekr 7X","zeekr-eu","询价","RWD Long Range:询价,AWD Performance:询价"],
+    ["Geely集团","Zeekr","Zeekr X","zeekr-eu"],["Geely集团","Zeekr","Zeekr 001","zeekr-eu"],["Geely集团","Zeekr","Zeekr 7X","zeekr-eu","询价","RWD Long Range:询价,AWD Performance:询价"],...zeekrEuNew(),
     ["GWM集团","GWM","WEY 03","gwm-eu"],["GWM集团","GWM","WEY 05","gwm-eu"],["GWM集团","GWM","Ora 03","gwm-eu"],
   ]),
   "德国": rs([
@@ -194,6 +202,7 @@ export const strategicRaw: Record<string,string[]> = {
     ["Geely集团","Zeekr","Zeekr X","zeekr-de","€ 37.990","RWD:€ 37.990,AWD Privilege:询价"],
     ["Geely集团","Zeekr","Zeekr 001","zeekr-de","€ 59.990","RWD Long Range:€ 59.990,AWD Performance:询价"],
     ["Geely集团","Zeekr","Zeekr 7X","zeekr-de","询价","RWD Long Range:询价,AWD Performance:询价"],
+    ...zeekrEuNew("zeekr-de"),
     ["GWM集团","GWM","WEY 03","gwm-eu"],["GWM集团","GWM","WEY 05","gwm-eu"],["GWM集团","GWM","Ora 03","gwm-eu"],
   ]),
   "波兰": rs([
@@ -253,7 +262,7 @@ export const strategicRaw: Record<string,string[]> = {
   "印度尼西亚": rs([
     ["BYD集团","BYD","Atto 1","byd-id","IDR 199.000.000","Standard 30.08 kWh:IDR 199.000.000,Dynamic 30.08 kWh:IDR 210.000.000,Premium 38.88 kWh:IDR 245.000.000"],["BYD集团","BYD","Atto 3","byd-id","IDR 415.000.000","Advanced Plus:IDR 415.000.000"],["BYD集团","BYD","Dolphin","byd-id","IDR 369.000.000","Dynamic 44.9 kWh:IDR 369.000.000,Premium 60.48 kWh:IDR 429.000.000"],["BYD集团","BYD","Seal","byd-id","IDR 639.000.000","Premium RWD:IDR 639.000.000,Performance AWD:IDR 750.000.000"],["BYD集团","BYD","M6","byd-id","IDR 395.000.000","Standard 55.4 kWh:IDR 395.000.000,Superior 71.8 kWh:IDR 423.000.000,Superior Captain 71.8 kWh:IDR 433.000.000"],["BYD集团","BYD","M6 DM-i","byd-id","IDR 298.000.000","Classic Standard 7.4 kWh:IDR 298.000.000,Classic Dynamic 7.4 kWh:IDR 318.000.000,Cross Advance 18.3 kWh:IDR 360.000.000,Cross Superior 18.3 kWh:IDR 380.000.000"],["BYD集团","BYD","Sealion 7","byd-id","IDR 629.000.000","Premium RWD:IDR 629.000.000,Performance AWD:IDR 719.000.000"],
     ["Chery集团","Chery","Tiggo 4","chery-id","询价","ICE:询价,HEV:询价"],["Chery集团","Chery","Tiggo 7","chery-id","询价","ICE:询价,PHEV:询价"],["Chery集团","Chery","Tiggo 8 Pro","chery-id","询价","ICE:询价,PHEV:询价"],["Chery集团","Omoda","Omoda 5","chery-id"],["Chery集团","Omoda","Omoda E5","chery-id"],["Chery集团","Jaecoo","Jaecoo 7","chery-id","询价","ICE:询价,PHEV:询价"],
-    ["Geely集团","Zeekr","Zeekr X","zeekr-id"],["Geely集团","Zeekr","Zeekr 009","zeekr-id"],
+    ["Geely集团","Zeekr","Zeekr X","zeekr-id"],["Geely集团","Zeekr","Zeekr 7X","zeekr-id","询价","RWD:询价,AWD:询价"],["Geely集团","Zeekr","Zeekr 009","zeekr-id"],
     ["GWM集团","GWM","Ora 03","gwm-id"],["GWM集团","GWM","Haval Jolion","gwm-id","询价","ICE:询价,HEV:询价"],["GWM集团","GWM","Haval H6","gwm-id","询价","HEV:询价,PHEV AWD:询价"],["GWM集团","GWM","Tank 300","gwm-id"],["GWM集团","GWM","Tank 500","gwm-id"],
     ["Changan集团","Deepal","Deepal S05","deepal-id","询价","BEV RWD:询价,BEV AWD:询价"],["Changan集团","Deepal","Deepal S07","deepal-id"],["Changan集团","Changan","Lumin","deepal-id"],
     ["XPENG集团","XPENG","XPENG G6","xpeng-id","询价","RWD:询价,AWD:询价"],["XPENG集团","XPENG","XPENG X9","xpeng-id","询价","FWD:询价,AWD:询价"],
@@ -263,7 +272,7 @@ export const strategicRaw: Record<string,string[]> = {
     ["Chery集团","Chery","Tiggo 7","chery-my","询价","ICE:询价,PHEV:询价"],["Chery集团","Chery","Tiggo 8 Pro","chery-my","询价","ICE:询价,PHEV:询价"],["Chery集团","Omoda","Omoda 5","chery-my","询价","ICE:询价,HEV:询价"],["Chery集团","Omoda","Omoda E5","chery-my"],["Chery集团","Jaecoo","Jaecoo 7","chery-my","询价","ICE:询价,PHEV:询价"],
     ["Chery集团","Omoda","Omoda 7","oj-my","询价","ICE C7 官方预售 FWD:询价,PHEV C7 官方预售 FWD:询价"],
     ["Chery集团","Omoda","Omoda 9","oj-my","MYR 168.800","ICE C9 FWD:MYR 168.800,ICE C9 AWD:MYR 188.800,PHEV C9 AWD:MYR 208.800"],
-    ["Geely集团","Zeekr","Zeekr X","zeekr-my"],["Geely集团","Zeekr","Zeekr 7X","zeekr-my","询价","RWD:询价,AWD:询价"],["Geely集团","Zeekr","Zeekr 009","zeekr-my"],
+    ["Geely集团","Zeekr","Zeekr X","zeekr-my"],["Geely集团","Zeekr","Zeekr 7X","zeekr-my","询价","RWD:询价,AWD:询价"],["Geely集团","Zeekr","Zeekr 009","zeekr-my","MYR 304.800","Executive FWD 116 kWh:MYR 304.800,Luxury AWD 116 kWh:MYR 349.800,Ultra-Luxury AWD 116 kWh:MYR 359.800"],["Geely集团","Zeekr","Zeekr 9X","zeekr-my-9x","询价","PHEV Ultra AWD 55 kWh 官方预订:询价"],
     ["GWM集团","GWM","Ora 03","gwm-my"],["GWM集团","GWM","Haval Jolion","gwm-my","询价","ICE:询价,HEV:询价"],["GWM集团","GWM","Haval H6","gwm-my","询价","HEV:询价,PHEV AWD:询价"],["GWM集团","GWM","Tank 300","gwm-my"],["GWM集团","GWM","Tank 500","gwm-my"],
     ["东风集团","Dongfeng","BOX","dongfeng-my"],["东风集团","VOYAH","VOYAH Dream","dongfeng-my"],
     ["Leapmotor集团","Leapmotor","B10","leap-my","询价","BEV:询价,REEV:询价"],["Leapmotor集团","Leapmotor","C10","leap-my","询价","BEV:询价,REEV:询价"],
@@ -366,6 +375,7 @@ export const strategicSources: Record<string,{name:string,url:string}> = {
   "zeekr-th":{name:"ZEEKR Thailand｜官方车型目录",url:"https://www.zeekrlife.com/th-th"},
   "zeekr-id":{name:"ZEEKR Indonesia｜官方车型目录",url:"https://www.zeekrlife.com/id-id"},
   "zeekr-my":{name:"ZEEKR Malaysia｜官方车型目录",url:"https://www.zeekrlife.com/my-en"},
+  "zeekr-my-9x":{name:"ZEEKR Malaysia｜9X 官方预览与开放预订",url:"https://www.zeekrlife.com/en-my/posts/zeekrs-first-ever-showing-at-klims-2026-demonstrates-premium-ev-leadership/"},
   "zeekr-sg":{name:"ZEEKR Singapore｜官方车型目录",url:"https://www.zeekr.com/en-sg"},
   "gwm-uk":{name:"GWM UK｜官方车型与起售价",url:"https://gwmcars.co.uk/"},
   "gwm-eu":{name:"GWM Europe｜欧洲官方车型目录",url:"https://www.gwm-eu.com/"},
@@ -431,10 +441,14 @@ export const strategicImages: Record<string,string> = {
   "Omoda 7":"https://cdn.sanity.io/images/ekfudic1/omoda-production/010267cc36022d97433359d45dd9c54c3d05c994-2560x1708.webp?rect=0,182,2560,1344&w=1200&h=630&q=80&fit=crop&auto=format",
   "Omoda 9":"https://cdn.sanity.io/images/ekfudic1/omoda-production/50c18d13d96a97ca3e0a2120935ebe7ab8919c1e-2560x1356.webp?rect=0,6,2560,1344&w=1200&h=630&q=80&fit=crop&auto=format",
   "B05":"/cars/leapmotor-b05-official.jpeg",
-  "Zeekr 7X":"https://builder-io.imgix.net/assets/abf848f2753846b5ba2407de096a5a71/ec06d53112054cf788fe4343d6541376?auto=format&fit=crop&h=649&w=1440",
+  "Zeekr 7X":"https://www.datocms-assets.com/128969/1758032711-2025_08_zeekr7x_0844_v002_fa_srgb-1-1.jpg?auto=format%2Ccompress%2Cenhance&q=65&w=2560",
+  "Zeekr 7GT":"https://www.datocms-assets.com/128969/1766570095-007gt.png?auto=format%2Ccompress%2Cenhance&q=65&w=1440",
+  "Zeekr 9X":"https://www.datocms-assets.com/128969/1786006741-untitled-design-2026-08-06t105817-551.jpg?auto=format%2Ccompress%2Cenhance&q=65&w=1440",
   "Zeekr 009":"https://www.datocms-assets.com/143770/1730254172-rectangle-46228942.jpg?auto=format",
   "Lynk & Co 02":"https://fde-web-prd-001-gdegamg8eeebbuf9.z01.azurefd.net/-/jssmedia/lynkco-global-portal/media-library-2025/02/02-gallery/hero-onyx-black/02-more-onyx-black-fromside-1-l.jpg?h=639&hash=BBFA4A086809AE2BFD95889752C1BDFC&iar=0&rev=-1&w=1136",
   "Lynk & Co 08":"https://fde-web-prd-001-gdegamg8eeebbuf9.z01.azurefd.net/-/jssmedia/lynkco-global-portal/media-library-2025/08/gallery/highlighs/1-frameless-windows-l.jpg?extension=webp%2Cavif&h=750&hash=979A0CD947CBF79300B918A6B88C9AAC&iar=0&rev=4d535ce6ce5846b4a15aac0d7ece1214&w=1000",
+  "Lynk & Co 09":"https://www.lynkco.funnelbox.cl/images/modelos/09/base/linkco_09_5.png",
+  "Lynk & Co 03+":"https://lynkco.uy/wp-content/uploads/2025/08/03plus_360_negro.png",
   "WEY 03":"/cars/wey-07.jpg","WEY 05":"/cars/wey-07.jpg",
   "VOYAH Free":"https://rgrcgstor01.blob.core.windows.net/voyahpt-682dd92db82f93402a08b68c-prod/free1920x10801.webp",
   "VOYAH Courage":"https://img.stcrm.it/images/41052742/3000x/voyah-courage-2024-1-risultato.jpeg",
@@ -447,7 +461,7 @@ export const strategicImages: Record<string,string> = {
   "XPENG X9":"https://assets.autobuzz.my/wp-content/uploads/2024/03/15113536/2024-XPeng-X9-1.jpg",
   "NIO ET5":"https://static.eu.nio.com/fx-static/mp-testdrive-fe/clcuar002000007774m7vg3wo/ET5_NL.png",
   "NIO ET5 Touring":"https://editorial.pxcrush.net/carsales/general/editorial/nio-et5-wagon-01.jpg?height=682&width=1024",
-  "NIO EL6":"https://carwow-es-wp-2.imgix.net/nio-modelos-europa-5.jpg?auto=format&cs=tinysrgb&fit=crop&q=60&w=1600",
+  "NIO EL6":"https://www-cdn.eu.nio.com/officialsite/editor/upload/prod/dd271684-0e86-437b-9c3c-463debfb5d8f/EL6.jpg",
   "NIO EL8":"https://www-cdn.eu.nio.com/officialsite/editor/upload/stg/d3b6e9ee-e6d2-4d71-b17f-ecdb78a7bedd/exterior-design-1-desktop.jpg",
   "firefly":"https://cdn-up-public.firefly.world/www-firefly/upload-local/2025-04-22/page_exteriorColors/item-02-desktop.jpg",
   "AION UT":"https://br-www-resouce-cdn.gacgroup.com/static/Global/tenant/operation/ncar/page/202510/1761115230165-0.webp",
@@ -480,14 +494,14 @@ export const strategicImages: Record<string,string> = {
 export const strategicDriveByModel: Record<string,string> = {
   "Atto 1":"前驱","Atto 2":"前驱","Atto 3":"前驱","Seal U DM-i":"前驱 / 四驱","Seal 6 DM-i":"前驱","Seal 6 Touring":"前驱","Sealion 5 DM-i":"前驱","Sealion 6 DM-i":"前驱 / 四驱","Sealion 8 DM-i":"四驱","M6":"前驱","M6 DM-i":"前驱","B05":"前驱",
   "Omoda 7":"前驱 / 四驱","Omoda 9":"前驱 / 四驱",
-  "Zeekr 7X":"后驱 / 四驱","Zeekr 009":"四驱","Lynk & Co 02":"后驱","Lynk & Co 08":"四驱","WEY 03":"四驱","WEY 05":"四驱","VOYAH Free":"四驱","VOYAH Courage":"后驱 / 四驱","VOYAH Dream":"四驱","VOYAH Passion":"四驱","VOYAH Passion L":"四驱",
+  "Zeekr 7X":"后驱 / 四驱","Zeekr 7GT":"后驱 / 四驱","Zeekr 9X":"四驱","Zeekr 009":"四驱","Lynk & Co 02":"后驱","Lynk & Co 08":"前驱","Lynk & Co 09":"四驱","Lynk & Co 03+":"四驱","WEY 03":"四驱","WEY 05":"四驱","VOYAH Free":"四驱","VOYAH Courage":"后驱 / 四驱","VOYAH Dream":"四驱","VOYAH Passion":"四驱","VOYAH Passion L":"四驱",
   "XPENG G6":"后驱 / 四驱","XPENG G9":"后驱 / 四驱","XPENG P7+":"后驱 / 四驱","XPENG X9":"前驱 / 四驱","NIO ET5":"四驱","NIO ET5 Touring":"四驱","NIO EL6":"四驱","NIO EL8":"四驱","firefly":"后驱",
   "AION UT":"前驱","AION V":"前驱","AION Y":"前驱","AION Y Plus":"前驱","AION ES":"前驱","HYPTEC HT":"后驱","GS3 EMZOOM":"前驱","GS3":"前驱","GS3 Power":"前驱","GS4":"前驱","GS4 Power":"前驱","GS4 MAX":"前驱","GS4 Hybrid":"前驱","EMKOO":"前驱","GS8":"前驱 / 四驱","EMPOW":"前驱","M8 PHEV":"前驱","GN8 PHEV":"前驱","M8":"前驱","M6 Pro":"前驱","S7":"前驱 / 四驱","AION i60":"前驱","E9":"前驱","Smilodon Pro":"后驱 / 四驱",
   "GS9":"四驱",
 };
 
 export const strategicBatteryByModel: Record<string,string> = {
-  "Dolphin Surf":"30–43.2 kWh*","Atto 1":"30.08–38.88 kWh","Atto 2":"45.1–64.8 kWh*","Atto 3":"60.48 kWh","Seal U DM-i":"18.3–26.6 kWh","Seal 6 DM-i":"10.1–19 kWh*","Seal 6 Touring":"10.1–19 kWh*","Sealion 5 DM-i":"12.9–18.3 kWh","Sealion 6 DM-i":"18.3–26.6 kWh","Sealion 8 DM-i":"约 35.6 kWh*","M6":"55.4–71.8 kWh","M6 DM-i":"7.4–18.3 kWh","Omoda 7":"18.4 kWh","Omoda 9":"34.46 kWh","B05":"56.2–67.1 kWh*","Zeekr 7X":"75–100 kWh","Zeekr 009":"116 kWh","Lynk & Co 02":"66 kWh","Lynk & Co 08":"39.6 kWh","WEY 03":"34 kWh*","WEY 05":"39.7 kWh*","VOYAH Free":"106.7 kWh","VOYAH Courage":"80 kWh*","VOYAH Dream":"108.7 kWh","VOYAH Passion":"43 kWh","VOYAH Passion L":"意大利官网未公布","XPENG G6":"68.5–80.8 kWh","XPENG G9":"79–98 kWh","XPENG P7+":"74.9 kWh","XPENG X9":"94.8–110 kWh","NIO ET5":"75 / 100 kWh","NIO ET5 Touring":"75 / 100 kWh","NIO EL6":"75 / 100 kWh","NIO EL8":"75 / 100 kWh","firefly":"42.1 kWh",
+  "Dolphin Surf":"30–43.2 kWh*","Atto 1":"30.08–38.88 kWh","Atto 2":"45.1–64.8 kWh*","Atto 3":"60.48 kWh","Seal U DM-i":"18.3–26.6 kWh","Seal 6 DM-i":"10.1–19 kWh*","Seal 6 Touring":"10.1–19 kWh*","Sealion 5 DM-i":"12.9–18.3 kWh","Sealion 6 DM-i":"18.3–26.6 kWh","Sealion 8 DM-i":"约 35.6 kWh*","M6":"55.4–71.8 kWh","M6 DM-i":"7.4–18.3 kWh","Omoda 7":"18.4 kWh","Omoda 9":"34.46 kWh","B05":"56.2–67.1 kWh*","Zeekr 7X":"75–100 kWh","Zeekr 7GT":"75–100 kWh","Zeekr 9X":"55 kWh","Zeekr 009":"116 kWh","Lynk & Co 02":"66 kWh","Lynk & Co 08":"39.6 kWh","WEY 03":"34 kWh*","WEY 05":"39.7 kWh*","VOYAH Free":"106.7 kWh","VOYAH Courage":"80 kWh*","VOYAH Dream":"108.7 kWh","VOYAH Passion":"43 kWh","VOYAH Passion L":"意大利官网未公布","XPENG G6":"68.5–80.8 kWh","XPENG G9":"79–98 kWh","XPENG P7+":"74.9 kWh","XPENG X9":"94.8–110 kWh","NIO ET5":"75 / 100 kWh","NIO ET5 Touring":"75 / 100 kWh","NIO EL6":"75 / 100 kWh","NIO EL8":"75 / 100 kWh","firefly":"42.1 kWh",
   "AION UT":"44.12–60 kWh*","AION V":"75.26 kWh*","AION Y":"63.2 kWh*","AION Y Plus":"63.2 kWh*","AION ES":"55.2 kWh*","HYPTEC HT":"83 kWh*","M8 PHEV":"当地官网未按配置公布","GN8 PHEV":"当地官网未按配置公布","S7":"当地官网未按配置公布","AION i60":"当地官网未按配置公布","E9":"当地官网未按配置公布",
   "GS9":"44.5 kWh",
 };
