@@ -57,17 +57,23 @@ test("server-renders the four-region strategic-market dashboard", async () => {
   assert.match(html, /车身形式与总车型数使用相同去重口径/);
   assert.match(html, /展开车身 \/ 尺寸 \/ 价格 \/ 动力 \/ 驱动 \/ 安全筛选/);
   assert.match(html, /价格：低 → 高/);
+  assert.match(html, /销量：高 → 低/);
+  assert.match(html, /销量：低 → 高/);
   assert.match(html, /续航：高 → 低/);
+  assert.match(html, /MARKLINES 销量口径/);
+  assert.match(html, /2024-01 至 2026-04/);
   assert.match(html, /上市时间（待补齐）/);
-  assert.ok(html.indexOf('id="market-insights"') < html.indexOf('id="lineup"'));
+  assert.ok(html.indexOf('id="market-insights"') > html.indexOf('id="lineup"'));
+  assert.ok(html.indexOf('id="market-insights"') > html.indexOf('class="salesMethodNote"'));
 });
 
 test("keeps expanded group data, region filters, and official source links in source", async () => {
-  const [page, css, layout, strategic] = await Promise.all([
+  const [page, css, layout, strategic, salesData] = await Promise.all([
     readFile(new URL("../app/dashboard.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/strategic-market-data.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/marklines-sales-data.ts", import.meta.url), "utf8"),
   ]);
 
   assert.match(page, /"东风集团":\["Dongfeng","VOYAH"\]/);
@@ -91,6 +97,11 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.match(page, /const carRangeValue/);
   assert.match(page, /sortBy==="priceAsc"/);
   assert.match(page, /sortBy==="rangeAsc"/);
+  assert.match(page, /sortBy==="salesAsc"/);
+  assert.match(page, /sortBy==="salesDesc"/);
+  assert.match(page, /const salesForCar/);
+  assert.match(page, /const salesForRecords/);
+  assert.match(page, /同一车型动力的不同驱动与配置卡片共享销量/);
   assert.match(page, /资料更新时间：新 → 旧/);
   assert.match(page, /"全部区域",\.\.\.regionCountries\.map/);
   assert.match(page, /coverageRegion,setCoverageRegion\]=useState\("南美"\)/);
@@ -174,6 +185,11 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.match(css, /\.priceRangeRow/);
   assert.match(css, /\.dimensionRangeRow/);
   assert.match(css, /\.sortControl/);
+  assert.match(css, /\.resultCount/);
+  const searchPosition = page.indexOf('className="search"');
+  const sectionHeadPosition = page.indexOf('className="sectionHead"', searchPosition);
+  const sortPosition = page.indexOf('className="sortControl sectionSort"');
+  assert.ok(searchPosition >= 0 && sectionHeadPosition > searchPosition && sortPosition > sectionHeadPosition, "排序控件应位于筛选区之后的结果标题区域");
   assert.match(css, /\.bodyMix/);
   assert.doesNotMatch(css, /--acid:#8b5e3c/);
   assert.match(css, /\.heroStrategy,\.coverage\{background:var\(--paper\)/);
@@ -197,4 +213,7 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.match(strategic, /1-frameless-windows-l\.jpg\?extension=webp%2Cavif/);
   assert.doesNotMatch(strategic, /press\.lynkco\.com\/image\/low\/247253\/2933672/);
   assert.match(strategic, /ebroauto\.com\/modelos/);
+  assert.match(salesData, /"country":"巴西","model":"BYD Seagull family","energy":"纯电"/);
+  assert.match(salesData, /"country":"西班牙","model":"Tiggo 7"/);
+  assert.match(salesData, /export const marklinesSalesPeriod = "2024-01 至 2026-04"/);
 });

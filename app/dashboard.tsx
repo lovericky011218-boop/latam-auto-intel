@@ -10,14 +10,16 @@ import {
   strategicSources,
   strategicSpecs,
 } from "./strategic-market-data";
+import { marklinesSales, marklinesSalesPeriod, marklinesSalesSource, type MarklinesSalesRow } from "./marklines-sales-data";
 
 type Trim = { name: string; price: string };
 type Spec = { dims: string; wheelbase: string; energy: string; use: string; range: string; safety: string; rating: "yes"|"unknown" };
 type PowerCar = Spec & { id:string; country:string; flag:string; group:string; brand:string; model:string; variant:string; image:string; price:string; trims:Trim[]; source:string; verified:string };
 type Car = PowerCar & { drive:string };
 type BodyType = "轿车"|"SUV"|"MPV"|"皮卡";
-type SortKey = "default"|"priceAsc"|"priceDesc"|"rangeDesc"|"rangeAsc"|"verifiedDesc"|"nameAsc";
-type BrandModelOverview = { group:string; brand:string; key:string; name:string; image:string; powers:{name:string;configs:string[];total:number}[]; regions:string[]; countries:{name:string;flag:string}[]; aliases:string[]; records:Car[] };
+type SortKey = "default"|"salesDesc"|"salesAsc"|"priceAsc"|"priceDesc"|"rangeDesc"|"rangeAsc"|"verifiedDesc"|"nameAsc";
+type SalesSummary = { matched:boolean; total:number; y2024:number; y2025:number; y2026:number; scope:"动力"|"车型家族"; sourceRows:number };
+type BrandModelOverview = { group:string; brand:string; key:string; name:string; image:string; powers:{name:string;configs:string[];total:number}[]; regions:string[]; countries:{name:string;flag:string}[]; aliases:string[]; records:Car[]; sales:SalesSummary };
 type FamilyFocus = { power:string; config?:string };
 
 const countries = regionCountries.flatMap(region => region.countries.map(([name,flag]) => [name,flag] as const));
@@ -732,6 +734,60 @@ const modelIdentityAliases: Record<string,string> = {
   "GAC|GS4 Hybrid":"GAC GS4 family",
 };
 const canonicalModel = (brand:string,model:string) => modelIdentityAliases[`${brand}|${model}`] || model.replace(/\s+(DM-i|CSH|HEV|EV)$/i,"").trim();
+const salesFamilyAliases: Record<string,string> = {
+  "Seal 6 DM-i":"BYD Seal 6 family",
+  "Seal 6 Touring":"BYD Seal 6 family",
+  "Rich 6":"Dongfeng Rich family",
+  "Rich 7":"Dongfeng Rich family",
+  "NIO ET5":"NIO ET5 family",
+  "NIO ET5 Touring":"NIO ET5 family",
+  "Huge HEV":"Huge",
+};
+const salesFamily = (brand:string,model:string) => salesFamilyAliases[model] || canonicalModel(brand,model);
+const salesRowTotal = (row:MarklinesSalesRow) => row.y2024+row.y2025+row.y2026;
+const marklinesRowsByFamily = new Map<string,MarklinesSalesRow[]>();
+marklinesSales.forEach(row=>{
+  const key=`${row.country}|${row.model}`;
+  marklinesRowsByFamily.set(key,[...(marklinesRowsByFamily.get(key)||[]),row]);
+});
+const summarizeSalesRows = (rows:MarklinesSalesRow[],scope:SalesSummary["scope"]):SalesSummary => ({
+  matched:rows.length>0,
+  y2024:rows.reduce((sum,row)=>sum+row.y2024,0),
+  y2025:rows.reduce((sum,row)=>sum+row.y2025,0),
+  y2026:rows.reduce((sum,row)=>sum+row.y2026,0),
+  total:rows.reduce((sum,row)=>sum+salesRowTotal(row),0),
+  scope,
+  sourceRows:rows.length,
+});
+const noSales:SalesSummary = {matched:false,total:0,y2024:0,y2025:0,y2026:0,scope:"动力",sourceRows:0};
+const salesForCar = (car:Car):SalesSummary => {
+  const rows=marklinesRowsByFamily.get(`${car.country}|${salesFamily(car.brand,car.model)}`)||[];
+  const exact=rows.filter(row=>row.energy===energyKey(car.energy));
+  return exact.length?summarizeSalesRows(exact,"动力"):rows.length?summarizeSalesRows(rows,"车型家族"):noSales;
+};
+const salesForRecords = (records:Car[]):SalesSummary => {
+  if(!records.length) return noSales;
+  const family=salesFamily(records[0].brand,records[0].model),selectedRows=new Map<string,MarklinesSalesRow>();
+  const byCountry=new Map<string,Set<string>>();
+  records.forEach(car=>byCountry.set(car.country,new Set([...(byCountry.get(car.country)||[]),energyKey(car.energy)])));
+  let usedFamilyFallback=false;
+  byCountry.forEach((energies,country)=>{
+    const rows=marklinesRowsByFamily.get(`${country}|${family}`)||[];
+    const exact=rows.filter(row=>energies.has(row.energy));
+    const chosen=exact.length?exact:rows;
+    if(!exact.length&&rows.length) usedFamilyFallback=true;
+    chosen.forEach(row=>selectedRows.set(`${row.country}|${row.model}|${row.energy}`,row));
+  });
+  const rows=[...selectedRows.values()];
+  return rows.length?summarizeSalesRows(rows,usedFamilyFallback?"车型家族":"动力"):noSales;
+};
+const formatSales = (value:number) => value.toLocaleString("zh-CN");
+const compareSales = (a:SalesSummary,b:SalesSummary,direction:"asc"|"desc") => {
+  if(!a.matched&&!b.matched) return 0;
+  if(!a.matched) return 1;
+  if(!b.matched) return -1;
+  return direction==="asc"?a.total-b.total:b.total-a.total;
+};
 const localSalesAliases: Record<string,string[]> = {
   "Chery|Chery Tiggo 4 / Tiggo 5X|西班牙":["EBRO s400"],
   "Chery|Tiggo 7|西班牙":["EBRO s700"],
@@ -753,7 +809,7 @@ const summarizeModelRecords=(records:Car[]):BrandModelOverview=>{
   const regions=regionCountries.map(x=>x.name).filter(name=>records.some(c=>regionOfCountry(c.country)===name));
   const modelCountries=countries.filter(([name])=>records.some(c=>c.country===name)).map(([name,flag])=>({name,flag}));
   const aliases=[...new Set(records.flatMap(c=>(localSalesAliases[`${c.brand}|${key}|${c.country}`]||[]).map(alias=>`${c.country}：${alias}`)))];
-  return {group:first.group,brand:first.brand,key,name:overviewModelName(key),image:first.image,powers,regions,countries:modelCountries,aliases,records};
+  return {group:first.group,brand:first.brand,key,name:overviewModelName(key),image:first.image,powers,regions,countries:modelCountries,aliases,records,sales:salesForRecords(records)};
 };
 
 export default function Home(){
@@ -769,6 +825,10 @@ export default function Home(){
       return (region==="全部区域"||regionOfCountry(c.country)===region)&&(country==="全部市场"||c.country===country)&&(group==="全部集团"||c.group===group)&&(brand==="全部品牌"||c.brand===brand)&&(body==="全部车身"||bodyTypeOf(c.model)===body)&&(energy==="全部能源"||energyKey(c.energy)===energy)&&(drive==="全部驱动"||c.drive.includes(drive))&&(!priceActive||(price!==null&&price>=priceMin&&price<=priceMax))&&(!lengthActive||(length!==null&&length>=effectiveLengthMin&&length<=lengthMax))&&(!safe||c.rating==="yes")&&(`${c.brand} ${c.model}`.toLowerCase().includes(query.toLowerCase()));
     });
     return [...matches].sort((a,b)=>{
+      if(sortBy==="salesAsc"||sortBy==="salesDesc"){
+        const av=salesForCar(a),bv=salesForCar(b);
+        return compareSales(av,bv,sortBy==="salesAsc"?"asc":"desc");
+      }
       if(sortBy==="priceAsc"||sortBy==="priceDesc"){
         const av=carPriceValue(a),bv=carPriceValue(b);
         if(av===null&&bv===null) return 0;
@@ -790,6 +850,7 @@ export default function Home(){
   },[region,country,group,brand,body,energy,drive,priceActive,priceMin,priceMax,lengthActive,lengthMin,lengthMax,sortBy,safe,query]);
   const uniqueBrands=new Set(cars.map(c=>c.brand)).size, priced=cars.filter(c=>c.price!=="询价").length, five=cars.filter(c=>c.rating==="yes").length;
   const compared=compare.map(id=>cars.find(c=>c.id===id)).filter(Boolean) as Car[];
+  const selectedSales=selected?salesForCar(selected):noSales;
   const reset=()=>{setRegion("全部区域");setCountry("全部市场");setGroup("全部集团");setBrand("全部品牌");setBody("全部车身");setEnergy("全部能源");setDrive("全部驱动");setPriceMin(0);setPriceMax(priceCeiling);setLengthMin(lengthFloor);setLengthMax(lengthCeiling);setSortBy("default");setSafe(false);setQuery("");setVisible(24);setOverviewBrand(null);setSelectedFamily(null);setFamilyFocus(null);setShowRawRecords(false)};
   const openFamily=(model:BrandModelOverview,focus:FamilyFocus|null=null)=>{setSelectedFamily(model);setFamilyFocus(focus)};
   const closeFamily=()=>{setSelectedFamily(null);setFamilyFocus(null)};
@@ -828,59 +889,42 @@ export default function Home(){
     const map=new Map<string,Car[]>();
     filtered.filter(c=>c.brand===overviewBrand).forEach(c=>{const key=canonicalModel(c.brand,c.model);map.set(key,[...(map.get(key)||[]),c])});
     const summaries=[...map.values()].map(summarizeModelRecords);
-    if(sortBy==="default"||sortBy==="nameAsc") summaries.sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}));
+    if(sortBy==="salesAsc"||sortBy==="salesDesc") summaries.sort((a,b)=>compareSales(a.sales,b.sales,sortBy==="salesAsc"?"asc":"desc"));
+    else if(sortBy==="default"||sortBy==="nameAsc") summaries.sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}));
     return summaries;
   },[overviewBrand,filtered,sortBy]);
   const globalModelOverview=useMemo<BrandModelOverview[]>(()=>{
     const map=new Map<string,Car[]>();
     filtered.forEach(car=>{const key=`${car.brand}|${canonicalModel(car.brand,car.model)}`;map.set(key,[...(map.get(key)||[]),car])});
     const summaries=[...map.values()].map(summarizeModelRecords);
-    if(sortBy==="default") summaries.sort((a,b)=>{
+    if(sortBy==="salesAsc"||sortBy==="salesDesc") summaries.sort((a,b)=>compareSales(a.sales,b.sales,sortBy==="salesAsc"?"asc":"desc"));
+    else if(sortBy==="default") summaries.sort((a,b)=>{
       const groupOrder=groups.indexOf(a.group)-groups.indexOf(b.group);
       if(groupOrder) return groupOrder;
       const brandOrder=(brandsByGroup[a.group]||[]).indexOf(a.brand)-(brandsByGroup[b.group]||[]).indexOf(b.brand);
       return brandOrder||a.name.localeCompare(b.name,undefined,{numeric:true});
     });
-    if(sortBy==="nameAsc") summaries.sort((a,b)=>`${a.brand} ${a.name}`.localeCompare(`${b.brand} ${b.name}`,undefined,{numeric:true}));
+    else if(sortBy==="nameAsc") summaries.sort((a,b)=>`${a.brand} ${a.name}`.localeCompare(`${b.brand} ${b.name}`,undefined,{numeric:true}));
     return summaries;
   },[filtered,sortBy]);
   const summaryActive=overviewActive||globalSummaryActive;
   const summaryModels=overviewActive?brandModelOverview:globalModelOverview;
+  const focusedFamilyRecords=useMemo(()=>selectedFamily?.records.filter(car=>(!familyFocus||energyKey(car.energy)===familyFocus.power)&&(!familyFocus?.config||car.trims.some(trim=>trim.name===familyFocus.config)))||[],[selectedFamily,familyFocus]);
+  const focusedFamilySales=useMemo(()=>salesForRecords(focusedFamilyRecords),[focusedFamilyRecords]);
   const familyMarkets=useMemo(()=>{
     if(!selectedFamily) return [];
-    const focusedRecords=selectedFamily.records.filter(car=>(!familyFocus||energyKey(car.energy)===familyFocus.power)&&(!familyFocus?.config||car.trims.some(trim=>trim.name===familyFocus.config)));
+    const focusedRecords=focusedFamilyRecords;
     return countries.filter(([name])=>focusedRecords.some(car=>car.country===name)).map(([name,flag])=>{
       const records=focusedRecords.filter(car=>car.country===name);
       const aliases=localSalesAliases[`${records[0].brand}|${selectedFamily.key}|${name}`]||[];
       return {name,flag,region:regionOfCountry(name),aliases,records};
     });
-  },[selectedFamily,familyFocus]);
+  },[selectedFamily,focusedFamilyRecords]);
   return <main className="shell">
     <header className="topbar"><button className="wordmark" onClick={reset}><span>DONGFENG</span> MARKET INTEL</button><nav><button onClick={()=>document.getElementById("lineup")?.scrollIntoView({behavior:"smooth"})}>车型库</button><button onClick={()=>document.getElementById("market-insights")?.scrollIntoView({behavior:"smooth"})}>市场洞察</button><button onClick={()=>setShowSources(true)}>数据来源</button></nav><div className="fresh"><i/>核验至 2026.08.28</div></header>
     <section className="heroStrategy" aria-label="东风集团主要战略市场竞品车型看板"><div><p>GLOBAL COMPETITOR VEHICLE INTELLIGENCE</p><h1>主要战略市场<br/><em>竞品车型看板</em></h1><span>覆盖南美、欧洲、澳新与东南亚，按市场、集团、子品牌、动力和驱动形式拆分官方在售车型。</span><div className="heroActions"><button onClick={()=>document.getElementById("lineup")?.scrollIntoView({behavior:"smooth"})}>直接进入车型库 ↓</button></div></div><aside>{regionCountries.map(item=><div key={item.name}><small>{item.code}</small><b>{String(item.countries.length).padStart(2,"0")}</b><span>{item.name}市场</span></div>)}</aside></section>
     <section className="pulse"><div><small>官方价格可见</small><b>{priced}</b><span>/ {cars.length} 条</span></div><div><small>已确认五星</small><b>{five}</b><span>条动力记录</span></div><div><small>本地在售品牌</small><b>{uniqueBrands}</b><span>个品牌</span></div><button onClick={()=>setShowSources(true)}>查看方法与来源 <span>↗</span></button></section>
-    <section className="marketInsights" id="market-insights">
-      <section className="coverage coverageTop" id="coverage">
-        <div className="coverageTitle">
-          <p>MARKET COVERAGE</p>
-          <h2>{coverageRegion} · 集团覆盖密度</h2>
-          <span>先选择市场，再横向比较各集团在当地官方目录可识别的车型动力记录数。点击柱条可直接筛选车型库。</span>
-          <div className="coverageRegions" aria-label="覆盖密度大区选择">
-            {regionCountries.map(item=><button className={coverageRegion===item.name?"active":""} onClick={()=>{setCoverageRegion(item.name);setCoverageMarket(item.countries[0][0])}} key={item.name}><small>{item.code}</small>{item.name}<b>{item.countries.length}</b></button>)}
-          </div>
-        </div>
-        <div className="coverageChart">
-          <div className="coverageMarketTabs" aria-label={`${coverageRegion}市场选择`}>
-            {coverageCountries.map(([name,flag])=><button className={coverageMarket===name?"active":""} onClick={()=>setCoverageMarket(name)} key={name}>{flag}<span>{name}</span></button>)}
-          </div>
-          {selectedCoverage&&<>
-            <div className="coverageChartHead"><div><small>当前市场</small><h3>{selectedCoverage.flag} {selectedCoverage.name}</h3></div><span>车型动力记录数 · 点击柱条筛选</span></div>
-            <div className="coverageBars">
-              {coverageBars.map(item=><button key={item.group} title={`筛选 ${selectedCoverage.name} · ${item.group}`} aria-label={`${selectedCoverage.name} ${item.group} ${item.count} 条车型动力记录`} onClick={()=>{setRegion(regionOfCountry(selectedCoverage.name));setCountry(selectedCoverage.name);setGroup(item.group);setBrand("全部品牌");setOverviewBrand(null);setVisible(24);document.getElementById("lineup")?.scrollIntoView({behavior:"smooth"})}}><span><small>{item.label}</small><b>{item.group.replace("集团","")}</b></span><i><em style={{width:`${item.count/coverageMax*100}%`}}/></i><strong>{item.count}</strong></button>)}
-            </div>
-          </>}
-        </div>
-      </section>
+    <section className="marketInsights">
       <section className="brandFootprint" aria-label="全市场单一品牌车型投放规模">
         <div className="brandFootprintHead"><p>BRAND MODEL FOOTPRINT</p><h2>全市场 · 单一品牌车型投放规模</h2><span>统计全部战略市场内各品牌投放的独立车型数，不随上方大区选择变化。相同车型的多个动力形式只计 1 款；不同市场名称指向同一实际车型时合并计数。</span></div>
         <div className="footprintGroupFilter" aria-label="按母集团筛选品牌">
@@ -892,7 +936,7 @@ export default function Home(){
       </section>
     </section>
     <section className="filterPanel" id="lineup">
-      <div className="search"><span>⌕</span><input value={query} onChange={e=>{setQuery(e.target.value);setVisible(24)}} placeholder="搜索品牌或车型…"/><label className="sortControl"><small>排序</small><select value={sortBy} onChange={e=>{setSortBy(e.target.value as SortKey);setVisible(24)}}><option value="default">默认顺序</option><option value="priceAsc">价格：低 → 高</option><option value="priceDesc">价格：高 → 低</option><option value="rangeDesc">续航：高 → 低</option><option value="rangeAsc">续航：低 → 高</option><option value="verifiedDesc">资料更新时间：新 → 旧</option><option value="nameAsc">品牌 / 车型：A → Z</option><option value="launch" disabled>上市时间（待补齐）</option></select></label><kbd>{summaryActive?`${summaryModels.length} 款车型`:`${filtered.length} 条结果`}</kbd></div>
+      <div className="search"><span>⌕</span><input value={query} onChange={e=>{setQuery(e.target.value);setVisible(24)}} placeholder="搜索品牌或车型…"/></div>
       <div className="filterRow regionRow"><span className="filterLabel">区域</span><div className="pills">{["全部区域",...regionCountries.map(x=>x.name)].map(x=><button className={region===x?"active":""} onClick={()=>{setRegion(x);setCountry("全部市场");setVisible(24)}} key={x}>{x.replace("全部区域","全部")}</button>)}</div></div>
       <div className="filterRow"><span className="filterLabel">市场</span><div className="pills"><button className={country==="全部市场"?"active":""} onClick={()=>setCountry("全部市场")}>全部</button>{countryOptions.map(([n,f])=><button className={country===n?"active":""} onClick={()=>{setCountry(n);setVisible(24)}} key={n}>{f} {n}</button>)}</div></div>
       <div className="filterRow"><span className="filterLabel">集团</span><div className="pills">{["全部集团",...groups].map(x=><button className={group===x?"active":""} onClick={()=>{setGroup(x);setBrand("全部品牌");setVisible(24)}} key={x}>{x.replace("全部集团","全部")}</button>)}</div></div>
@@ -905,12 +949,34 @@ export default function Home(){
         <div className="filterRow"><span className="filterLabel">动力</span><div className="pills">{["全部能源","纯电","插混","增程","混动","燃油"].map(x=><button className={energy===x?"active":""} onClick={()=>{setEnergy(x);setVisible(24)}} key={x}>{x.replace("全部能源","全部")}</button>)}</div></div><div className="filterRow compact"><span className="filterLabel">驱动</span><div className="pills">{["全部驱动","前驱","后驱","四驱"].map(x=><button className={drive===x?"active":""} onClick={()=>{setDrive(x);setVisible(24)}} key={x}>{x.replace("全部驱动","全部")}</button>)}</div><button className={`safetyOnly ${safe?"on":""}`} onClick={()=>setSafe(!safe)}><i/> 只看五星安全</button></div>
       </div>}
     </section>
-    <section className="sectionHead"><div><p>{globalSummaryActive?"GLOBAL MODEL FAMILY INDEX":overviewActive?"GLOBAL BRAND LINE-UP":"MARKET LINE-UP"}</p><h2>{globalSummaryActive?"全部战略市场 · 车型家族总览":overviewActive?`全市场 · ${overviewBrand} 车型总览`:`${region==="全部区域"?"全部战略市场":region}${country!=="全部市场"?` · ${country}`:""}${group!=="全部集团"?` · ${group}`:""}${brand!=="全部品牌"?` · ${brand}`:""}`}</h2><span>{globalSummaryActive?`${globalModelOverview.length} 款归一化车型 · 高级筛选已作用于底层版本与汇总结果`:overviewActive?`${brandModelOverview.length} 款归一化车型 · 高级筛选已作用于该品牌底层版本与汇总结果 · 点击卡片查看各国版本`: `${filtered.length} 条车型动力 / 驱动记录 · 不同动力、驱动或配置组合独立呈现`}</span></div><div className="sectionActions">{globalSummaryActive&&<button className="backToRecords" onClick={()=>setShowRawRecords(true)}>查看 {filtered.length} 条版本记录</button>}{allBasicFilters&&showRawRecords&&<button className="backToRecords" onClick={()=>setShowRawRecords(false)}>返回车型家族汇总</button>}{overviewActive&&<button className="backToRecords" onClick={()=>setOverviewBrand(null)}>查看全部动力记录</button>}{!summaryActive&&compare.length>0&&<button className="compareTop" onClick={()=>setShowCompare(true)}>对比清单 <b>{compare.length}</b> →</button>}</div></section>
-    {summaryActive?(summaryModels.length?<section className="brandOverviewGrid">{summaryModels.map(model=><article className="brandOverviewCard" key={`${model.brand}-${model.key}`}><div className="brandOverviewHero"><img src={model.image} alt={`${model.brand} ${model.name} 官网车型图`} loading="lazy"/><div><small>{groupLabels[model.group]} · {model.brand} · 车型族</small><h3>{model.name}</h3><p>{model.powers.length} 种动力 · {model.countries.length} 个国家</p></div></div><div className="brandOverviewBlock"><small>动力与主要配置 · 点击查看投放市场</small>{model.powers.map(power=><div className="powerSummary" key={power.name}><button className="powerChoice" onClick={()=>openFamily(model,{power:power.name})}>{power.name}</button><div>{power.configs.map(config=><button className="configChoice" onClick={()=>openFamily(model,{power:power.name,config})} key={config}>{config}</button>)}{power.total>power.configs.length&&<button className="configMore" onClick={()=>openFamily(model,{power:power.name})}>+{power.total-power.configs.length} 项</button>}</div></div>)}</div><div className="brandOverviewBlock marketSummary"><small>投放大区</small><div>{model.regions.map(name=><b key={name}>{name}</b>)}</div><small>投放国家</small><div>{model.countries.map(item=><span key={item.name}>{item.flag} {item.name}</span>)}</div></div>{model.aliases.length>0&&<div className="localAlias"><small>当地销售名</small>{model.aliases.map(alias=><b key={alias}>{alias}</b>)}</div>}<button className="familyDrill" onClick={()=>openFamily(model)}>查看各国版本与配置 <span>→</span></button></article>)}</section>:<div className="empty"><b>该筛选组合暂无匹配车型家族</b><p>高级筛选会先作用于各市场的版本记录，再生成车型家族汇总。可放宽尺寸、价格或动力条件后重试。</p><button onClick={reset}>清除全部筛选</button></div>):filtered.length?<section className="grid">{filtered.slice(0,visible).map(car=><article className="card" key={car.id} onClick={()=>setSelected(car)} tabIndex={0} onKeyDown={e=>e.key==="Enter"&&setSelected(car)}><div className="cardTop"><span>{car.flag} {car.country} · {car.brand}</span>{car.rating==="yes"?<b className="five">5★</b>:<b className="pending">待核</b>}</div><div className="carShape"><img src={car.image} alt={`${car.brand} ${car.model} 车型实拍或官方素材`} loading="lazy"/></div><p className="type">{car.group.toUpperCase()} · {energyKey(car.energy)} · {car.drive} · {bodyTypeOf(car.model)}</p><h3>{car.model} <mark>{car.variant}</mark></h3><div className="metrics"><span><small>能源形式</small>{car.energy}</span><span><small>驱动形式</small>{car.drive}</span><span><small>官方起售价</small>{car.price}<em>{cnyPrice(car.price)}</em></span></div><div className="cardActions"><button onClick={e=>{e.stopPropagation();setSelected(car)}}>参数与 {car.trims.length} 个配置 <span>→</span></button><button aria-label="加入对比" className={compare.includes(car.id)?"added":""} onClick={e=>{e.stopPropagation();toggleCompare(car.id)}}>{compare.includes(car.id)?"✓":"＋"}</button></div></article>)}</section>:<div className="empty"><b>该筛选组合暂无可核验记录</b><p>可减少筛选条件；官网未公开配置、价格或当地在售目录时，看板会保留空缺，不补写推测数据。</p><button onClick={reset}>清除全部筛选</button></div>}
+    <section className="sectionHead"><div><p>{globalSummaryActive?"GLOBAL MODEL FAMILY INDEX":overviewActive?"GLOBAL BRAND LINE-UP":"MARKET LINE-UP"}</p><h2>{globalSummaryActive?"全部战略市场 · 车型家族总览":overviewActive?`全市场 · ${overviewBrand} 车型总览`:`${region==="全部区域"?"全部战略市场":region}${country!=="全部市场"?` · ${country}`:""}${group!=="全部集团"?` · ${group}`:""}${brand!=="全部品牌"?` · ${brand}`:""}`}</h2><span>{globalSummaryActive?`${globalModelOverview.length} 款归一化车型 · 高级筛选已作用于底层版本与汇总结果`:overviewActive?`${brandModelOverview.length} 款归一化车型 · 高级筛选已作用于该品牌底层版本与汇总结果 · 点击卡片查看各国版本`: `${filtered.length} 条车型动力 / 驱动记录 · 不同动力、驱动或配置组合独立呈现`}</span></div><div className="sectionActions"><label className="sortControl sectionSort"><small>排序</small><select value={sortBy} onChange={e=>{setSortBy(e.target.value as SortKey);setVisible(24)}}><option value="default">默认顺序</option><option value="salesDesc">销量：高 → 低</option><option value="salesAsc">销量：低 → 高</option><option value="priceAsc">价格：低 → 高</option><option value="priceDesc">价格：高 → 低</option><option value="rangeDesc">续航：高 → 低</option><option value="rangeAsc">续航：低 → 高</option><option value="verifiedDesc">资料更新时间：新 → 旧</option><option value="nameAsc">品牌 / 车型：A → Z</option><option value="launch" disabled>上市时间（待补齐）</option></select></label><kbd className="resultCount">{summaryActive?`${summaryModels.length} 款车型`:`${filtered.length} 条结果`}</kbd>{globalSummaryActive&&<button className="backToRecords" onClick={()=>setShowRawRecords(true)}>查看 {filtered.length} 条版本记录</button>}{allBasicFilters&&showRawRecords&&<button className="backToRecords" onClick={()=>setShowRawRecords(false)}>返回车型家族汇总</button>}{overviewActive&&<button className="backToRecords" onClick={()=>setOverviewBrand(null)}>查看全部动力记录</button>}{!summaryActive&&compare.length>0&&<button className="compareTop" onClick={()=>setShowCompare(true)}>对比清单 <b>{compare.length}</b> →</button>}</div></section>
+    {summaryActive?(summaryModels.length?<section className="brandOverviewGrid">{summaryModels.map(model=><article className="brandOverviewCard" key={`${model.brand}-${model.key}`}><div className="brandOverviewHero"><img src={model.image} alt={`${model.brand} ${model.name} 官网车型图`} loading="lazy"/><div><small>{groupLabels[model.group]} · {model.brand} · 车型族</small><h3>{model.name}</h3><p>{model.powers.length} 种动力 · {model.countries.length} 个国家</p></div></div><div className={`familySales ${model.sales.matched?"matched":"missing"}`}><small>MARKLINES · 2024—2026.04</small>{model.sales.matched?<><b>{formatSales(model.sales.total)}</b><span>辆</span><em>2024 {formatSales(model.sales.y2024)} · 2025 {formatSales(model.sales.y2025)} · 2026.1—4 {formatSales(model.sales.y2026)}</em></>:<><b>暂无匹配</b><em>源表未提供可归属到该车型的明细</em></>}</div><div className="brandOverviewBlock"><small>动力与主要配置 · 点击查看投放市场</small>{model.powers.map(power=><div className="powerSummary" key={power.name}><button className="powerChoice" onClick={()=>openFamily(model,{power:power.name})}>{power.name}</button><div>{power.configs.map(config=><button className="configChoice" onClick={()=>openFamily(model,{power:power.name,config})} key={config}>{config}</button>)}{power.total>power.configs.length&&<button className="configMore" onClick={()=>openFamily(model,{power:power.name})}>+{power.total-power.configs.length} 项</button>}</div></div>)}</div><div className="brandOverviewBlock marketSummary"><small>投放大区</small><div>{model.regions.map(name=><b key={name}>{name}</b>)}</div><small>投放国家</small><div>{model.countries.map(item=><span key={item.name}>{item.flag} {item.name}</span>)}</div></div>{model.aliases.length>0&&<div className="localAlias"><small>当地销售名</small>{model.aliases.map(alias=><b key={alias}>{alias}</b>)}</div>}<button className="familyDrill" onClick={()=>openFamily(model)}>查看各国版本与配置 <span>→</span></button></article>)}</section>:<div className="empty"><b>该筛选组合暂无匹配车型家族</b><p>高级筛选会先作用于各市场的版本记录，再生成车型家族汇总。可放宽尺寸、价格或动力条件后重试。</p><button onClick={reset}>清除全部筛选</button></div>):filtered.length?<section className="grid">{filtered.slice(0,visible).map(car=>{const sales=salesForCar(car);return <article className="card" key={car.id} onClick={()=>setSelected(car)} tabIndex={0} onKeyDown={e=>e.key==="Enter"&&setSelected(car)}><div className="cardTop"><span>{car.flag} {car.country} · {car.brand}</span>{car.rating==="yes"?<b className="five">5★</b>:<b className="pending">待核</b>}</div><div className="carShape"><img src={car.image} alt={`${car.brand} ${car.model} 车型实拍或官方素材`} loading="lazy"/></div><p className="type">{car.group.toUpperCase()} · {energyKey(car.energy)} · {car.drive} · {bodyTypeOf(car.model)}</p><h3>{car.model} <mark>{car.variant}</mark></h3><div className="metrics"><span><small>能源形式</small>{car.energy}</span><span><small>驱动形式</small>{car.drive}</span><span><small>官方起售价</small>{car.price}<em>{cnyPrice(car.price)}</em></span><span className={sales.matched?"salesMetric":"salesMetric missing"}><small>MarkLines 累计销量</small>{sales.matched?`${formatSales(sales.total)} 辆`:"暂无匹配"}<em>{sales.matched?`${sales.scope}口径 · 2024—2026.04`:"未按车型披露"}</em></span></div><div className="cardActions"><button onClick={e=>{e.stopPropagation();setSelected(car)}}>参数与 {car.trims.length} 个配置 <span>→</span></button><button aria-label="加入对比" className={compare.includes(car.id)?"added":""} onClick={e=>{e.stopPropagation();toggleCompare(car.id)}}>{compare.includes(car.id)?"✓":"＋"}</button></div></article>})}</section>:<div className="empty"><b>该筛选组合暂无可核验记录</b><p>可减少筛选条件；官网未公开配置、价格或当地在售目录时，看板会保留空缺，不补写推测数据。</p><button onClick={reset}>清除全部筛选</button></div>}
     {!summaryActive&&visible<filtered.length&&<button className="loadMore" onClick={()=>setVisible(v=>v+24)}>继续加载 <b>{filtered.length-visible}</b> 条记录 ↓</button>}
+    <aside className="salesMethodNote"><b>MARKLINES 销量口径</b><p>{marklinesSalesSource}，覆盖 {marklinesSalesPeriod}。销量优先按“国家 × 归一化车型家族 × 动力”匹配；同一车型动力的不同驱动与配置卡片共享销量，不可跨配置相加。玻利维亚在源表内无记录；智利、乌拉圭、匈牙利和新加坡仅有车型字段为 N/A 的品牌汇总，页面因此标为“暂无匹配”，不代表零销量。</p></aside>
+    <section className="coverage coverageBottom" id="market-insights">
+      <div className="coverageTitle">
+        <p>MARKET COVERAGE</p>
+        <h2>{coverageRegion} · 集团覆盖密度</h2>
+        <span>先选择市场，再横向比较各集团在当地官方目录可识别的车型动力记录数。点击柱条可直接筛选车型库。</span>
+        <div className="coverageRegions" aria-label="覆盖密度大区选择">
+          {regionCountries.map(item=><button className={coverageRegion===item.name?"active":""} onClick={()=>{setCoverageRegion(item.name);setCoverageMarket(item.countries[0][0])}} key={item.name}><small>{item.code}</small>{item.name}<b>{item.countries.length}</b></button>)}
+        </div>
+      </div>
+      <div className="coverageChart">
+        <div className="coverageMarketTabs" aria-label={`${coverageRegion}市场选择`}>
+          {coverageCountries.map(([name,flag])=><button className={coverageMarket===name?"active":""} onClick={()=>setCoverageMarket(name)} key={name}>{flag}<span>{name}</span></button>)}
+        </div>
+        {selectedCoverage&&<>
+          <div className="coverageChartHead"><div><small>当前市场</small><h3>{selectedCoverage.flag} {selectedCoverage.name}</h3></div><span>车型动力记录数 · 点击柱条筛选</span></div>
+          <div className="coverageBars">
+            {coverageBars.map(item=><button key={item.group} title={`筛选 ${selectedCoverage.name} · ${item.group}`} aria-label={`${selectedCoverage.name} ${item.group} ${item.count} 条车型动力记录`} onClick={()=>{setRegion(regionOfCountry(selectedCoverage.name));setCountry(selectedCoverage.name);setGroup(item.group);setBrand("全部品牌");setOverviewBrand(null);setVisible(24);document.getElementById("lineup")?.scrollIntoView({behavior:"smooth"})}}><span><small>{item.label}</small><b>{item.group.replace("集团","")}</b></span><i><em style={{width:`${item.count/coverageMax*100}%`}}/></i><strong>{item.count}</strong></button>)}
+          </div>
+        </>}
+      </div>
+    </section>
     <footer><div className="wordmark"><span>DONGFENG</span> MARKET INTEL</div><p>东风集团主要战略市场竞品研究工具 · 价格不含上牌、保险及金融成本</p><button onClick={()=>setShowSources(true)}>数据口径与免责声明</button></footer>
-    {selected&&<div className="overlay" onMouseDown={e=>e.target===e.currentTarget&&setSelected(null)}><section className="drawer"><button className="close" onClick={()=>setSelected(null)}>×</button><div className="detailHead"><p>{selected.flag} {selected.country} · {selected.group}</p><h2>{selected.brand} <em>{selected.model}</em> <mark>{selected.variant}</mark></h2><div><span className={selected.rating==="yes"?"safeYes":"safeUnknown"}>{selected.rating==="yes"?"★ 五星安全已确认":"○ 暂无有效五星记录"}</span><small>核验 {selected.verified}</small></div></div><div className="detailHero"><div className="detailShape"><img src={selected.image} alt={`${selected.brand} ${selected.model} 官网车型图`}/></div><div><small>{selected.variant} · {selected.drive} · {bodyTypeOf(selected.model)} 官方起售价</small><strong>{selected.price}</strong>{cnyPrice(selected.price)&&<em className="cnyDetail">{cnyPrice(selected.price)}</em>}<a href={sources[selected.source]?.url} target="_blank" rel="noreferrer">查看官方来源 ↗</a></div></div><div className="specGrid"><div><small>长 × 宽 × 高</small><b>{selected.dims}</b></div><div><small>轴距</small><b>{selected.wheelbase}</b></div><div><small>车身形式</small><b>{bodyTypeOf(selected.model)}</b></div><div><small>能源形式</small><b>{selected.energy}</b></div><div><small>驱动形式</small><b>{selected.drive}</b></div><div><small>能耗</small><b>{selected.use}</b></div><div><small>续航</small><b>{selected.range}</b></div><div><small>碰撞安全</small><b>{selected.safety}</b></div></div><div className="trimBox"><div className="trimHead"><h3>{selected.variant} · {selected.drive} 配置明细</h3><span>{selected.trims.length} 个配置记录</span></div><div className="trim trimColumns"><span>配置</span><b>官方售价</b><span>电池容量</span><span>对应续航</span></div>{selected.trims.map((t,i)=>{const detail=trimEnergyDetail(selected,t);return <div className="trim" key={i}><span><i>{String(i+1).padStart(2,"0")}</i>{t.name}</span><b>{t.price}{cnyPrice(t.price)&&<em>{cnyPrice(t.price)}</em>}</b><span>{detail.battery}</span><span>{detail.range}</span></div>})}</div><button className={`drawerCompare ${compare.includes(selected.id)?"added":""}`} onClick={()=>toggleCompare(selected.id)}>{compare.includes(selected.id)?"已加入对比 ✓":"加入车型对比 ＋"}</button><p className="footnote">* 人民币价格按 2026-08-23 汇率快照估算；不同市场测试循环与配置可能不同，续航/能耗以当地官方最终销售资料为准。</p></section></div>}
-    {selectedFamily&&<div className="overlay" onMouseDown={e=>e.target===e.currentTarget&&closeFamily()}><section className="familyDrawer" role="dialog" aria-modal="true" aria-label={`${selectedFamily.brand} ${selectedFamily.name} 各国版本`}><button className="close" aria-label="关闭车型家族详情" onClick={closeFamily}>×</button><p className="eyebrow">GLOBAL MODEL FAMILY</p><div className="familyHeader"><div><small>{groupLabels[selectedFamily.group]} · {selectedFamily.brand} · 归一化车型家族</small><h2>{selectedFamily.name}</h2><p>{selectedFamily.powers.length} 种动力 · {selectedFamily.countries.length} 个国家 · {selectedFamily.regions.length} 个大区</p></div><img src={selectedFamily.image} alt={`${selectedFamily.brand} ${selectedFamily.name} 官网车型图`}/></div>{selectedFamily.aliases.length>0&&<div className="familyAliases"><small>当地销售名</small>{selectedFamily.aliases.map(alias=><b key={alias}>{alias}</b>)}</div>}{familyFocus&&<div className="familyFocus"><div><small>当前查看</small><b>{familyFocus.power}{familyFocus.config&&` · ${familyFocus.config}`}</b><span>{familyMarkets.length} 个投放国家</span></div><button onClick={()=>setFamilyFocus(null)}>查看全部版本</button></div>}<div className="familyMarketList">{familyMarkets.map(market=><article className="familyMarket" key={market.name}><header><div><small>{market.region}</small><h3>{market.flag} {market.name}</h3>{market.aliases.length>0&&<p>当地销售名：{market.aliases.join(" / ")}</p>}</div><b>{market.records.length} 条动力 / 驱动记录</b></header><div className="familyRecordHead"><span>动力与驱动</span><span>主要配置</span><span>官方起售价</span><span>来源</span></div>{market.records.map(record=><div className="familyRecord" key={record.id}><span><b>{record.variant}</b><small>{record.drive}</small></span><span>{record.trims.slice(0,4).map(trim=><em className={familyFocus?.config===trim.name?"active":""} key={trim.name}>{trim.name}</em>)}{record.trims.length>4&&<em>+{record.trims.length-4} 项</em>}</span><span><b>{record.price}</b>{cnyPrice(record.price)&&<small>{cnyPrice(record.price)}</small>}</span><a href={sources[record.source]?.url} target="_blank" rel="noreferrer">官网 ↗</a></div>)}</article>)}</div></section></div>}
+    {selected&&<div className="overlay" onMouseDown={e=>e.target===e.currentTarget&&setSelected(null)}><section className="drawer"><button className="close" onClick={()=>setSelected(null)}>×</button><div className="detailHead"><p>{selected.flag} {selected.country} · {selected.group}</p><h2>{selected.brand} <em>{selected.model}</em> <mark>{selected.variant}</mark></h2><div><span className={selected.rating==="yes"?"safeYes":"safeUnknown"}>{selected.rating==="yes"?"★ 五星安全已确认":"○ 暂无有效五星记录"}</span><small>核验 {selected.verified}</small></div></div><div className="detailHero"><div className="detailShape"><img src={selected.image} alt={`${selected.brand} ${selected.model} 官网车型图`}/></div><div><small>{selected.variant} · {selected.drive} · {bodyTypeOf(selected.model)} 官方起售价</small><strong>{selected.price}</strong>{cnyPrice(selected.price)&&<em className="cnyDetail">{cnyPrice(selected.price)}</em>}<a href={sources[selected.source]?.url} target="_blank" rel="noreferrer">查看官方来源 ↗</a></div></div><div className={`salesPanel ${selectedSales.matched?"matched":"missing"}`}><div><small>MARKLINES 销量 · {selectedSales.scope}口径</small>{selectedSales.matched?<><strong>{formatSales(selectedSales.total)}</strong><span>辆</span></>:<strong>暂无匹配</strong>}</div>{selectedSales.matched?<dl><div><dt>2024</dt><dd>{formatSales(selectedSales.y2024)}</dd></div><div><dt>2025</dt><dd>{formatSales(selectedSales.y2025)}</dd></div><div><dt>2026.1—4</dt><dd>{formatSales(selectedSales.y2026)}</dd></div></dl>:<p>MarkLines 表内没有可可靠归属到该国家、车型与动力的明细。</p>}</div><div className="specGrid"><div><small>长 × 宽 × 高</small><b>{selected.dims}</b></div><div><small>轴距</small><b>{selected.wheelbase}</b></div><div><small>车身形式</small><b>{bodyTypeOf(selected.model)}</b></div><div><small>能源形式</small><b>{selected.energy}</b></div><div><small>驱动形式</small><b>{selected.drive}</b></div><div><small>能耗</small><b>{selected.use}</b></div><div><small>续航</small><b>{selected.range}</b></div><div><small>碰撞安全</small><b>{selected.safety}</b></div></div><div className="trimBox"><div className="trimHead"><h3>{selected.variant} · {selected.drive} 配置明细</h3><span>{selected.trims.length} 个配置记录</span></div><div className="trim trimColumns"><span>配置</span><b>官方售价</b><span>电池容量</span><span>对应续航</span></div>{selected.trims.map((t,i)=>{const detail=trimEnergyDetail(selected,t);return <div className="trim" key={i}><span><i>{String(i+1).padStart(2,"0")}</i>{t.name}</span><b>{t.price}{cnyPrice(t.price)&&<em>{cnyPrice(t.price)}</em>}</b><span>{detail.battery}</span><span>{detail.range}</span></div>})}</div><button className={`drawerCompare ${compare.includes(selected.id)?"added":""}`} onClick={()=>toggleCompare(selected.id)}>{compare.includes(selected.id)?"已加入对比 ✓":"加入车型对比 ＋"}</button><p className="footnote">* 人民币价格按 2026-08-23 汇率快照估算；MarkLines 销量覆盖 {marklinesSalesPeriod}，同一车型动力的不同驱动与配置共享销量，请勿跨配置相加；续航/能耗以当地官方最终销售资料为准。</p></section></div>}
+    {selectedFamily&&<div className="overlay" onMouseDown={e=>e.target===e.currentTarget&&closeFamily()}><section className="familyDrawer" role="dialog" aria-modal="true" aria-label={`${selectedFamily.brand} ${selectedFamily.name} 各国版本`}><button className="close" aria-label="关闭车型家族详情" onClick={closeFamily}>×</button><p className="eyebrow">GLOBAL MODEL FAMILY</p><div className="familyHeader"><div><small>{groupLabels[selectedFamily.group]} · {selectedFamily.brand} · 归一化车型家族</small><h2>{selectedFamily.name}</h2><p>{selectedFamily.powers.length} 种动力 · {selectedFamily.countries.length} 个国家 · {selectedFamily.regions.length} 个大区</p></div><img src={selectedFamily.image} alt={`${selectedFamily.brand} ${selectedFamily.name} 官网车型图`}/></div><div className={`familySalesPanel ${focusedFamilySales.matched?"matched":"missing"}`}><div><small>MARKLINES · 当前筛选范围累计销量</small>{focusedFamilySales.matched?<><strong>{formatSales(focusedFamilySales.total)}</strong><span>辆</span></>:<strong>暂无匹配</strong>}</div>{focusedFamilySales.matched?<p>2024 {formatSales(focusedFamilySales.y2024)} · 2025 {formatSales(focusedFamilySales.y2025)} · 2026.1—4 {formatSales(focusedFamilySales.y2026)} · {focusedFamilySales.scope}口径</p>:<p>源表未提供可可靠归属到当前国家、车型与动力的明细。</p>}</div>{selectedFamily.aliases.length>0&&<div className="familyAliases"><small>当地销售名</small>{selectedFamily.aliases.map(alias=><b key={alias}>{alias}</b>)}</div>}{familyFocus&&<div className="familyFocus"><div><small>当前查看</small><b>{familyFocus.power}{familyFocus.config&&` · ${familyFocus.config}`}</b><span>{familyMarkets.length} 个投放国家</span></div><button onClick={()=>setFamilyFocus(null)}>查看全部版本</button></div>}<div className="familyMarketList">{familyMarkets.map(market=><article className="familyMarket" key={market.name}><header><div><small>{market.region}</small><h3>{market.flag} {market.name}</h3>{market.aliases.length>0&&<p>当地销售名：{market.aliases.join(" / ")}</p>}</div><b>{market.records.length} 条动力 / 驱动记录</b></header><div className="familyRecordHead"><span>动力与驱动</span><span>主要配置</span><span>官方起售价</span><span>销量</span><span>来源</span></div>{market.records.map(record=>{const sales=salesForCar(record);return <div className="familyRecord" key={record.id}><span><b>{record.variant}</b><small>{record.drive}</small></span><span>{record.trims.slice(0,4).map(trim=><em className={familyFocus?.config===trim.name?"active":""} key={trim.name}>{trim.name}</em>)}{record.trims.length>4&&<em>+{record.trims.length-4} 项</em>}</span><span><b>{record.price}</b>{cnyPrice(record.price)&&<small>{cnyPrice(record.price)}</small>}</span><span className="familyRecordSales"><b>{sales.matched?`${formatSales(sales.total)} 辆`:"暂无匹配"}</b><small>{sales.matched?`${sales.scope}口径`:"MarkLines"}</small></span><a href={sources[record.source]?.url} target="_blank" rel="noreferrer">官网 ↗</a></div>})}</article>)}</div></section></div>}
     {showCompare&&<div className="overlay compareOverlay"><section className="compareSheet"><button className="close" onClick={()=>setShowCompare(false)}>×</button><p className="eyebrow">SIDE-BY-SIDE</p><h2>车型横向对比</h2>{compared.length?<div className="compareGrid"><div className="compareLabels"><b>车型 / 动力</b><span>市场</span><span>官方起售价</span><span>能源</span><span>驱动</span><span>尺寸</span><span>轴距</span><span>能耗</span><span>续航</span><span>安全</span></div>{compared.map(c=><div className="compareCol" key={c.id}><b>{c.brand}<br/><em>{c.model} · {c.variant}</em></b><span>{c.flag} {c.country}</span><span className="comparePrice">{c.price}<em>{cnyPrice(c.price)}</em></span><span>{c.energy}</span><span>{c.drive}</span><span>{c.dims}</span><span>{c.wheelbase}</span><span>{c.use}</span><span>{c.range}</span><span className={c.rating==="yes"?"green":""}>{c.safety}</span><button onClick={()=>toggleCompare(c.id)}>移出对比</button></div>)}</div>:<div className="empty">尚未选择车型</div>}</section></div>}
   {showSources&&<div className="overlay" onMouseDown={e=>e.target===e.currentTarget&&setShowSources(false)}><section className="sourceDrawer"><button className="close" onClick={()=>setShowSources(false)}>×</button><p className="eyebrow">DATA NOTES</p><h2>数据口径与来源</h2><div className="note"><b>本轮升级</b><p>研究范围扩展为 4 个区域、25 个国家和 10 个汽车集团；欧洲包含匈牙利，澳新仅含澳大利亚与新西兰。补充 Omoda 7、Omoda 9，并增加西班牙 EBRO 等当地销售名称与原车型家族的对应关系。</p></div><div className="note"><b>市场口径</b><p>优先采用当地品牌官网目录；当地站点不可读取时，使用品牌欧洲或区域官网确认车型范围，并将未见本地公开售价的配置标为“询价”。区域目录可证明官方产品范围，不代表每家门店均有现车。</p></div><div className="note"><b>价格口径</b><p>优先采用当地品牌官网公开售价或当月价格表；仅有起售价时保留“从”价；没有公开版本价时标为“询价”。促销、金融奖金和税费可能改变终端成交价。</p></div><div className="note"><b>汇率口径</b><p>人民币估算采用 2026-08-21 欧洲央行最新工作日参考汇率交叉换算，CLP 沿用 2026-08-23 快照，并按金额量级取整。页面仍显示原币价格，人民币仅用于横向比较。</p></div><div className="note"><b>安全口径</b><p>“五星”仅在 Euro NCAP、Latin NCAP 或 ANCAP 可对应到该车型/代际时确认。未找到有效结果会标为“待核”，不代表安全表现较差。</p></div><div className="note"><b>参数口径</b><p>尺寸按全球或当地销售版本整理。动力与驱动按当地公开配置拆分；同一车型存在不同能源、驱动或配置组合时会建立独立记录。配置表中的电池容量与续航按同一版本对应；官网未逐版本披露时明确标为“未公布”。续航与能耗保留测试循环差异，带 * 项目需结合当地配置表复核。</p></div><div className="note"><b>图片口径</b><p>车型图片优先采用品牌官网车型页、官网车型导航及官方媒体素材；官网未提供可用素材时使用开放媒体图库。同一车型的不同动力版本共享对应外观图，仅用于车型识别。</p></div><h3>主要公开来源</h3><div className="sourceList">{Object.entries(sources).map(([id,s])=><a href={s.url} target="_blank" rel="noreferrer" key={id}><span>{s.name}</span><b>↗</b></a>)}</div><div className="safetySources"><a href="https://www.latinncap.com" target="_blank" rel="noreferrer">Latin NCAP ↗</a><a href="https://www.euroncap.com" target="_blank" rel="noreferrer">Euro NCAP ↗</a><a href="https://www.ancap.com.au" target="_blank" rel="noreferrer">ANCAP ↗</a><a href="https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html" target="_blank" rel="noreferrer">ECB 汇率 ↗</a></div><p className="footnote">研究快照：2026-08-28。车型在售状态与价格变化频繁，采购决策前请再次向当地品牌方或经销商核验。</p></section></div>}
     {compare.length>0&&!showCompare&&<button className="floatingCompare" onClick={()=>setShowCompare(true)}>对比 {compare.length}/3 <span>↑</span></button>}
