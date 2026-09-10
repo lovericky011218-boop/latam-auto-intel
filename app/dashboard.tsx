@@ -153,7 +153,7 @@ const latamRaw: Record<string, string[]> = {
 "Geely集团|Geely|EX2|R$ 123.800|Pro:R$ 123.800,Max:R$ 136.800|geely-br","Geely集团|Geely|EX5|R$ 195.800|Pro:R$ 195.800,Max:R$ 225.800|geely-br","Geely集团|Geely|EX5 EM-i|R$ 189.990|Pro:R$ 189.990,Max:R$ 209.990,Ultra:R$ 234.990|geely-br",
 "GWM集团|GWM|Ora 03|R$ 154.000|Skin:询价,GT:R$ 184.000|gwm-br","GWM集团|GWM|Haval H6|R$ 223.000|HEV:R$ 223.000,PHEV19:询价,PHEV35:询价,GT:询价|gwm-br","GWM集团|GWM|Haval H9|R$ 319.000|Exclusive:R$ 319.000|gwm-br","GWM集团|GWM|Tank 300|R$ 342.000|PHEV Flex:R$ 342.000|gwm-br","GWM集团|GWM|Poer|R$ 240.000|P30 Trail:询价,P30 Exclusive:询价|gwm-br","GWM集团|GWM|WEY 07|R$ 429.000|WEY 07:R$ 429.000,Dark Edition:R$ 432.000|wey-br",
 "Leapmotor集团|Leapmotor|B10|R$ 182.990|BEV:R$ 182.990|leap-br","Leapmotor集团|Leapmotor|C10|R$ 189.990|BEV:R$ 189.990,REEV:R$ 199.990|leap-br",
-"Changan集团|Changan|UNI-T|R$ 174.990|Infinity 1.5 TGDI Flex:R$ 174.990|changan-br"],
+"Changan集团|Changan|UNI-T|R$ 174.990|Infinity 1.5 TGDI Flex:R$ 174.990|changan-br","Changan集团|AVATR|AVATR 11|R$ 599.990|5 Seats AWD:R$ 599.990,4 Seats AWD:R$ 619.990|avatr-br"],
 "阿根廷":[
 "BYD集团|BYD|Dolphin Mini|US$ 22.990|GL:US$ 22.990,GS:US$ 23.990|byd-ar","BYD集团|BYD|Yuan Pro|US$ 29.990|GL:US$ 29.990,GS:US$ 30.990|byd-ar","BYD集团|BYD|Song Pro|US$ 34.990|GL:US$ 34.990,GS:US$ 36.990|byd-ar","BYD集团|BYD|Song Plus|询价|DM-i:询价|byd-ar","BYD集团|BYD|Shark|询价|DMO:询价|byd-ar","BYD集团|BYD|Seal|询价|Design:询价|byd-ar",
 "Chery集团|Chery|Tiggo 2 Pro|US$ 23.000|MT Comfort:US$ 23.000,CVT Comfort:US$ 25.500|chery-ar","Chery集团|Chery|Tiggo 4 CSH|US$ 33.500|HEV Premium:US$ 33.500|chery-ar","Chery集团|Chery|Tiggo 7|US$ 32.900|Hybrid Premium:US$ 32.900|chery-ar","Chery集团|Chery|Tiggo 8 Pro|US$ 46.600|Luxury:US$ 46.600|chery-ar","Chery集团|Chery|Arrizo 8 CSH|询价|PHEV:询价|chery-ar","Chery集团|Omoda|Omoda 5|询价|当地官网未逐版本公开:询价|oj-ar","Chery集团|Jaecoo|Jaecoo 7|询价|当地官网未逐版本公开:询价|oj-ar",
@@ -238,7 +238,7 @@ const baseSources: Record<string,{name:string,url:string}> = {
 "gwm-br":{name:"GWM Brasil｜在售车型",url:"https://www.gwmmotors.com.br/pt/modelos"},"wey-br":{name:"GWM Brasil｜WEY 07 官方车型页",url:"https://www.gwmmotors.com.br/pt/modelos/wey-07"},"gwm-ar":{name:"GWM Argentina｜在售车型",url:"https://gwm.com.ar/modelos"},"gwm-cl":{name:"GWM Chile｜车型与价格",url:"https://www.gwm.cl"},"gwm-uy":{name:"GWM Uruguay｜车型与价格",url:"https://gwm.com.uy"},"gwm-bo":{name:"GWM Bolivia｜车型官网",url:"https://gwm.com.bo"},"gwm-ec":{name:"GWM Ecuador｜车型官网",url:"https://www.gwm.com.ec"},"gwm-pe":{name:"GWM Perú｜车型与官方起售价",url:"https://pdn.gwm.com.pe/"},
 "dongfeng-ar":{name:"Dongfeng Argentina｜乘用车与官方售价",url:"https://www.dongfengmotors.com.ar/"},"dongfeng-cl":{name:"Dongfeng Chile｜电动车型官网",url:"https://dongfengindumotora.cl/"},"dongfeng-uy":{name:"Dongfeng Uruguay｜乘用车型官网",url:"https://dongfengmotors.com.uy/"},"dongfeng-bo":{name:"Dongfeng Bolivia｜Rodaria 官方车型",url:"https://automotriz.rodaria.com.bo/"},"dongfeng-ec":{name:"Dongfeng Ecuador｜Maresa 车型与售价",url:"https://dongfeng.ec/"},"dongfeng-pe":{name:"Dongfeng Perú｜乘用车型目录",url:"https://dongfengmotor.pe/dongfeng/"},"voyah-global":{name:"VOYAH Global｜全球车型目录（七市场暂无当地官网在售记录）",url:"https://www.voyah-global.com/"},
 "leap-br":{name:"Leapmotor Brasil｜Stellantis 官方车型与售价",url:"https://www.media.stellantis.com/br-pt/leapmotor/"},"leap-ar":{name:"Leapmotor Argentina｜官方车型目录",url:"https://www.leapmotor.com.ar/"},"leap-cl":{name:"Leapmotor Chile｜官方车型目录",url:"https://www.leapmotorchile.cl/"},"leap-uy":{name:"Leapmotor Uruguay｜车型、参数与售价",url:"https://www.leapmotor.com.uy/"},"leap-ec":{name:"Leapmotor Ecuador｜车型、参数与售价",url:"https://www.leapmotor.ec/"},
-"changan-br":{name:"Global Changan｜巴西本地生产与上市公告",url:"https://www.globalchangan.com/newsroom/changan-and-caoa-strengthen-long-term-commitment-to-brazil-with-new-5-billion-investment-cycle-and-breakthrough-flex-fuel-technology.html"},"changan-ar":{name:"Changan Argentina｜车型与官方售价",url:"https://changan.com.ar/"},"changan-cl":{name:"Changan Chile｜车型与官方售价",url:"https://www.changan.cl/"},"deepal-cl":{name:"Deepal Chile｜车型、动力与官方售价",url:"https://www.deepalautos.cl/"},"avatr-cl":{name:"Changan Chile｜AVATR 11 官方车型资料",url:"https://www.changan.cl/autos-hibridos-y-electricos/"},"avatr07-cl":{name:"Changan Chile｜AVATR 07 上市、配置与官方售价",url:"https://www.changan.cl/noticia/changan-impulsa-nueva-etapa-para-avatr-con-lanzamiento-avatr-07/"},"changan-uy":{name:"Changan Uruguay｜车型、配置与售价",url:"https://changan.uy/"},"changan-bo":{name:"Changan Bolivia｜Changan 与 Deepal 车型目录",url:"https://www.changan.com.bo/catalogo"},"changan-ec":{name:"Changan Ecuador｜车型与官方售价",url:"https://www.changanecuador.com/"},"deepal-ec":{name:"Changan Ecuador｜Deepal S07 官方车型页",url:"https://changanecuador.com/landing-changan-deepal-s07/"},"changan-pe":{name:"Changan Perú｜车型、配置与官方售价",url:"https://www.pdn.changan.com.pe/"},
+"changan-br":{name:"CAOA Changan Brasil｜UNI-T 官方车型与售价",url:"https://caoachangan.com.br/novos/uni-t"},"avatr-br":{name:"CAOA Changan Brasil｜AVATR 11 官方车型、配置与询价",url:"https://avatr.caoachangan.com.br/novos/avatr-11"},"changan-ar":{name:"Changan Argentina｜车型与官方售价",url:"https://changan.com.ar/"},"changan-cl":{name:"Changan Chile｜车型与官方售价",url:"https://www.changan.cl/"},"deepal-cl":{name:"Deepal Chile｜车型、动力与官方售价",url:"https://www.deepalautos.cl/"},"avatr-cl":{name:"Changan Chile｜AVATR 11 官方车型资料",url:"https://www.changan.cl/autos-hibridos-y-electricos/"},"avatr07-cl":{name:"Changan Chile｜AVATR 07 上市、配置与官方售价",url:"https://www.changan.cl/noticia/changan-impulsa-nueva-etapa-para-avatr-con-lanzamiento-avatr-07/"},"changan-uy":{name:"Changan Uruguay｜车型、配置与售价",url:"https://changan.uy/"},"changan-bo":{name:"Changan Bolivia｜Changan 与 Deepal 车型目录",url:"https://www.changan.com.bo/catalogo"},"changan-ec":{name:"Changan Ecuador｜车型与官方售价",url:"https://www.changanecuador.com/"},"deepal-ec":{name:"Changan Ecuador｜Deepal S07 官方车型页",url:"https://changanecuador.com/landing-changan-deepal-s07/"},"changan-pe":{name:"Changan Perú｜车型、配置与官方售价",url:"https://www.pdn.changan.com.pe/"},
 "gac-br":{name:"GAC Brasil｜官方车型目录",url:"https://www.gacgroup.com/pt-br"},"gac-ar":{name:"GAC Argentina｜官方车型目录",url:"https://gacmotorargentina.com/modelos"},"gac-cl":{name:"GAC Chile｜官方车型与价格",url:"https://gacmotor.cl/modelos/"},"gac-uy":{name:"GAC Uruguay｜官方车型与价格",url:"https://www.gacmotor.uy/"},"gac-bo":{name:"GAC Bolivia｜官方车型目录",url:"https://www.gac.com.bo/"},"gac-ec":{name:"GAC Ecuador｜官方车型目录",url:"https://www.gacmotor.com.ec/modelos"},"gac-pe":{name:"GAC Perú｜官方车型目录",url:"https://www.gacperu.pe/index.html"}
 };
 const sources: Record<string,{name:string,url:string}> = {...baseSources,...strategicSources};
@@ -297,11 +297,15 @@ const auditedSources = new Set([
 ]);
 const freshSources = new Set(["oj-br","oj-cl","oj-it","oj-fr","oj-nl","oj-es","oj-de","oj-pl","oj-be","oj-se","oj-uk","oj-hu","oj-il","oj-au","oj-nz","oj-my","ebro-es"]);
 const currentSources = new Set(["oj-cl","gac-br","gac-ar","gac-cl","gac-uy","gac-bo","gac-ec","gac-pe","gac-uk","gac-il","gac-au","gac-nz","gac-th","gac-id","gac-my","gac-sg"]);
+const latestSources = new Set(["changan-br","avatr-br"]);
+const marketSpecOverrides: Record<string,Partial<Spec>> = {
+  "巴西|AVATR 11": {energy:"纯电 BEV",use:"当地官网未公布",range:"710 km CLTC"},
+};
 
 const baseCars: BaseCar[] = Object.entries(raw).flatMap(([country, rows]) => rows.map((row, index) => {
   const [group,brand,model,price,trimStr,source] = row.split("|");
   const trims = trimStr.split(",").map(x=>{const i=x.lastIndexOf(":"); return {name:x.slice(0,i),price:x.slice(i+1)}});
-  return {id:`${country}-${brand}-${model}-${index}`,country,flag:countries.find(x=>x[0]===country)?.[1]||"",group,brand,model,image:modelImage(model),price,trims,source,verified:currentSources.has(source)?"2026-08-28":freshSources.has(source)?"2026-08-26":auditedSources.has(source)?"2026-08-23":"2026-08-17",...(S[model]||{dims:"官网未披露",wheelbase:"官网未披露",energy:"待核验",use:"官网未披露",range:"官网未披露",safety:"未查到有效五星成绩",rating:"unknown"})};
+  return {id:`${country}-${brand}-${model}-${index}`,country,flag:countries.find(x=>x[0]===country)?.[1]||"",group,brand,model,image:modelImage(model),price,trims,source,verified:latestSources.has(source)?"2026-09-10":currentSources.has(source)?"2026-08-28":freshSources.has(source)?"2026-08-26":auditedSources.has(source)?"2026-08-23":"2026-08-17",...(S[model]||{dims:"官网未披露",wheelbase:"官网未披露",energy:"待核验",use:"官网未披露",range:"官网未披露",safety:"未查到有效五星成绩",rating:"unknown"}),...(marketSpecOverrides[`${country}|${model}`]||{})};
 }));
 
 const splitPowertrains = (c: BaseCar): PowerCar[] => {
@@ -456,7 +460,7 @@ const driveByModel: Record<string,string> = {
   "GX3 Pro":"前驱","Emgrand":"前驱","Coolray":"前驱","Cityray":"前驱","Starray":"前驱","Okavango":"前驱","EX2":"后驱","EX5":"前驱","EX5 EM-i":"前驱","Zeekr X":"后驱","Zeekr 001":"四驱","Lynk & Co 01":"前驱","Lynk & Co 06":"前驱",
   "Ora 03":"前驱","Haval Jolion":"前驱","Haval H6":"前驱","Haval H7":"前驱","Haval H9":"四驱","Tank 300":"四驱","Tank 500":"四驱","Poer":"四驱","Wingle 5":"后驱 / 四驱","Wingle 7":"四驱","Poer P500":"四驱","WEY 07":"四驱",
   "BOX":"前驱","Nammi":"前驱","Vigo":"前驱","E70":"前驱","Mage":"前驱","Mage HEV":"前驱","Mage EV":"前驱","Huge HEV":"前驱","Paladin":"四驱","Rich 6":"后驱 / 四驱","Rich 7":"后驱 / 四驱","Z9":"四驱",
-  "T03":"前驱","B10":"后驱","C10":"后驱","C11":"后驱","C16":"后驱","UNI-T":"前驱","CS55 Plus":"前驱","Eado Plus":"前驱","Lumin":"前驱","CS75 Plus":"前驱","Alsvin":"前驱","CS35 Max":"前驱","CS35 Plus":"前驱","CS15":"前驱","UNI-K":"前驱","X7 Plus":"前驱","Hunter":"后驱 / 四驱","F70":"四驱","Deepal S05":"后驱","Deepal S07":"后驱","Deepal G318":"四驱","AVATR 11":"后驱","AVATR 07":"后驱 / 四驱",
+  "T03":"前驱","B10":"后驱","C10":"后驱","C11":"后驱","C16":"后驱","UNI-T":"前驱","CS55 Plus":"前驱","Eado Plus":"前驱","Lumin":"前驱","CS75 Plus":"前驱","Alsvin":"前驱","CS35 Max":"前驱","CS35 Plus":"前驱","CS15":"前驱","UNI-K":"前驱","X7 Plus":"前驱","Hunter":"后驱 / 四驱","F70":"四驱","Deepal S05":"后驱","Deepal S07":"后驱","Deepal G318":"四驱","AVATR 11":"后驱 / 四驱","AVATR 07":"后驱 / 四驱",
   ...strategicDriveByModel,
 };
 
@@ -613,7 +617,7 @@ const trimEnergyDetail = (car:Car, trim:Trim) => {
   if(car.model==="Mage HEV") return {battery:"1.9 kWh（350V）",range:"不适用（非插电）"};
   if(car.model==="Mage EV") return {battery:"50.82 kWh",range:"445 km CLTC"};
   if(car.model==="T03") return {battery:"41.3 kWh",range:car.country==="乌拉圭"?"280 km WLTP":"418 km CLTC / 300 km WLTP"};
-  if(car.model==="AVATR 11") return {battery:"90 kWh",range:"575 km NEDC"};
+  if(car.model==="AVATR 11") return car.country==="巴西"?{battery:"116 kWh",range:"710 km CLTC"}:{battery:"90 kWh",range:"575 km NEDC"};
   if(car.model==="AVATR 07") return {battery:"39.05 kWh",range:car.drive==="四驱"?"900 km 综合 WLTP":"932 km 综合 WLTP"};
   if(car.model==="B10") return car.variant==="REEV"?{battery:"当地官网未按配置公布",range:"超过 900 km 综合*"}:{battery:car.country==="智利"?"56.2 kWh":"67.1 kWh",range:car.country==="智利"?"360 km NEDC":"540 km NEDC"};
   if(car.model==="C10") return car.variant==="REEV"?{battery:"28.4 kWh",range:car.country==="乌拉圭"?"1,140 km 综合 / 170 km 纯电 NEDC":"1,000–1,190 km 综合*"}:{battery:"69.9 kWh",range:car.country==="智利"?"480 km NEDC":"530 km CLTC"};
@@ -789,6 +793,8 @@ const compareSales = (a:SalesSummary,b:SalesSummary,direction:"asc"|"desc") => {
   return direction==="asc"?a.total-b.total:b.total-a.total;
 };
 const localSalesAliases: Record<string,string[]> = {
+  "Changan|UNI-T|巴西":["CAOA Changan UNI-T"],
+  "AVATR|AVATR 11|巴西":["CAOA Changan · AVATR 11"],
   "Chery|Chery Tiggo 4 / Tiggo 5X|西班牙":["EBRO s400"],
   "Chery|Tiggo 7|西班牙":["EBRO s700"],
   "Chery|Tiggo 8 Pro|西班牙":["EBRO s800"],
@@ -921,7 +927,7 @@ export default function Home(){
     });
   },[selectedFamily,focusedFamilyRecords]);
   return <main className="shell">
-    <header className="topbar"><button className="wordmark" onClick={reset}><span>DONGFENG</span> MARKET INTEL</button><nav><button onClick={()=>document.getElementById("lineup")?.scrollIntoView({behavior:"smooth"})}>车型库</button><button onClick={()=>document.getElementById("market-insights")?.scrollIntoView({behavior:"smooth"})}>市场洞察</button><button onClick={()=>setShowSources(true)}>数据来源</button></nav><div className="fresh"><i/>核验至 2026.08.28</div></header>
+    <header className="topbar"><button className="wordmark" onClick={reset}><span>DONGFENG</span> MARKET INTEL</button><nav><button onClick={()=>document.getElementById("lineup")?.scrollIntoView({behavior:"smooth"})}>车型库</button><button onClick={()=>document.getElementById("market-insights")?.scrollIntoView({behavior:"smooth"})}>市场洞察</button><button onClick={()=>setShowSources(true)}>数据来源</button></nav><div className="fresh"><i/>更新至 2026.09.10</div></header>
     <section className="heroStrategy" aria-label="东风集团主要战略市场竞品车型看板"><div><p>GLOBAL COMPETITOR VEHICLE INTELLIGENCE</p><h1>主要战略市场<br/><em>竞品车型看板</em></h1><span>覆盖南美、欧洲、澳新与东南亚，按市场、集团、子品牌、动力和驱动形式拆分官方在售车型。</span><div className="heroActions"><button onClick={()=>document.getElementById("lineup")?.scrollIntoView({behavior:"smooth"})}>直接进入车型库 ↓</button></div></div><aside>{regionCountries.map(item=><div key={item.name}><small>{item.code}</small><b>{String(item.countries.length).padStart(2,"0")}</b><span>{item.name}市场</span></div>)}</aside></section>
     <section className="pulse"><div><small>官方价格可见</small><b>{priced}</b><span>/ {cars.length} 条</span></div><div><small>已确认五星</small><b>{five}</b><span>条动力记录</span></div><div><small>本地在售品牌</small><b>{uniqueBrands}</b><span>个品牌</span></div><button onClick={()=>setShowSources(true)}>查看方法与来源 <span>↗</span></button></section>
     <section className="marketInsights">

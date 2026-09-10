@@ -89,6 +89,12 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.match(page, /dongfeng\.ec/);
   assert.match(page, /Leapmotor集团\|Leapmotor\|C10/);
   assert.match(page, /Changan集团\|Deepal\|Deepal S07/);
+  assert.match(page, /Changan集团\|AVATR\|AVATR 11\|R\$ 599\.990\|5 Seats AWD:R\$ 599\.990,4 Seats AWD:R\$ 619\.990\|avatr-br/);
+  assert.match(page, /CAOA Changan Brasil｜AVATR 11 官方车型、配置与询价/);
+  assert.match(page, /"巴西\|AVATR 11": \{energy:"纯电 BEV",use:"当地官网未公布",range:"710 km CLTC"\}/);
+  assert.match(page, /"AVATR 11":"后驱 \/ 四驱"/);
+  assert.match(page, /car\.country==="巴西"\?\{battery:"116 kWh",range:"710 km CLTC"\}/);
+  assert.match(page, /"AVATR\|AVATR 11\|巴西":\["CAOA Changan · AVATR 11"\]/);
   assert.match(page, /"全部驱动","前驱","后驱","四驱"/);
   assert.match(page, /"全部能源","纯电","插混","增程","混动","燃油"/);
   assert.match(page, /"全部车身","轿车","SUV","MPV","皮卡"/);
