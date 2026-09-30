@@ -1,0 +1,1547 @@
+{
+  "checkedAt": "2026-10-01",
+  "note": "HTTP readability is a discovery check, not a complete per-model verification. Additional official model pages were reviewed separately.",
+  "sources": [
+    {
+      "id": "byd-br",
+      "name": "BYD Brasil｜车型与促销条件",
+      "url": "https://www.byd.com/br/condicoes",
+      "status": 200,
+      "readable": true,
+      "title": "Campanhas Promocionais - Condições | BYD Brasil"
+    },
+    {
+      "id": "denza-br",
+      "name": "DENZA Brasil｜B5 官方配置与售价",
+      "url": "https://www.denza.com/br/save-configuration",
+      "status": 200,
+      "readable": true,
+      "title": "DENZA | Monte o Seu B5"
+    },
+    {
+      "id": "byd-ar",
+      "name": "BYD Argentina｜车型与官方售价",
+      "url": "https://www.byd.com/ar/news-list/byd-en-argentina",
+      "status": 200,
+      "readable": true,
+      "title": "BYD inicia oficialmente sus operaciones en Argentina"
+    },
+    {
+      "id": "byd-cl",
+      "name": "BYD Chile｜品牌官网",
+      "url": "https://www.byd.com/cl",
+      "status": 200,
+      "readable": true,
+      "title": "Autos eléctricos, sedan y SUV I BYD Chile"
+    },
+    {
+      "id": "byd-uy",
+      "name": "BYD Uruguay｜品牌官网",
+      "url": "https://www.byd.com/uy",
+      "status": 200,
+      "readable": true,
+      "title": "Autos eléctricos, sedan y SUV I BYD Uruguay"
+    },
+    {
+      "id": "byd-bo",
+      "name": "BYD Bolivia｜品牌官网",
+      "url": "https://bydauto.com.bo",
+      "status": null,
+      "readable": false,
+      "error": "curl: (6) Could not resolve host: bydauto.com.bo\n"
+    },
+    {
+      "id": "byd-ec",
+      "name": "BYD Ecuador｜品牌官网",
+      "url": "https://www.byd.com/ec",
+      "status": 200,
+      "readable": true,
+      "title": "Autos eléctricos, sedan y SUV I BYD Ecuador"
+    },
+    {
+      "id": "byd-pe",
+      "name": "BYD Perú｜官方车型目录",
+      "url": "https://www.byd.com/pe/car",
+      "status": 200,
+      "readable": true,
+      "title": "Car"
+    },
+    {
+      "id": "chery-br",
+      "name": "CAOA Chery Brasil｜车型官网",
+      "url": "https://caoachery.com.br",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 403"
+    },
+    {
+      "id": "chery-ar",
+      "name": "Chery Argentina｜车型与价格表",
+      "url": "https://chery.com.ar",
+      "status": 200,
+      "readable": true,
+      "title": "Chery Argentina"
+    },
+    {
+      "id": "chery-cl",
+      "name": "Chery Chile｜车型官网",
+      "url": "https://www.chery.cl",
+      "status": 200,
+      "readable": true,
+      "title": "Chery en Chile | SUVs Tiggo y Camioneta HIMLA"
+    },
+    {
+      "id": "chery-uy",
+      "name": "Chery Uruguay｜车型与价格",
+      "url": "https://chery.com.uy",
+      "status": 200,
+      "readable": true,
+      "title": "Inicio ⋅ Chery"
+    },
+    {
+      "id": "chery-bo",
+      "name": "Chery Bolivia｜车型官网",
+      "url": "https://chery.com.bo",
+      "status": null,
+      "readable": false,
+      "error": "curl: (6) Could not resolve host: chery.com.bo\n"
+    },
+    {
+      "id": "chery-ec",
+      "name": "Chery Ecuador｜车型官网",
+      "url": "https://www.chery.com.ec",
+      "status": 200,
+      "readable": true,
+      "title": "Chey Ecuador | SUVs, híbridos y eléctricos innovadores"
+    },
+    {
+      "id": "chery-pe",
+      "name": "Chery Perú｜车型与官方起售价",
+      "url": "https://www.chery.com.pe/public/",
+      "status": 200,
+      "readable": true,
+      "title": "CHERY | PERÚ"
+    },
+    {
+      "id": "oj-br",
+      "name": "OMODA | JAECOO Brasil｜官方优惠",
+      "url": "https://omodajaecoo.com.br/ofertas",
+      "status": 200,
+      "readable": true,
+      "title": "Omoda - Futuro da Mobilidade no Brasil: Estilo, Inovação, Sustentabilidade"
+    },
+    {
+      "id": "oj-ar",
+      "name": "OMODA | JAECOO Argentina｜品牌官网",
+      "url": "https://omodajaecoo.com.ar",
+      "status": null,
+      "readable": false,
+      "error": "curl: (6) Could not resolve host: omodajaecoo.com.ar\n"
+    },
+    {
+      "id": "oj-cl",
+      "name": "OMODA | JAECOO Chile｜车型与价格",
+      "url": "https://www.omodajaecoo.cl",
+      "status": 200,
+      "readable": true,
+      "title": "Sitio Oficial OMODA | JAECOO"
+    },
+    {
+      "id": "oj-uy",
+      "name": "OMODA | JAECOO Uruguay｜车型官网",
+      "url": "https://omodajaecoo.com.uy",
+      "status": 200,
+      "readable": true,
+      "title": "OMODA | JAECOO Uruguay: camionetas eléctricas e híbridas"
+    },
+    {
+      "id": "oj-bo",
+      "name": "OMODA | JAECOO Bolivia｜品牌官网",
+      "url": "https://omodajaecoo.com.bo",
+      "status": null,
+      "readable": false,
+      "error": "curl: (6) Could not resolve host: omodajaecoo.com.bo\n"
+    },
+    {
+      "id": "oj-ec",
+      "name": "OMODA | JAECOO Ecuador｜品牌官网",
+      "url": "https://omodajaecoo.com.ec",
+      "status": null,
+      "readable": false,
+      "error": "curl: (6) Could not resolve host: omodajaecoo.com.ec\n"
+    },
+    {
+      "id": "exeed-cl",
+      "name": "EXEED Chile｜品牌官网",
+      "url": "https://www.exeed.cl",
+      "status": null,
+      "readable": false,
+      "error": "curl: (28) Connection timed out after 20004 milliseconds\n"
+    },
+    {
+      "id": "exeed-ec",
+      "name": "EXEED Ecuador｜品牌官网",
+      "url": "https://www.exeed.ec",
+      "status": null,
+      "readable": false,
+      "error": "curl: (6) Could not resolve host: www.exeed.ec\n"
+    },
+    {
+      "id": "jetour-cl",
+      "name": "JETOUR Chile｜车型官网",
+      "url": "https://jetourchile.cl",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 403"
+    },
+    {
+      "id": "jetour-uy",
+      "name": "JETOUR Uruguay｜车型官网",
+      "url": "https://jetour.com.uy",
+      "status": 200,
+      "readable": true,
+      "title": "Jetour Uruguay – Jetour,  marca perteneciente a Chery Holding,  presenta su modelo  X70: un SUV de 7 plazas con todo el confort."
+    },
+    {
+      "id": "jetour-bo",
+      "name": "JETOUR Bolivia｜车型官网",
+      "url": "https://jetour.com.bo",
+      "status": null,
+      "readable": false,
+      "error": "curl: (6) Could not resolve host: jetour.com.bo\n"
+    },
+    {
+      "id": "jetour-ec",
+      "name": "JETOUR Ecuador｜车型官网",
+      "url": "https://jetour.com.ec",
+      "status": null,
+      "readable": false,
+      "error": "curl: (6) Could not resolve host: jetour.com.ec\n"
+    },
+    {
+      "id": "jetour-pe",
+      "name": "JETOUR Perú｜车型与官方起售价",
+      "url": "https://www.jetour.com.pe/modelos",
+      "status": 200,
+      "readable": true,
+      "title": "Conoce todos los modelos de Jetour disponibles en Perú"
+    },
+    {
+      "id": "geely-br",
+      "name": "Geely Brasil｜车型与官方优惠",
+      "url": "https://www.geelybrasil.com.br",
+      "status": 200,
+      "readable": true,
+      "title": "Geely Brasil - A sua grande jornada começa agora!"
+    },
+    {
+      "id": "geely-ar",
+      "name": "Geely Argentina｜车型官网",
+      "url": "https://geelyargentina.com.ar",
+      "status": 200,
+      "readable": true,
+      "title": "Geely Argentina | Conduce el futuro hoy"
+    },
+    {
+      "id": "geely-cl",
+      "name": "Geely Chile｜车型与价格",
+      "url": "https://www.geely.cl/cotizar",
+      "status": 200,
+      "readable": true,
+      "title": "Autos nuevos - Cotiza tu auto | Geely"
+    },
+    {
+      "id": "geely-uy",
+      "name": "Geely Uruguay｜车型与价格",
+      "url": "https://geely.com.uy",
+      "status": 200,
+      "readable": true,
+      "title": "Geely Uruguay"
+    },
+    {
+      "id": "geely-bo",
+      "name": "Geely Bolivia｜车型官网",
+      "url": "https://geely.com.bo",
+      "status": 200,
+      "readable": true,
+      "title": "Geely Bolivia"
+    },
+    {
+      "id": "geely-ec",
+      "name": "Geely Ecuador｜车型官网",
+      "url": "https://geely.com.ec",
+      "status": 200,
+      "readable": true,
+      "title": "Geely Ecuador | Descubre y Conduce Hoy"
+    },
+    {
+      "id": "geely-pe",
+      "name": "Geely Perú｜车型与官方起售价",
+      "url": "https://geely.pe/",
+      "status": 200,
+      "readable": true,
+      "title": "Descubre las mejores camionetas y carros SUV | Geely Perú"
+    },
+    {
+      "id": "zeekr-cl",
+      "name": "ZEEKR Chile｜品牌官网",
+      "url": "https://www.zeekr.cl",
+      "status": null,
+      "readable": false,
+      "error": "curl: (6) Could not resolve host: www.zeekr.cl\n"
+    },
+    {
+      "id": "lynk-cl",
+      "name": "Lynk & Co Chile｜本地官方车型目录",
+      "url": "https://www.lynkco.funnelbox.cl/",
+      "status": 200,
+      "readable": true,
+      "title": "Lynk & Co Chile: SUV Híbrido | Tattersall Automotriz"
+    },
+    {
+      "id": "lynk-ec",
+      "name": "Lynk & Co Ecuador｜本地官方车型目录",
+      "url": "https://www.lynkcoecuador.com.ec/",
+      "status": 200,
+      "readable": true,
+      "title": "Lynk & Co - Carros Híbridos y Eléctricos en Ecuador"
+    },
+    {
+      "id": "lynk-uy",
+      "name": "Lynk & Co Uruguay｜本地官方车型与售价",
+      "url": "https://lynkco.uy/",
+      "status": 200,
+      "readable": true,
+      "title": "Lynk & Co"
+    },
+    {
+      "id": "gwm-br",
+      "name": "GWM Brasil｜在售车型",
+      "url": "https://www.gwmmotors.com.br/pt/modelos",
+      "status": 200,
+      "readable": true,
+      "title": "Car List"
+    },
+    {
+      "id": "wey-br",
+      "name": "GWM Brasil｜WEY 07 官方车型页",
+      "url": "https://www.gwmmotors.com.br/pt/modelos/wey-07",
+      "status": 200,
+      "readable": true,
+      "title": "GWM WEY 07: A Nova Era do Luxo​"
+    },
+    {
+      "id": "gwm-ar",
+      "name": "GWM Argentina｜在售车型",
+      "url": "https://gwm.com.ar/modelos",
+      "status": 200,
+      "readable": true,
+      "title": "GWM Argentina"
+    },
+    {
+      "id": "gwm-cl",
+      "name": "GWM Chile｜车型与价格",
+      "url": "https://www.gwm.cl",
+      "status": 200,
+      "readable": true,
+      "title": "Great Wall Motors: Camionetas, SUVs y Autos Eléctricos"
+    },
+    {
+      "id": "gwm-uy",
+      "name": "GWM Uruguay｜车型与价格",
+      "url": "https://gwm.com.uy",
+      "status": 200,
+      "readable": true,
+      "title": "Inicio | GWM | Great Wall Motors"
+    },
+    {
+      "id": "gwm-bo",
+      "name": "GWM Bolivia｜车型官网",
+      "url": "https://gwm.com.bo",
+      "status": null,
+      "readable": false,
+      "error": "curl: (6) Could not resolve host: gwm.com.bo\n"
+    },
+    {
+      "id": "gwm-ec",
+      "name": "GWM Ecuador｜车型官网",
+      "url": "https://www.gwm.com.ec",
+      "status": null,
+      "readable": false,
+      "error": "curl: (6) Could not resolve host: www.gwm.com.ec\n"
+    },
+    {
+      "id": "gwm-pe",
+      "name": "GWM Perú｜车型与官方起售价",
+      "url": "https://pdn.gwm.com.pe/",
+      "status": 200,
+      "readable": true,
+      "title": "GWM PERÚ: Descubre nuestros modelos y servicios"
+    },
+    {
+      "id": "dongfeng-ar",
+      "name": "Dongfeng Argentina｜乘用车与官方售价",
+      "url": "https://www.dongfengmotors.com.ar/",
+      "status": 200,
+      "readable": true,
+      "title": "Inicio - Dongfeng Motors - Innovación y tecnología en movilidad"
+    },
+    {
+      "id": "dongfeng-cl",
+      "name": "Dongfeng Chile｜电动车型官网",
+      "url": "https://dongfengindumotora.cl/",
+      "status": 200,
+      "readable": true,
+      "title": "Dongfeng Chile | Autos Eléctricos e Híbridos Enchufables"
+    },
+    {
+      "id": "dongfeng-uy",
+      "name": "Dongfeng Uruguay｜乘用车型官网",
+      "url": "https://dongfengmotors.com.uy/",
+      "status": 200,
+      "readable": true,
+      "title": "Dongfeng - El verdadero poder urbano"
+    },
+    {
+      "id": "dongfeng-bo",
+      "name": "Dongfeng Bolivia｜Rodaria 官方车型",
+      "url": "https://automotriz.rodaria.com.bo/",
+      "status": 200,
+      "readable": true,
+      "title": "Rodaria División Automotríz – Representante oficial para Bolivia de las marcas automotrices DONGFENG y ZNA"
+    },
+    {
+      "id": "dongfeng-ec",
+      "name": "Dongfeng Ecuador｜Maresa 车型与售价",
+      "url": "https://dongfeng.ec/",
+      "status": 200,
+      "readable": true,
+      "title": "Dongfeng Maresa | SUVs, Eléctricos, Híbridos y Pickups"
+    },
+    {
+      "id": "dongfeng-pe",
+      "name": "Dongfeng Perú｜乘用车型目录",
+      "url": "https://dongfengmotor.pe/dongfeng/",
+      "status": 200,
+      "readable": true,
+      "title": "Dongfeng Motor Perú - Vehículos Deportivos SUV y Comerciales"
+    },
+    {
+      "id": "voyah-global",
+      "name": "VOYAH Global｜全球车型目录（七市场暂无当地官网在售记录）",
+      "url": "https://www.voyah-global.com/",
+      "status": 200,
+      "readable": false,
+      "title": "VOYAH"
+    },
+    {
+      "id": "leap-br",
+      "name": "Leapmotor Brasil｜Stellantis 官方车型与售价",
+      "url": "https://www.media.stellantis.com/br-pt/leapmotor/",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 403"
+    },
+    {
+      "id": "leap-ar",
+      "name": "Leapmotor Argentina｜官方车型目录",
+      "url": "https://www.leapmotor.com.ar/",
+      "status": 200,
+      "readable": true,
+      "title": "Leapmotor Argentina"
+    },
+    {
+      "id": "leap-cl",
+      "name": "Leapmotor Chile｜官方车型目录",
+      "url": "https://www.leapmotorchile.cl/",
+      "status": 200,
+      "readable": true,
+      "title": "Leapmotor Chile - Un salto a la nueva era"
+    },
+    {
+      "id": "leap-uy",
+      "name": "Leapmotor Uruguay｜车型、参数与售价",
+      "url": "https://www.leapmotor.com.uy/",
+      "status": 200,
+      "readable": true,
+      "title": "Leapmotor"
+    },
+    {
+      "id": "leap-ec",
+      "name": "Leapmotor Ecuador｜车型、参数与售价",
+      "url": "https://www.leapmotor.ec/",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 404"
+    },
+    {
+      "id": "changan-br",
+      "name": "CAOA Changan Brasil｜UNI-T 官方车型与售价",
+      "url": "https://caoachangan.com.br/novos/uni-t",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 403"
+    },
+    {
+      "id": "avatr-br",
+      "name": "CAOA Changan Brasil｜AVATR 11 官方车型、配置与询价",
+      "url": "https://avatr.caoachangan.com.br/novos/avatr-11",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 403"
+    },
+    {
+      "id": "changan-ar",
+      "name": "Changan Argentina｜车型与官方售价",
+      "url": "https://changan.com.ar/",
+      "status": 200,
+      "readable": true,
+      "title": "CHANGAN Argentina | Sitio Oficial | Autos y SUVs"
+    },
+    {
+      "id": "changan-cl",
+      "name": "Changan Chile｜车型与官方售价",
+      "url": "https://www.changan.cl/",
+      "status": 200,
+      "readable": true,
+      "title": "SUV, Autos, Camionetas y Comerciales | Changan"
+    },
+    {
+      "id": "deepal-cl",
+      "name": "Deepal Chile｜车型、动力与官方售价",
+      "url": "https://www.deepalautos.cl/",
+      "status": 200,
+      "readable": true,
+      "title": "Autos Eléctricos e Híbridos Innovadores | Deepal Chile  -"
+    },
+    {
+      "id": "avatr-cl",
+      "name": "Changan Chile｜AVATR 11 官方车型资料",
+      "url": "https://www.changan.cl/autos-hibridos-y-electricos/",
+      "status": 200,
+      "readable": true,
+      "title": "Autos Híbridos y Eléctricos Changan, Deepal y AVATR"
+    },
+    {
+      "id": "avatr07-cl",
+      "name": "Changan Chile｜AVATR 07 上市、配置与官方售价",
+      "url": "https://www.changan.cl/noticia/changan-impulsa-nueva-etapa-para-avatr-con-lanzamiento-avatr-07/",
+      "status": 200,
+      "readable": true,
+      "title": "Changan impulsa nueva etapa para AVATR con lanzamiento AVATR 07"
+    },
+    {
+      "id": "changan-uy",
+      "name": "Changan Uruguay｜车型、配置与售价",
+      "url": "https://changan.uy/",
+      "status": 200,
+      "readable": true,
+      "title": "Inicio | Changan | Uruguay"
+    },
+    {
+      "id": "changan-bo",
+      "name": "Changan Bolivia｜Changan 与 Deepal 车型目录",
+      "url": "https://www.changan.com.bo/catalogo",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 403"
+    },
+    {
+      "id": "changan-ec",
+      "name": "Changan Ecuador｜车型与官方售价",
+      "url": "https://www.changanecuador.com/",
+      "status": 200,
+      "readable": true,
+      "title": "Changan Ecuador | Autos 0KM: Sedanes, SUVs y Camionetas"
+    },
+    {
+      "id": "deepal-ec",
+      "name": "Changan Ecuador｜Deepal S07 官方车型页",
+      "url": "https://changanecuador.com/landing-changan-deepal-s07/",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 404"
+    },
+    {
+      "id": "changan-pe",
+      "name": "Changan Perú｜车型、配置与官方售价",
+      "url": "https://www.pdn.changan.com.pe/",
+      "status": 200,
+      "readable": true,
+      "title": "SUV, Autos y Camionetas: Descubre tu Nuevo Vehículo | Changan Perú"
+    },
+    {
+      "id": "gac-br",
+      "name": "GAC Brasil｜官方车型目录",
+      "url": "https://www.gacgroup.com/pt-br",
+      "status": 200,
+      "readable": true,
+      "title": "Site Oficial da GAC | Onde o Artesanato Encontra a Tecnologia | GAC Brasil"
+    },
+    {
+      "id": "gac-ar",
+      "name": "GAC Argentina｜官方车型目录",
+      "url": "https://gacmotorargentina.com/modelos",
+      "status": 200,
+      "readable": true,
+      "title": "Modelos Disponibles | GAC Motor Argentina"
+    },
+    {
+      "id": "gac-cl",
+      "name": "GAC Chile｜官方车型与价格",
+      "url": "https://gacmotor.cl/modelos/",
+      "status": null,
+      "readable": false,
+      "error": "curl: (6) Could not resolve host: gacmotor.cl\n"
+    },
+    {
+      "id": "gac-uy",
+      "name": "GAC Uruguay｜官方车型与价格",
+      "url": "https://www.gacmotor.uy/",
+      "status": 200,
+      "readable": true,
+      "title": "GAC Motor | Tecnología e innovación en SUV"
+    },
+    {
+      "id": "gac-bo",
+      "name": "GAC Bolivia｜官方车型目录",
+      "url": "https://www.gac.com.bo/",
+      "status": 200,
+      "readable": true,
+      "title": "GAC Motor Bolivia"
+    },
+    {
+      "id": "gac-ec",
+      "name": "GAC Ecuador｜官方车型目录",
+      "url": "https://www.gacmotor.com.ec/modelos",
+      "status": null,
+      "readable": false,
+      "error": "curl: (6) Could not resolve host: www.gacmotor.com.ec\n"
+    },
+    {
+      "id": "gac-pe",
+      "name": "GAC Perú｜官方车型目录",
+      "url": "https://www.gacperu.pe/index.html",
+      "status": 200,
+      "readable": true,
+      "title": "GAC PERÚ"
+    },
+    {
+      "id": "byd-eu",
+      "name": "BYD Europe｜欧洲官方车型目录",
+      "url": "https://www.byd.com/eu/car",
+      "status": 200,
+      "readable": false,
+      "title": "Car"
+    },
+    {
+      "id": "byd-au",
+      "name": "BYD Australia｜官方车型与价格",
+      "url": "https://bydautomotive.com.au/",
+      "status": 200,
+      "readable": true,
+      "title": "BYD Australia | New Energy Cars, SUVs & Utes"
+    },
+    {
+      "id": "byd-nz",
+      "name": "BYD New Zealand｜官方车型目录",
+      "url": "https://www.bydauto.co.nz/",
+      "status": 200,
+      "readable": true,
+      "title": "BYD Auto NZ | Electric & Super Hybrid Vehicles"
+    },
+    {
+      "id": "byd-th",
+      "name": "BYD Thailand｜官方车型目录",
+      "url": "https://www.byd.com/en-th",
+      "status": 200,
+      "readable": true,
+      "title": "Electric Cars, Sedans and SUVs I BYD Thailand"
+    },
+    {
+      "id": "byd-id",
+      "name": "BYD Indonesia｜官方车型与价格表",
+      "url": "https://www.byd.com/id/pricelist",
+      "status": 200,
+      "readable": true,
+      "title": "Daftar Harga | BYD Indonesia"
+    },
+    {
+      "id": "byd-my",
+      "name": "BYD Malaysia｜官方车型目录",
+      "url": "https://www.byd.com/my",
+      "status": 200,
+      "readable": true,
+      "title": "Electric Cars, Sedans and SUVs I BYD Malaysia"
+    },
+    {
+      "id": "byd-sg",
+      "name": "BYD Singapore｜官方车型目录",
+      "url": "https://www.byd.com/sg",
+      "status": 200,
+      "readable": true,
+      "title": "BYD Singapore - New Energy Solutions Pioneer"
+    },
+    {
+      "id": "oj-eu",
+      "name": "OMODA & JAECOO Europe｜欧洲车型目录",
+      "url": "https://www.omodajaecoo.com/",
+      "status": 200,
+      "readable": false,
+      "title": "Redirecting..."
+    },
+    {
+      "id": "oj-es",
+      "name": "OMODA & JAECOO España｜官方车型与售价",
+      "url": "https://www.omodajaecoo.es/",
+      "status": 200,
+      "readable": true,
+      "title": "OMODA & JAECOO España | SUV Innovadores con Garantía 7 Años"
+    },
+    {
+      "id": "oj-uk",
+      "name": "OMODA & JAECOO UK｜官方车型目录",
+      "url": "https://omodaauto.co.uk/",
+      "status": 200,
+      "readable": true,
+      "title": "OMODA UK | Explore New Cars, SUVs, Hybrid & Electric Cars"
+    },
+    {
+      "id": "oj-it",
+      "name": "OMODA & JAECOO Italia｜官方车型与售价",
+      "url": "https://www.omodajaecooitalia.com/modelli/",
+      "status": null,
+      "readable": false,
+      "error": "curl: (28) Operation timed out after 13572 milliseconds with 249129 bytes received\n"
+    },
+    {
+      "id": "oj-fr",
+      "name": "OMODA & JAECOO France｜官方车型与售价",
+      "url": "https://omoda-jaecoo.fr/pages/home",
+      "status": 200,
+      "readable": true,
+      "title": "OMODA & JAECOO France - Site Officiel"
+    },
+    {
+      "id": "oj-nl",
+      "name": "OMODA & JAECOO Nederland｜官方车型与售价",
+      "url": "https://www.omodajaecoo.nl/",
+      "status": 200,
+      "readable": false,
+      "title": "OMODA & JAECOO"
+    },
+    {
+      "id": "oj-de",
+      "name": "OMODA & JAECOO Deutschland｜官方车型与售价",
+      "url": "https://www.omodajaecoo-auto.de/",
+      "status": 200,
+      "readable": true,
+      "title": "OMODA & JAECOO Deutschland | Innovative SUVs mit 7 Jahren Garantie"
+    },
+    {
+      "id": "oj-pl",
+      "name": "OMODA & JAECOO Polska｜官方车型与售价",
+      "url": "https://www.omodajaecoo.pl/",
+      "status": 200,
+      "readable": true,
+      "title": "Oficjalna strona internetowa - OMODA & JAECOO Polska"
+    },
+    {
+      "id": "oj-be",
+      "name": "OMODA & JAECOO België｜官方车型与售价",
+      "url": "https://www.omodajaecoo.be/nl/",
+      "status": 200,
+      "readable": false,
+      "title": "OMODA & JAECOO"
+    },
+    {
+      "id": "oj-se",
+      "name": "OMODA & JAECOO Sverige｜官方车型目录",
+      "url": "https://omodajaecoo.se/modeller",
+      "status": 200,
+      "readable": true,
+      "title": "Våra modeller | Omoda Jaecoo"
+    },
+    {
+      "id": "oj-hu",
+      "name": "OMODA & JAECOO Magyarország｜官方车型与价目表",
+      "url": "https://www.omodajaecoo.hu/",
+      "status": 200,
+      "readable": true,
+      "title": "OMODA | JAECOO - OMODA JAECOO Magyarország"
+    },
+    {
+      "id": "oj-il",
+      "name": "OMODA Israel｜官方车型与售价",
+      "url": "https://omoda.co.il/",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 403"
+    },
+    {
+      "id": "oj-au",
+      "name": "OMODA JAECOO Australia｜OMODA 9 官方车型与售价",
+      "url": "https://www.omodajaecoo.com.au/models/omoda-9",
+      "status": 200,
+      "readable": true,
+      "title": "OMODA 9 SHS | Omoda Jaecoo Australia"
+    },
+    {
+      "id": "oj-nz",
+      "name": "OMODA JAECOO New Zealand｜OMODA 9 官方车型与售价",
+      "url": "https://www.omodajaecoo.co.nz/models/omoda-9-shs",
+      "status": 200,
+      "readable": true,
+      "title": "OMODA 9 SHS | Omoda Jaecoo NZ"
+    },
+    {
+      "id": "oj-my",
+      "name": "OMODA JAECOO Malaysia｜C7 / C9 官方车型目录",
+      "url": "https://www.omodajaecoo.com.my/",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 406"
+    },
+    {
+      "id": "ebro-es",
+      "name": "EBRO España｜Chery 技术车型的本地品牌目录",
+      "url": "https://www.ebroauto.com/modelos",
+      "status": 200,
+      "readable": true,
+      "title": "Coches EBRO: descubre todos los modelos y sus tecnologías"
+    },
+    {
+      "id": "chery-il",
+      "name": "Chery Israel｜官方车型目录",
+      "url": "https://cheryisrael.co.il/",
+      "status": 200,
+      "readable": true,
+      "title": "Chery Israel - רכבי צ'רי ישראל - האתר הרשמי"
+    },
+    {
+      "id": "chery-au",
+      "name": "Chery Australia｜官方车型与起售价",
+      "url": "https://cherymotor.com.au/",
+      "status": 200,
+      "readable": true,
+      "title": "Chery Australia | Home of the 7 Seater SUV"
+    },
+    {
+      "id": "chery-nz",
+      "name": "Chery New Zealand｜官方车型目录",
+      "url": "https://chery.co.nz/",
+      "status": 200,
+      "readable": true,
+      "title": "Homepage | Chery New Zealand"
+    },
+    {
+      "id": "oj-th",
+      "name": "OMODA & JAECOO Thailand｜官方车型目录",
+      "url": "https://www.omodajaecoo.co.th/",
+      "status": 200,
+      "readable": true,
+      "title": "OMODA & JAECOO Thailand | รถยนต์ไฟฟ้าและ SUV พรีเมียม | Omoda Jaecoo Thailand"
+    },
+    {
+      "id": "chery-id",
+      "name": "Chery Indonesia｜官方车型目录",
+      "url": "https://chery.co.id/",
+      "status": 200,
+      "readable": true,
+      "title": "Experience drive of the future with Chery Indonesia! | Chery Indonesia"
+    },
+    {
+      "id": "chery-my",
+      "name": "Chery Malaysia｜官方车型目录",
+      "url": "https://www.chery.my/",
+      "status": 200,
+      "readable": true,
+      "title": "HOME of Chery Malaysia - Chery"
+    },
+    {
+      "id": "oj-sg",
+      "name": "OMODA & JAECOO Singapore｜官方车型目录",
+      "url": "https://omodajaecoo.com.sg/",
+      "status": 200,
+      "readable": true,
+      "title": "Omoda | Jaecoo"
+    },
+    {
+      "id": "lynk-eu",
+      "name": "Lynk & Co Europe｜官方车型目录",
+      "url": "https://www.lynkco.com/en-WW",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 404"
+    },
+    {
+      "id": "zeekr-eu",
+      "name": "ZEEKR Europe｜官方车型目录",
+      "url": "https://www.zeekr.eu/",
+      "status": 200,
+      "readable": true,
+      "title": "Zeekr Europe - premium electric vehicles for Europe"
+    },
+    {
+      "id": "zeekr-de",
+      "name": "ZEEKR Germany｜官方车型与售价",
+      "url": "https://www.zeekr.eu/de-de",
+      "status": 200,
+      "readable": true,
+      "title": "Premium Elektroautos & Elektro SUVs | Zeekr Deutschland"
+    },
+    {
+      "id": "geely-il",
+      "name": "Geely Israel｜官方车型目录",
+      "url": "https://geely.co.il/",
+      "status": 200,
+      "readable": true,
+      "title": "דף בית         GEELY טכנולוגיה ועיצוב לחווית נהיגה בלתי נשכחת         :        Geely"
+    },
+    {
+      "id": "geely-au",
+      "name": "Geely Australia｜官方车型目录",
+      "url": "https://www.geely.com/en-au",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 500"
+    },
+    {
+      "id": "geely-nz",
+      "name": "Geely New Zealand｜官方车型目录",
+      "url": "https://www.geelyauto.co.nz/",
+      "status": null,
+      "readable": false,
+      "error": "curl: (6) Could not resolve host: www.geelyauto.co.nz\n"
+    },
+    {
+      "id": "zeekr-au",
+      "name": "ZEEKR Australia｜官方车型目录",
+      "url": "https://www.zeekr.com/en-au",
+      "status": 200,
+      "readable": true,
+      "title": "Digital House of Zeekr"
+    },
+    {
+      "id": "geely-th",
+      "name": "Geely Thailand｜官方车型目录",
+      "url": "https://www.geelythailand.com/",
+      "status": null,
+      "readable": false,
+      "error": "curl: (6) Could not resolve host: www.geelythailand.com\n"
+    },
+    {
+      "id": "zeekr-th",
+      "name": "ZEEKR Thailand｜官方车型目录",
+      "url": "https://www.zeekrlife.com/th-th",
+      "status": 200,
+      "readable": true,
+      "title": "ซีเคอร์ ประเทศไทย | แบรนด์ยานยนต์ไฟฟ้าสุดหรูและสมรรถนะสูง"
+    },
+    {
+      "id": "zeekr-id",
+      "name": "ZEEKR Indonesia｜官方车型目录",
+      "url": "https://www.zeekrlife.com/id-id",
+      "status": 200,
+      "readable": true,
+      "title": "Zeekr Indonesia | Luxury High - Performance Electric Vehicle Brand"
+    },
+    {
+      "id": "zeekr-my",
+      "name": "ZEEKR Malaysia｜官方车型目录",
+      "url": "https://www.zeekrlife.com/my-en",
+      "status": 200,
+      "readable": false,
+      "title": "极氪官网"
+    },
+    {
+      "id": "zeekr-my-9x",
+      "name": "ZEEKR Malaysia｜9X 官方预览与开放预订",
+      "url": "https://www.zeekrlife.com/en-my/posts/zeekrs-first-ever-showing-at-klims-2026-demonstrates-premium-ev-leadership/",
+      "status": 200,
+      "readable": true,
+      "title": "Zeekr’s First Ever Showing at KLIMS 2026 Demonstrates Premium EV Leadership"
+    },
+    {
+      "id": "zeekr-sg",
+      "name": "ZEEKR Singapore｜官方车型目录",
+      "url": "https://www.zeekr.com/en-sg",
+      "status": 200,
+      "readable": true,
+      "title": "Digital House of Zeekr"
+    },
+    {
+      "id": "gwm-uk",
+      "name": "GWM UK｜官方车型与起售价",
+      "url": "https://gwmcars.co.uk/",
+      "status": 200,
+      "readable": true,
+      "title": "Welcome to GWM Cars UK. Go With More"
+    },
+    {
+      "id": "gwm-eu",
+      "name": "GWM Europe｜欧洲官方车型目录",
+      "url": "https://www.gwm-eu.com/",
+      "status": 200,
+      "readable": true,
+      "title": "GWM Europe | Home"
+    },
+    {
+      "id": "gwm-il",
+      "name": "GWM Israel｜官方车型目录",
+      "url": "https://www.gwm.co.il/",
+      "status": null,
+      "readable": false,
+      "error": "curl: (6) Could not resolve host: www.gwm.co.il\n"
+    },
+    {
+      "id": "gwm-au",
+      "name": "GWM Australia｜官方车型目录",
+      "url": "https://www.gwmanz.com/au/",
+      "status": 200,
+      "readable": true,
+      "title": "Innovative & Exciting SUVs, Utes, Hybrids and EVs | GWM"
+    },
+    {
+      "id": "gwm-nz",
+      "name": "GWM New Zealand｜官方车型目录",
+      "url": "https://www.gwmanz.com/nz/",
+      "status": 200,
+      "readable": true,
+      "title": "Innovative & Exciting SUVs, Utes, Hybrids and EVs | GWM"
+    },
+    {
+      "id": "gwm-th",
+      "name": "GWM Thailand｜官方车型目录",
+      "url": "https://www.gwm.co.th/",
+      "status": 200,
+      "readable": true,
+      "title": "GWM Thailand - Home"
+    },
+    {
+      "id": "gwm-id",
+      "name": "GWM Indonesia｜官方车型目录",
+      "url": "https://www.gwm-indonesia.com/",
+      "status": 200,
+      "readable": true,
+      "title": "GWM FATMAWATI JAKARTA | DEALER RESMI MOBIL GWM INDONESIA – Pusat Promo Dealer Resmi Mobil Gwm Jakarta dan Melayani Pembelian untuk wilayah Jabodetabek."
+    },
+    {
+      "id": "gwm-my",
+      "name": "GWM Malaysia｜官方车型目录",
+      "url": "https://www.gwm.com.my/",
+      "status": 200,
+      "readable": true,
+      "title": "GWM Malaysia - Home"
+    },
+    {
+      "id": "gwm-sg",
+      "name": "GWM Singapore｜官方车型目录",
+      "url": "https://www.gwm.com.sg/",
+      "status": null,
+      "readable": false,
+      "error": "curl: (6) Could not resolve host: www.gwm.com.sg\n"
+    },
+    {
+      "id": "voyah-eu",
+      "name": "VOYAH Global｜欧洲销售车型目录",
+      "url": "https://www.voyah-global.com/",
+      "status": 200,
+      "readable": false,
+      "title": "VOYAH"
+    },
+    {
+      "id": "voyah-it",
+      "name": "VOYAH Italia｜Passion L 官方车型页",
+      "url": "https://voyah-italia.it/voyah-passion-l/",
+      "status": 200,
+      "readable": true,
+      "title": "Voyah Passion: una nuova espressione di eleganza"
+    },
+    {
+      "id": "voyah-hu",
+      "name": "VOYAH Magyarország｜Passion PHEV 官方车型与起售价",
+      "url": "https://voyah.hu/model/voyah-passion/",
+      "status": 200,
+      "readable": true,
+      "title": "VOYAH PASSION PHEV | VOYAH"
+    },
+    {
+      "id": "dongfeng-th",
+      "name": "Dongfeng Thailand｜官方车型目录",
+      "url": "https://www.dongfeng.co.th/",
+      "status": null,
+      "readable": false,
+      "error": "curl: (6) Could not resolve host: www.dongfeng.co.th\n"
+    },
+    {
+      "id": "dongfeng-my",
+      "name": "Dongfeng Malaysia｜官方车型目录",
+      "url": "https://www.dongfeng.com.my/",
+      "status": null,
+      "readable": false,
+      "error": "curl: (60) SSL: no alternative certificate subject name matches target host name 'www.dongfeng.com.my'\nMore details here: https://curl.se/docs/sslcerts.html\n\ncurl failed to verify the legitimacy of the server and therefore could not\nestablish a secur"
+    },
+    {
+      "id": "voyah-sg",
+      "name": "VOYAH Singapore｜官方车型目录",
+      "url": "https://www.voyah.sg/",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 404"
+    },
+    {
+      "id": "leap-eu",
+      "name": "Leapmotor Europe｜官方车型目录",
+      "url": "https://www.leapmotor.net/",
+      "status": 200,
+      "readable": false,
+      "title": "SUVs & Electric Vehicles | Leapmotor Official Site"
+    },
+    {
+      "id": "leap-au",
+      "name": "Leapmotor Australia｜官方车型目录",
+      "url": "https://www.leapmotor.net/au",
+      "status": 200,
+      "readable": false,
+      "title": "Electric Cars & SUVs | Leapmotor Australia"
+    },
+    {
+      "id": "leap-nz",
+      "name": "Leapmotor New Zealand｜官方车型目录",
+      "url": "https://www.leapmotor.net/nz",
+      "status": 200,
+      "readable": false,
+      "title": "SUVs & Electric Vehicles | Leapmotor NZ Official Site"
+    },
+    {
+      "id": "leap-th",
+      "name": "Leapmotor Thailand｜官方车型目录",
+      "url": "https://www.leapmotor.net/th",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 404"
+    },
+    {
+      "id": "leap-my",
+      "name": "Leapmotor Malaysia｜官方车型目录",
+      "url": "https://www.leapmotor.net/my",
+      "status": 200,
+      "readable": false,
+      "title": "Leapmotor"
+    },
+    {
+      "id": "leap-sg",
+      "name": "Leapmotor Singapore｜官方车型目录",
+      "url": "https://www.leapmotor.net/sg",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 404"
+    },
+    {
+      "id": "changan-eu",
+      "name": "CHANGAN｜欧洲 DEEPAL 官方发布",
+      "url": "https://www.globalchangan.com/newsroom/changan-automobile-launches-changan-deepal-and-avatr-in-europe-ushering-in-a-new-era-of-evs.html",
+      "status": 200,
+      "readable": true,
+      "title": "ChangAn Automobile Launches CHANGAN, DEEPAL, and AVATR in Europe, Ushering in a New Era of EVs - NEWSROOM - Global CHANGAN"
+    },
+    {
+      "id": "deepal-au",
+      "name": "DEEPAL Australia｜官方车型目录",
+      "url": "https://www.deepal.com.au/",
+      "status": 200,
+      "readable": true,
+      "title": "World-Class, Luxury Electric Vehicles | DEEPAL Australia"
+    },
+    {
+      "id": "deepal-nz",
+      "name": "DEEPAL New Zealand｜官方车型目录",
+      "url": "https://www.deepal.co.nz/",
+      "status": 200,
+      "readable": false
+    },
+    {
+      "id": "deepal-th",
+      "name": "DEEPAL Thailand｜官方车型目录",
+      "url": "https://www.deepal.co.th/",
+      "status": null,
+      "readable": false,
+      "error": "curl: (6) Could not resolve host: www.deepal.co.th\n"
+    },
+    {
+      "id": "deepal-id",
+      "name": "DEEPAL Indonesia｜官方车型目录",
+      "url": "https://www.deepal.id/",
+      "status": null,
+      "readable": false,
+      "error": "curl: (6) Could not resolve host: www.deepal.id\n"
+    },
+    {
+      "id": "deepal-my",
+      "name": "DEEPAL Malaysia｜官方车型目录",
+      "url": "https://www.deepal.com.my/",
+      "status": 200,
+      "readable": false
+    },
+    {
+      "id": "deepal-sg",
+      "name": "CHANGAN｜DEEPAL Singapore 官方发布",
+      "url": "https://www.globalchangan.com/newsroom/deepal-s05-unveiled-at-the-singapore-motorshow-2026-aimed-at-the-coe-category-a-segment.html",
+      "status": 200,
+      "readable": true,
+      "title": "DEEPAL S05 Unveiled at the Singapore Motorshow 2026, Aimed at the COE Category A Segment - NEWSROOM - Global CHANGAN"
+    },
+    {
+      "id": "xpeng-eu",
+      "name": "XPENG Europe｜欧洲官方车型目录",
+      "url": "https://www.xpeng.com/eu",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 404"
+    },
+    {
+      "id": "xpeng-no",
+      "name": "XPENG Norway｜官方车型与配置",
+      "url": "https://www.xpeng.com/no",
+      "status": 200,
+      "readable": true,
+      "title": "XPENG - Smart EVs, SUVs & MPV-er | XPENG Norge"
+    },
+    {
+      "id": "xpeng-nl",
+      "name": "XPENG Netherlands｜官方车型与配置",
+      "url": "https://www.xpeng.com/nl/",
+      "status": 200,
+      "readable": true,
+      "title": "XPENG Nederland - Smart EV's met super snelle laadcapaciteit"
+    },
+    {
+      "id": "xpeng-uk",
+      "name": "XPENG UK｜G6 官方上市价格",
+      "url": "https://www.xpeng.com/news/0194f9d174999467d6e98a0282160052",
+      "status": 200,
+      "readable": true,
+      "title": "XPENG announces its official launch in the UK, showcasing smart mobility lineups including world's first AI-defined vehicle and flying car"
+    },
+    {
+      "id": "xpeng-au",
+      "name": "XPENG Australia｜官方车型与配置",
+      "url": "https://www.xpeng.com/au",
+      "status": 200,
+      "readable": true,
+      "title": "XPENG Australia | Electric Vehicles & SUVs"
+    },
+    {
+      "id": "xpeng-nz",
+      "name": "XPENG New Zealand｜官方车型与起售价",
+      "url": "https://website-eu.x-peng.com/nz",
+      "status": 200,
+      "readable": true,
+      "title": "XPENG - Official Website | XPENG Motors – XPENG"
+    },
+    {
+      "id": "xpeng-th",
+      "name": "XPENG Thailand｜官方车型与配置",
+      "url": "https://store.xpeng.com/th/configurator/G6_R",
+      "status": 200,
+      "readable": true,
+      "title": "XPENG - Official Website | XPENG Motors – XPENG"
+    },
+    {
+      "id": "xpeng-id",
+      "name": "XPENG Indonesia｜官方车型目录",
+      "url": "https://www.xpeng.com/id",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 404"
+    },
+    {
+      "id": "xpeng-my",
+      "name": "XPENG Malaysia｜官方车型目录",
+      "url": "https://www.xpeng.com/my",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 404"
+    },
+    {
+      "id": "xpeng-sg",
+      "name": "XPENG Singapore｜官方车型目录",
+      "url": "https://www.xpeng.com/sg",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 404"
+    },
+    {
+      "id": "nio-eu",
+      "name": "NIO Europe｜官方车型目录",
+      "url": "https://www.nio.com/de_DE",
+      "status": 200,
+      "readable": true,
+      "title": "NIO Elektroautos: intelligent und leistungsfähig"
+    },
+    {
+      "id": "nio-no",
+      "name": "NIO Norway｜官方库存与车型",
+      "url": "https://www.nio.com/no_NO/inventory",
+      "status": 200,
+      "readable": true
+    },
+    {
+      "id": "nio-nl",
+      "name": "NIO Netherlands｜官方车型与订阅",
+      "url": "https://www.nio.com/nl_NL/subscription/product",
+      "status": 200,
+      "readable": true,
+      "title": "NIO Subscription"
+    },
+    {
+      "id": "nio-se",
+      "name": "NIO Sweden｜官方车型与订阅",
+      "url": "https://www.nio.com/sv_SE/subscription/product",
+      "status": 200,
+      "readable": true,
+      "title": "NIO Subscription"
+    },
+    {
+      "id": "nio-de",
+      "name": "NIO Germany｜官方车型与订阅",
+      "url": "https://www.nio.com/de_DE/subscription/product",
+      "status": 200,
+      "readable": true,
+      "title": "Konfigurieren Sie Ihr NIO Abonnement nach Ihren Bedürfnissen"
+    },
+    {
+      "id": "firefly-eu",
+      "name": "firefly Europe｜官方车型页",
+      "url": "https://www.firefly.world/nl_NL/firefly",
+      "status": 200,
+      "readable": true,
+      "title": "Compacte elektrische auto | firefly.world"
+    },
+    {
+      "id": "firefly-th",
+      "name": "firefly｜泰国官方上市公告",
+      "url": "https://www.firefly.world/news/20260324001",
+      "status": 200,
+      "readable": true,
+      "title": "firefly Officially Launches in Thailand - newsroom | firefly.world"
+    },
+    {
+      "id": "firefly-sg",
+      "name": "firefly｜新加坡官方上市公告",
+      "url": "https://www.firefly.world/news/20260108001",
+      "status": 200,
+      "readable": true,
+      "title": "glowing in singapore: firefly’s new chapter in global market in 2026 - newsroom | firefly.world"
+    },
+    {
+      "id": "gac-uk",
+      "name": "AION UK｜官方车型目录",
+      "url": "https://www.aionauto.co.uk/uk",
+      "status": 200,
+      "readable": true,
+      "title": "Electric Cars & SUVs | AION Auto"
+    },
+    {
+      "id": "gac-il",
+      "name": "AION Israel｜官方车型与价格表",
+      "url": "https://aionauto.co.il/",
+      "status": 200,
+      "readable": true,
+      "title": "מותג הרכב החשמלי AION (איון) האתר הרשמי | רכבים חשמליים GAC"
+    },
+    {
+      "id": "gac-au",
+      "name": "GAC Australia｜官方车型与售价",
+      "url": "https://www.gacgroup.com/en-au",
+      "status": 200,
+      "readable": true,
+      "title": "GAC | GAC Australia"
+    },
+    {
+      "id": "gac-nz",
+      "name": "GAC New Zealand｜官方车型与售价",
+      "url": "https://gacnz.co.nz/models",
+      "status": 200,
+      "readable": true,
+      "title": "Models | Discover Your Perfect Vehicle Today — GAC New Zealand"
+    },
+    {
+      "id": "gac-th",
+      "name": "GAC Thailand｜官方车型与售价",
+      "url": "https://www.gacgroup.com/th-th",
+      "status": 200,
+      "readable": true,
+      "title": "GAC Thailand Site | WHERE CRAFT MEETS TECHNOLOGY | GAC Thailand"
+    },
+    {
+      "id": "gac-id",
+      "name": "AION Indonesia｜官方车型目录",
+      "url": "https://aionindonesia.com/home-2/",
+      "status": 200,
+      "readable": true,
+      "title": "AION Indonesia | Electric Vehicle | Intelligent Companion"
+    },
+    {
+      "id": "gac-my",
+      "name": "GAC Malaysia｜官方车型与售价",
+      "url": "https://gacmotor.com.my/",
+      "status": 200,
+      "readable": true,
+      "title": "GAC MOTOR Malaysia | Where Craft Meets Technology"
+    },
+    {
+      "id": "gac-sg",
+      "name": "GAC Singapore｜官方车型发布",
+      "url": "https://www.gacgroup.com/en/news/article/all-round-strength-revitalizes-urban-mobility--aion-ut-launches-in-singapore--redefining-the-benchmark-for-urban-electric-vehicles-273",
+      "status": 200,
+      "readable": true,
+      "title": "All-Round Strength Revitalizes Urban Mobility! AION UT Launches in Singapore, Redefining the Benchmark for Urban Electric Vehicles | GAC Global"
+    },
+    {
+      "id": "byd-co",
+      "name": "BYD Colombia｜Motorysa 官方乘用车型目录",
+      "url": "https://bydauto.com.co/modelos/",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 403"
+    },
+    {
+      "id": "chery-co",
+      "name": "Chery Colombia｜本地车型与起售价",
+      "url": "https://www.chery.com.co/",
+      "status": 200,
+      "readable": true,
+      "title": "Chery Colombia | SUV Híbridos y Eléctricos | iCAR, CSH y E5"
+    },
+    {
+      "id": "chery-co-e5",
+      "name": "Chery Colombia｜E5 预订与配置",
+      "url": "https://www.chery.com.co/chery-e5/",
+      "status": 200,
+      "readable": true,
+      "title": "Chery E5 SUV eléctrico en Colombia | Reserva"
+    },
+    {
+      "id": "chery-co-icar",
+      "name": "Chery Colombia｜iCAR 03 配置",
+      "url": "https://www.chery.com.co/icar-03/",
+      "status": 200,
+      "readable": true,
+      "title": "Chery iCar 03 en Colombia | SUV eléctrico | Chery Colombia"
+    },
+    {
+      "id": "chery-co-orders",
+      "name": "Chery Colombia｜官方预订目录",
+      "url": "https://www.chery.com.co/pedidos/",
+      "status": 200,
+      "readable": true,
+      "title": "Reserva tu Chery iCAR 03T, E5, TIGGO CSH, iCAR"
+    },
+    {
+      "id": "jetour-co",
+      "name": "Jetour Colombia｜Autocom 官方车型与起售价",
+      "url": "https://jetour.com.co/nuestros-vehiculos/",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 406"
+    },
+    {
+      "id": "geely-co",
+      "name": "Geely Colombia｜本地车型目录",
+      "url": "https://geely.com.co/",
+      "status": 200,
+      "readable": true,
+      "title": "Carros Eléctricos e Híbridos en Colombia | Geely"
+    },
+    {
+      "id": "zeekr-co",
+      "name": "Zeekr Colombia｜本地车型与订购",
+      "url": "https://store.zeekrco.com/",
+      "status": 200,
+      "readable": true,
+      "title": "Zeekr | Colombia"
+    },
+    {
+      "id": "gwm-co",
+      "name": "GWM Colombia｜本地车型目录",
+      "url": "https://www.gwm.com.co/",
+      "status": 200,
+      "readable": true,
+      "title": "Great Wall Motors: Camionetas, SUVs y Autos Eléctricos | Great Wall Motors Colombia"
+    },
+    {
+      "id": "gwm-co-h6",
+      "name": "GWM Colombia｜Haval H6 本地动力与售价",
+      "url": "https://www.gwm.com.co/vehiculo/haval/nueva-h6/",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 404"
+    },
+    {
+      "id": "gwm-co-ora5",
+      "name": "GWM Colombia｜ORA 5 SUV 配置、电池与售价",
+      "url": "https://www.gwm.com.co/vehiculo/ora/ora-5-suv/",
+      "status": 200,
+      "readable": true,
+      "title": "ORA 5: Auto eléctrico vanguardista y sostenible"
+    },
+    {
+      "id": "gwm-co-poer",
+      "name": "GWM Colombia｜Poer Commercial 配置与售价",
+      "url": "https://www.gwm.com.co/vehiculo/poer/poer-mecanica/",
+      "status": 200,
+      "readable": true,
+      "title": "POER COMERCIAL: camioneta de carga potente y confiable"
+    },
+    {
+      "id": "voyah-co",
+      "name": "VOYAH Colombia｜本地官方车型目录",
+      "url": "https://www.voyahcolombia.com/",
+      "status": 200,
+      "readable": true,
+      "title": "Coche Eléctrico Premium | Tecnología Avanzada | Voyah"
+    },
+    {
+      "id": "changan-co",
+      "name": "Changan Colombia｜本地官方车型目录",
+      "url": "https://changan.com.co/",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 403"
+    },
+    {
+      "id": "nevo-co",
+      "name": "Changan Colombia｜NEVO Q05 官方预订",
+      "url": "https://changan.com.co/nevo-q05/",
+      "status": null,
+      "readable": false,
+      "error": "HTTP 403"
+    },
+    {
+      "id": "deepal-co",
+      "name": "Deepal Colombia｜本地动力版本目录",
+      "url": "https://www.deepalcolombia.com.co/",
+      "status": 200,
+      "readable": true,
+      "title": "Camionetas híbridas y eléctricas Deepal Colombia"
+    },
+    {
+      "id": "xpeng-co",
+      "name": "XPENG Colombia｜本地车型与起售价",
+      "url": "https://www.xpeng.com/co/",
+      "status": 200,
+      "readable": true,
+      "title": "Xpeng Colombia: SUV y camionetas eléctricas de lujo -"
+    },
+    {
+      "id": "gac-co",
+      "name": "GAC Colombia｜本地官方车型目录",
+      "url": "https://gacmotorcolombia.com/",
+      "status": 200,
+      "readable": true,
+      "title": "GAC COLOMBIA - Autos Eléctricos, Híbridos y a Gasolina"
+    }
+  ]
+}

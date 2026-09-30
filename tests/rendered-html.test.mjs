@@ -59,6 +59,10 @@ test("server-renders the four-region strategic-market dashboard", async () => {
   assert.match(html, /价格：低 → 高/);
   assert.match(html, /销量：高 → 低/);
   assert.match(html, /销量：低 → 高/);
+  assert.match(html, /哥伦比亚/);
+  assert.match(html, /目录扫描至/);
+  assert.doesNotMatch(html, /class="pulse"|查看方法与来源|本地在售品牌/);
+  assert.doesNotMatch(html, /<aside>/);
   assert.match(html, /续航：高 → 低/);
   assert.match(html, /MARKLINES 销量口径/);
   assert.match(html, /2024-01 至 2026-04/);
@@ -78,7 +82,7 @@ test("keeps expanded group data, region filters, and official source links in so
 
   assert.match(page, /"东风集团":\["Dongfeng","VOYAH"\]/);
   assert.match(page, /"Leapmotor集团":\["Leapmotor"\]/);
-  assert.match(page, /"Changan集团":\["Changan","Deepal","AVATR"\]/);
+  assert.match(page, /"Changan集团":\["Changan","Deepal","AVATR","NEVO"\]/);
   assert.match(page, /"XPENG集团":\["XPENG"\]/);
   assert.match(page, /"NIO集团":\["NIO","firefly"\]/);
   assert.match(page, /"GWM集团":\["GWM"\]/);
@@ -199,7 +203,7 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.match(css, /\.bodyMix/);
   assert.doesNotMatch(css, /--acid:#8b5e3c/);
   assert.match(css, /\.heroStrategy,\.coverage\{background:var\(--paper\)/);
-  assert.match(layout, /南美、欧洲、澳新与东南亚 25 个重点国家/);
+  assert.match(layout, /南美、欧洲、澳新与东南亚 26 个重点国家/);
   assert.match(strategic, /\{ name: "欧洲"[^\n]+\["匈牙利","🇭🇺"\]/);
   assert.match(strategic, /\{ name: "澳新"[^\n]+\["澳大利亚","🇦🇺"\],\["新西兰","🇳🇿"\]/);
   assert.doesNotMatch(strategic, /\{ name: "澳新"[^\n]+匈牙利/);

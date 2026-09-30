@@ -24,7 +24,7 @@ const geistMono = Geist_Mono({
 });
 
 const title = "东风集团主要战略市场竞品车型看板";
-const description = "覆盖南美、欧洲、澳新与东南亚 25 个重点国家的中国汽车集团车型、配置价格、参数、动力、驱动、电池续航与碰撞安全评级。";
+const description = "覆盖南美、欧洲、澳新与东南亚 26 个重点国家（含哥伦比亚）的中国汽车集团车型、配置价格、参数、动力、驱动、电池续航与碰撞安全评级；官方预售单独标注。";
 const image = `${siteOrigin}/og.png`;
 const icon = `${publicBasePath}/favicon.svg`;
 

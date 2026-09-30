@@ -11,6 +11,7 @@ import {
   strategicSpecs,
 } from "./strategic-market-data";
 import { marklinesSales, marklinesSalesPeriod, marklinesSalesSource, type MarklinesSalesRow } from "./marklines-sales-data";
+import { applyMarketRefresh, marketRefreshDate, refreshedRecordKeys, refreshedSources, refreshSpecs, refreshImages, refreshDrive, refreshMarketSpecs, refreshBatteryDetails } from "./market-refresh-data";
 
 type Trim = { name: string; price: string };
 type Spec = { dims: string; wheelbase: string; energy: string; use: string; range: string; safety: string; rating: "yes"|"unknown" };
@@ -32,7 +33,7 @@ const brandsByGroup: Record<string,string[]> = {
   "GWM集团":["GWM"],
   "东风集团":["Dongfeng","VOYAH"],
   "Leapmotor集团":["Leapmotor"],
-  "Changan集团":["Changan","Deepal","AVATR"],
+  "Changan集团":["Changan","Deepal","AVATR","NEVO"],
   "XPENG集团":["XPENG"],
   "NIO集团":["NIO","firefly"],
   "GAC集团":["GAC","AION","HYPTEC"],
@@ -144,7 +145,7 @@ const baseSpecs: Record<string, Spec> = {
   "AVATR 11": {dims:"4,880 × 1,970 × 1,601 mm",wheelbase:"2,975 mm",energy:"纯电 BEV",use:"181 Wh/km",range:"575 km NEDC",safety:"未查到当地版本有效五星成绩",rating:"unknown"},
   "AVATR 07": {dims:"4,825 × 1,980 × 1,620 mm",wheelbase:"2,940 mm",energy:"增程 REEV",use:"依驱动版本",range:"932 km 后驱 / 900 km 四驱综合 WLTP*",safety:"未查到当地版本有效五星成绩",rating:"unknown"},
 };
-const S: Record<string, Spec> = {...baseSpecs,...strategicSpecs};
+const S: Record<string, Spec> = {...baseSpecs,...strategicSpecs,...refreshSpecs};
 
 const latamRaw: Record<string, string[]> = {
 "巴西":[
@@ -228,7 +229,7 @@ const gacLatamRaw: Record<string,string[]> = {
   ],
 };
 Object.entries(gacLatamRaw).forEach(([market,records])=>latamRaw[market]?.push(...records));
-const raw: Record<string,string[]> = {...latamRaw,...strategicRaw};
+const raw: Record<string,string[]> = applyMarketRefresh({...latamRaw,...strategicRaw});
 
 const baseSources: Record<string,{name:string,url:string}> = {
 "byd-br":{name:"BYD Brasil｜车型与促销条件",url:"https://www.byd.com/br/condicoes"},"denza-br":{name:"DENZA Brasil｜B5 官方配置与售价",url:"https://www.denza.com/br/save-configuration"},"byd-ar":{name:"BYD Argentina｜车型与官方售价",url:"https://www.byd.com/ar/news-list/byd-en-argentina"},"byd-cl":{name:"BYD Chile｜品牌官网",url:"https://www.byd.com/cl"},"byd-uy":{name:"BYD Uruguay｜品牌官网",url:"https://www.byd.com/uy"},"byd-bo":{name:"BYD Bolivia｜品牌官网",url:"https://bydauto.com.bo"},"byd-ec":{name:"BYD Ecuador｜品牌官网",url:"https://www.byd.com/ec"},"byd-pe":{name:"BYD Perú｜官方车型目录",url:"https://www.byd.com/pe/car"},
@@ -241,7 +242,7 @@ const baseSources: Record<string,{name:string,url:string}> = {
 "changan-br":{name:"CAOA Changan Brasil｜UNI-T 官方车型与售价",url:"https://caoachangan.com.br/novos/uni-t"},"avatr-br":{name:"CAOA Changan Brasil｜AVATR 11 官方车型、配置与询价",url:"https://avatr.caoachangan.com.br/novos/avatr-11"},"changan-ar":{name:"Changan Argentina｜车型与官方售价",url:"https://changan.com.ar/"},"changan-cl":{name:"Changan Chile｜车型与官方售价",url:"https://www.changan.cl/"},"deepal-cl":{name:"Deepal Chile｜车型、动力与官方售价",url:"https://www.deepalautos.cl/"},"avatr-cl":{name:"Changan Chile｜AVATR 11 官方车型资料",url:"https://www.changan.cl/autos-hibridos-y-electricos/"},"avatr07-cl":{name:"Changan Chile｜AVATR 07 上市、配置与官方售价",url:"https://www.changan.cl/noticia/changan-impulsa-nueva-etapa-para-avatr-con-lanzamiento-avatr-07/"},"changan-uy":{name:"Changan Uruguay｜车型、配置与售价",url:"https://changan.uy/"},"changan-bo":{name:"Changan Bolivia｜Changan 与 Deepal 车型目录",url:"https://www.changan.com.bo/catalogo"},"changan-ec":{name:"Changan Ecuador｜车型与官方售价",url:"https://www.changanecuador.com/"},"deepal-ec":{name:"Changan Ecuador｜Deepal S07 官方车型页",url:"https://changanecuador.com/landing-changan-deepal-s07/"},"changan-pe":{name:"Changan Perú｜车型、配置与官方售价",url:"https://www.pdn.changan.com.pe/"},
 "gac-br":{name:"GAC Brasil｜官方车型目录",url:"https://www.gacgroup.com/pt-br"},"gac-ar":{name:"GAC Argentina｜官方车型目录",url:"https://gacmotorargentina.com/modelos"},"gac-cl":{name:"GAC Chile｜官方车型与价格",url:"https://gacmotor.cl/modelos/"},"gac-uy":{name:"GAC Uruguay｜官方车型与价格",url:"https://www.gacmotor.uy/"},"gac-bo":{name:"GAC Bolivia｜官方车型目录",url:"https://www.gac.com.bo/"},"gac-ec":{name:"GAC Ecuador｜官方车型目录",url:"https://www.gacmotor.com.ec/modelos"},"gac-pe":{name:"GAC Perú｜官方车型目录",url:"https://www.gacperu.pe/index.html"}
 };
-const sources: Record<string,{name:string,url:string}> = {...baseSources,...strategicSources};
+const sources: Record<string,{name:string,url:string}> = {...baseSources,...strategicSources,...refreshedSources};
 
 type BaseCar = Omit<PowerCar,"variant">;
 
@@ -283,6 +284,7 @@ const officialRemoteImages: Record<string,string> = {
   "AVATR 11":"https://www.changan.cl/media/fb2hwu03/avatr-11.webp",
   "AVATR 07":"https://www.changan.cl/media/2qlhqkhv/avatr-07-2.webp",
   ...strategicImages,
+  ...refreshImages,
 };
 const publicBasePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const withPublicBasePath = (value:string) => value.startsWith("/") ? `${publicBasePath}${value}` : value;
@@ -300,12 +302,14 @@ const currentSources = new Set(["oj-cl","gac-br","gac-ar","gac-cl","gac-uy","gac
 const latestSources = new Set(["changan-br","avatr-br"]);
 const marketSpecOverrides: Record<string,Partial<Spec>> = {
   "巴西|AVATR 11": {energy:"纯电 BEV",use:"当地官网未公布",range:"710 km CLTC"},
+  ...refreshMarketSpecs,
 };
+const isRefreshed=(car:Pick<PowerCar,"country"|"group"|"brand"|"model">)=>refreshedRecordKeys.has(`${car.country}|${car.group}|${car.brand}|${car.model}`);
 
 const baseCars: BaseCar[] = Object.entries(raw).flatMap(([country, rows]) => rows.map((row, index) => {
   const [group,brand,model,price,trimStr,source] = row.split("|");
   const trims = trimStr.split(",").map(x=>{const i=x.lastIndexOf(":"); return {name:x.slice(0,i),price:x.slice(i+1)}});
-  return {id:`${country}-${brand}-${model}-${index}`,country,flag:countries.find(x=>x[0]===country)?.[1]||"",group,brand,model,image:modelImage(model),price,trims,source,verified:latestSources.has(source)?"2026-09-10":currentSources.has(source)?"2026-08-28":freshSources.has(source)?"2026-08-26":auditedSources.has(source)?"2026-08-23":"2026-08-17",...(S[model]||{dims:"官网未披露",wheelbase:"官网未披露",energy:"待核验",use:"官网未披露",range:"官网未披露",safety:"未查到有效五星成绩",rating:"unknown"}),...(marketSpecOverrides[`${country}|${model}`]||{})};
+  return {id:`${country}-${brand}-${model}-${index}`,country,flag:countries.find(x=>x[0]===country)?.[1]||"",group,brand,model,image:modelImage(model),price,trims,source,verified:refreshedRecordKeys.has(`${country}|${group}|${brand}|${model}`)?marketRefreshDate:latestSources.has(source)?"2026-09-10":currentSources.has(source)?"2026-08-28":freshSources.has(source)?"2026-08-26":auditedSources.has(source)?"2026-08-23":"2026-08-17",...(S[model]||{dims:"官网未披露",wheelbase:"官网未披露",energy:"待核验",use:"官网未披露",range:"官网未披露",safety:"未查到有效五星成绩",rating:"unknown"}),...(marketSpecOverrides[`${country}|${model}`]||{})};
 }));
 
 const splitPowertrains = (c: BaseCar): PowerCar[] => {
@@ -320,6 +324,13 @@ const splitPowertrains = (c: BaseCar): PowerCar[] => {
   const phev = (match?:RegExp)=>make("PHEV","插混 PHEV",c.model.includes("Haval")?"约 1.0 L/100km 等效*":c.use.includes("依版本")?"约 2.0 L/100km 等效*":c.use,c.range.includes("PHEV")?c.range.replace(/^PHEV /,""):c.range,match);
   const bev = (match?:RegExp)=>make("BEV","纯电 BEV",c.use.includes("依版本")?"约 17 kWh/100km*":c.use,c.range,match);
   const reev = (match?:RegExp)=>make("REEV","增程 REEV",c.use.includes("依版本")?"当地官网未公布":c.use,c.range,match);
+
+  // Refreshed local catalogues explicitly tag every configuration. Do not
+  // manufacture a second powertrain when it is sold only in another country.
+  if(isRefreshed(c)){
+    const definitions:[RegExp,string,string][]=[[/\bBEV\b/i,"BEV","纯电 BEV"],[/\bPHEV\b/i,"PHEV","插混 PHEV"],[/\bREEV\b/i,"REEV","增程 REEV"],[/\bMHEV\b/i,"MHEV","轻混 MHEV"],[/\bHEV\b/i,"HEV","油电混动 HEV"],[/\bICE\b|Gasolina/i,"燃油","汽油 ICE"],[/Diesel/i,"柴油","柴油 ICE"]];
+    return definitions.filter(([re])=>c.trims.some(trim=>re.test(trim.name))).map(([re,variant,energy])=>make(variant,energy,c.use,/ICE|MHEV|^油电/.test(energy)?"不适用（非插电）":c.range,re));
+  }
 
   if(c.model==="Denza D9"){
     const hasPhev=c.trims.some(t=>/DM-i|PHEV/i.test(t.name)),hasBev=c.trims.some(t=>/EV|BEV/i.test(t.name));
@@ -462,6 +473,7 @@ const driveByModel: Record<string,string> = {
   "BOX":"前驱","Nammi":"前驱","Vigo":"前驱","E70":"前驱","Mage":"前驱","Mage HEV":"前驱","Mage EV":"前驱","Huge HEV":"前驱","Paladin":"四驱","Rich 6":"后驱 / 四驱","Rich 7":"后驱 / 四驱","Z9":"四驱",
   "T03":"前驱","B10":"后驱","C10":"后驱","C11":"后驱","C16":"后驱","UNI-T":"前驱","CS55 Plus":"前驱","Eado Plus":"前驱","Lumin":"前驱","CS75 Plus":"前驱","Alsvin":"前驱","CS35 Max":"前驱","CS35 Plus":"前驱","CS15":"前驱","UNI-K":"前驱","X7 Plus":"前驱","Hunter":"后驱 / 四驱","F70":"四驱","Deepal S05":"后驱","Deepal S07":"后驱","Deepal G318":"四驱","AVATR 11":"后驱 / 四驱","AVATR 07":"后驱 / 四驱",
   ...strategicDriveByModel,
+  ...refreshDrive,
 };
 
 const splitDrivetrains = (c: PowerCar): Car[] => {
@@ -470,6 +482,13 @@ const splitDrivetrains = (c: PowerCar): Car[] => {
     return {...c,id:`${c.id}-${drive}`,drive,trims:listedTrims,price:price || listedTrims.find(t=>t.price!=="询价")?.price || "询价"};
   };
   const match = (re:RegExp) => c.trims.filter(t=>re.test(t.name));
+
+  if(isRefreshed(c)){
+    const definitions=[{drive:"前驱",re:/\bFWD\b/i},{drive:"后驱",re:/\bRWD\b|4x2/i},{drive:"四驱",re:/\bAWD\b|\b4WD\b|4x4/i}];
+    const tagged=definitions.map(item=>({...item,trims:match(item.re)})).filter(item=>item.trims.length);
+    const unknown=c.trims.filter(trim=>/当地驱动未公布/.test(trim.name));
+    return [...tagged.map(item=>record(item.drive,item.trims)),...(unknown.length?[record("待核验",unknown)]:[])];
+  }
 
   if(c.model==="Seal"){
     if(c.country==="巴西") return [record("四驱")];
@@ -565,6 +584,9 @@ const batteryByModel: Record<string,string> = {
 
 const trimEnergyDetail = (car:Car, trim:Trim) => {
   const n=trim.name;
+  const refreshedDetail=refreshBatteryDetails[`${car.country}|${car.model}|${n}`]||refreshBatteryDetails[`${car.country}|${car.model}|${energyKey(car.energy)}`];
+  if(refreshedDetail) return refreshedDetail;
+  if(isRefreshed(car)) return {battery:/ICE|MHEV|^油电/.test(car.energy)?"不适用 / 当地官网未公布":"当地官网未按配置公布",range:car.range};
   if(car.model==="Atto 1"){
     const long=/Premium|38\.88/i.test(n);
     return {battery:long?"38.88 kWh":"30.08 kWh",range:long?"380 km NEDC*":"300 km NEDC*"};
@@ -650,9 +672,9 @@ const trimEnergyDetail = (car:Car, trim:Trim) => {
   return {battery,range};
 };
 
-const fxToCny:Record<string,number> = {"US$":6.7206,"R$":1.2992,"CLP":0.00726,"€":7.8624,"£":9.1772,"NOK":0.7235,"SEK":0.7107,"PLN":1.8251,"HUF":0.02167,"ILS":2.2517,"AUD":4.8174,"NZ$":4.0235,"THB":0.2057,"IDR":0.0003806,"MYR":1.6642,"SGD":5.2988};
+const fxToCny:Record<string,number> = {"US$":6.7206,"R$":1.2992,"CLP":0.00726,"€":7.8624,"£":9.1772,"NOK":0.7235,"SEK":0.7107,"PLN":1.8251,"HUF":0.02167,"ILS":2.2517,"AUD":4.8174,"NZ$":4.0235,"THB":0.2057,"IDR":0.0003806,"MYR":1.6642,"SGD":5.2988,"COP":6.717859/3366.901593};
 const cnyValue = (price:string) => {
-  const currency = ["US$","R$","CLP","€","£","NOK","SEK","PLN","HUF","ILS","AUD","NZ$","THB","IDR","MYR","SGD"].find(code=>price.startsWith(code));
+  const currency = Object.keys(fxToCny).find(code=>price.startsWith(code));
   if(!currency) return null;
   const amount = Number(price.replace(/\D/g,""));
   return amount ? amount * fxToCny[currency] : null;
@@ -664,9 +686,9 @@ const cnyPrice = (price:string) => {
   return `约 ¥${rounded.toLocaleString("zh-CN")}`;
 };
 
-const mpvModels = new Set(["Denza D9","M6","M6 DM-i","M7","Zeekr 009","VOYAH Dream","XPENG X9","M8 PHEV","GN8 PHEV","M8","M6 Pro","E9"]);
+const mpvModels = new Set(["Denza D9","M6","M6 DM-i","M7","Zeekr 009","VOYAH Dream","XPENG X9","M8 PHEV","GN8 PHEV","M8","M6 Pro","E9","WEY G9"]);
 const pickupModels = new Set(["Shark","Himla","Poer","Poer P500","Wingle 5","Wingle 7","Rich 6","Rich 7","Hunter","F70","Z9","Smilodon Pro"]);
-const carModels = new Set(["Dolphin Mini","Dolphin","Dolphin Surf","Atto 1","King","Seal","Seal 6 DM-i","Seal 6 Touring","Arrizo 5 Pro","Arrizo 8 CSH","Emgrand","EX2","Ora 03","BOX","Nammi","E70","T03","Lumin","Eado Plus","XPENG P7+","NIO ET5","NIO ET5 Touring","firefly","B05","Zeekr 001","Zeekr 7GT","Lynk & Co 03+","AION UT","AION ES","EMPOW"]);
+const carModels = new Set(["Dolphin Mini","Dolphin","Dolphin Surf","Atto 1","King","Seal","Seal 6 DM-i","Seal 6 Touring","Arrizo 5 Pro","Arrizo 8 CSH","Emgrand","EX2","Ora 03","BOX","Nammi","E70","T03","Lumin","Eado Plus","XPENG P7+","NIO ET5","NIO ET5 Touring","firefly","B05","Zeekr 001","Zeekr 7GT","Lynk & Co 03+","AION UT","AION ES","EMPOW","NIO ET7"]);
 const bodyTypeOf = (model:string):BodyType => mpvModels.has(model)?"MPV":pickupModels.has(model)?"皮卡":carModels.has(model)?"轿车":"SUV";
 const carPriceValue = (car:Car) => {
   const values=[car.price,...car.trims.map(trim=>trim.price)].map(cnyValue).filter((value):value is number=>value!==null);
@@ -793,6 +815,11 @@ const compareSales = (a:SalesSummary,b:SalesSummary,direction:"asc"|"desc") => {
   return direction==="asc"?a.total-b.total:b.total-a.total;
 };
 const localSalesAliases: Record<string,string[]> = {
+  "BYD|BYD Seagull family|哥伦比亚":["BYD Seagull"],
+  "Geely|Geely EX5 family|哥伦比亚":["Starray EM-i（插混） / EX5（纯电）"],
+  "Chery|Omoda 5 family|哥伦比亚":["Chery E5"],
+  "Chery|Omoda 5 family|澳大利亚":["Chery C5 / E5"],
+  "VOYAH|VOYAH Free|哥伦比亚":["VOYAH Free 318"],
   "Changan|UNI-T|巴西":["CAOA Changan UNI-T"],
   "AVATR|AVATR 11|巴西":["CAOA Changan · AVATR 11"],
   "Chery|Chery Tiggo 4 / Tiggo 5X|西班牙":["EBRO s400"],
@@ -854,7 +881,6 @@ export default function Home(){
       return 0;
     });
   },[region,country,group,brand,body,energy,drive,priceActive,priceMin,priceMax,lengthActive,lengthMin,lengthMax,sortBy,safe,query]);
-  const uniqueBrands=new Set(cars.map(c=>c.brand)).size, priced=cars.filter(c=>c.price!=="询价").length, five=cars.filter(c=>c.rating==="yes").length;
   const compared=compare.map(id=>cars.find(c=>c.id===id)).filter(Boolean) as Car[];
   const selectedSales=selected?salesForCar(selected):noSales;
   const reset=()=>{setRegion("全部区域");setCountry("全部市场");setGroup("全部集团");setBrand("全部品牌");setBody("全部车身");setEnergy("全部能源");setDrive("全部驱动");setPriceMin(0);setPriceMax(priceCeiling);setLengthMin(lengthFloor);setLengthMax(lengthCeiling);setSortBy("default");setSafe(false);setQuery("");setVisible(24);setOverviewBrand(null);setSelectedFamily(null);setFamilyFocus(null);setShowRawRecords(false)};
@@ -927,9 +953,8 @@ export default function Home(){
     });
   },[selectedFamily,focusedFamilyRecords]);
   return <main className="shell">
-    <header className="topbar"><button className="wordmark" onClick={reset}><span>DONGFENG</span> MARKET INTEL</button><nav><button onClick={()=>document.getElementById("lineup")?.scrollIntoView({behavior:"smooth"})}>车型库</button><button onClick={()=>document.getElementById("market-insights")?.scrollIntoView({behavior:"smooth"})}>市场洞察</button><button onClick={()=>setShowSources(true)}>数据来源</button></nav><div className="fresh"><i/>更新至 2026.09.10</div></header>
-    <section className="heroStrategy" aria-label="东风集团主要战略市场竞品车型看板"><div><p>GLOBAL COMPETITOR VEHICLE INTELLIGENCE</p><h1>主要战略市场<br/><em>竞品车型看板</em></h1><span>覆盖南美、欧洲、澳新与东南亚，按市场、集团、子品牌、动力和驱动形式拆分官方在售车型。</span><div className="heroActions"><button onClick={()=>document.getElementById("lineup")?.scrollIntoView({behavior:"smooth"})}>直接进入车型库 ↓</button></div></div><aside>{regionCountries.map(item=><div key={item.name}><small>{item.code}</small><b>{String(item.countries.length).padStart(2,"0")}</b><span>{item.name}市场</span></div>)}</aside></section>
-    <section className="pulse"><div><small>官方价格可见</small><b>{priced}</b><span>/ {cars.length} 条</span></div><div><small>已确认五星</small><b>{five}</b><span>条动力记录</span></div><div><small>本地在售品牌</small><b>{uniqueBrands}</b><span>个品牌</span></div><button onClick={()=>setShowSources(true)}>查看方法与来源 <span>↗</span></button></section>
+    <header className="topbar"><button className="wordmark" onClick={reset}><span>DONGFENG</span> MARKET INTEL</button><nav><button onClick={()=>document.getElementById("lineup")?.scrollIntoView({behavior:"smooth"})}>车型库</button><button onClick={()=>document.getElementById("market-insights")?.scrollIntoView({behavior:"smooth"})}>市场洞察</button><button onClick={()=>setShowSources(true)}>数据来源</button></nav><div className="fresh"><i/>目录扫描至 {marketRefreshDate.replaceAll("-",".")}</div></header>
+    <section className="heroStrategy" aria-label="东风集团主要战略市场竞品车型看板"><div><p>GLOBAL COMPETITOR VEHICLE INTELLIGENCE</p><h1>主要战略市场<br/><em>竞品车型看板</em></h1><span>覆盖南美、欧洲、澳新与东南亚，按市场、集团、子品牌、动力和驱动形式拆分官方车型目录，预售车型单独标注。</span><div className="heroActions"><button onClick={()=>document.getElementById("lineup")?.scrollIntoView({behavior:"smooth"})}>直接进入车型库 ↓</button></div></div></section>
     <section className="marketInsights">
       <section className="brandFootprint" aria-label="全市场单一品牌车型投放规模">
         <div className="brandFootprintHead"><p>BRAND MODEL FOOTPRINT</p><h2>全市场 · 单一品牌车型投放规模</h2><span>统计全部战略市场内各品牌投放的独立车型数，不随上方大区选择变化。相同车型的多个动力形式只计 1 款；不同市场名称指向同一实际车型时合并计数。</span></div>
@@ -958,7 +983,7 @@ export default function Home(){
     <section className="sectionHead"><div><p>{globalSummaryActive?"GLOBAL MODEL FAMILY INDEX":overviewActive?"GLOBAL BRAND LINE-UP":"MARKET LINE-UP"}</p><h2>{globalSummaryActive?"全部战略市场 · 车型家族总览":overviewActive?`全市场 · ${overviewBrand} 车型总览`:`${region==="全部区域"?"全部战略市场":region}${country!=="全部市场"?` · ${country}`:""}${group!=="全部集团"?` · ${group}`:""}${brand!=="全部品牌"?` · ${brand}`:""}`}</h2><span>{globalSummaryActive?`${globalModelOverview.length} 款归一化车型 · 高级筛选已作用于底层版本与汇总结果`:overviewActive?`${brandModelOverview.length} 款归一化车型 · 高级筛选已作用于该品牌底层版本与汇总结果 · 点击卡片查看各国版本`: `${filtered.length} 条车型动力 / 驱动记录 · 不同动力、驱动或配置组合独立呈现`}</span></div><div className="sectionActions"><label className="sortControl sectionSort"><small>排序</small><select value={sortBy} onChange={e=>{setSortBy(e.target.value as SortKey);setVisible(24)}}><option value="default">默认顺序</option><option value="salesDesc">销量：高 → 低</option><option value="salesAsc">销量：低 → 高</option><option value="priceAsc">价格：低 → 高</option><option value="priceDesc">价格：高 → 低</option><option value="rangeDesc">续航：高 → 低</option><option value="rangeAsc">续航：低 → 高</option><option value="verifiedDesc">资料更新时间：新 → 旧</option><option value="nameAsc">品牌 / 车型：A → Z</option><option value="launch" disabled>上市时间（待补齐）</option></select></label><kbd className="resultCount">{summaryActive?`${summaryModels.length} 款车型`:`${filtered.length} 条结果`}</kbd>{globalSummaryActive&&<button className="backToRecords" onClick={()=>setShowRawRecords(true)}>查看 {filtered.length} 条版本记录</button>}{allBasicFilters&&showRawRecords&&<button className="backToRecords" onClick={()=>setShowRawRecords(false)}>返回车型家族汇总</button>}{overviewActive&&<button className="backToRecords" onClick={()=>setOverviewBrand(null)}>查看全部动力记录</button>}{!summaryActive&&compare.length>0&&<button className="compareTop" onClick={()=>setShowCompare(true)}>对比清单 <b>{compare.length}</b> →</button>}</div></section>
     {summaryActive?(summaryModels.length?<section className="brandOverviewGrid">{summaryModels.map(model=><article className="brandOverviewCard" key={`${model.brand}-${model.key}`}><div className="brandOverviewHero"><img src={model.image} alt={`${model.brand} ${model.name} 官网车型图`} loading="lazy"/><div><small>{groupLabels[model.group]} · {model.brand} · 车型族</small><h3>{model.name}</h3><p>{model.powers.length} 种动力 · {model.countries.length} 个国家</p></div></div><div className={`familySales ${model.sales.matched?"matched":"missing"}`}><small>MARKLINES · 2024—2026.04</small>{model.sales.matched?<><b>{formatSales(model.sales.total)}</b><span>辆</span><em>2024 {formatSales(model.sales.y2024)} · 2025 {formatSales(model.sales.y2025)} · 2026.1—4 {formatSales(model.sales.y2026)}</em></>:<><b>暂无匹配</b><em>源表未提供可归属到该车型的明细</em></>}</div><div className="brandOverviewBlock"><small>动力与主要配置 · 点击查看投放市场</small>{model.powers.map(power=><div className="powerSummary" key={power.name}><button className="powerChoice" onClick={()=>openFamily(model,{power:power.name})}>{power.name}</button><div>{power.configs.map(config=><button className="configChoice" onClick={()=>openFamily(model,{power:power.name,config})} key={config}>{config}</button>)}{power.total>power.configs.length&&<button className="configMore" onClick={()=>openFamily(model,{power:power.name})}>+{power.total-power.configs.length} 项</button>}</div></div>)}</div><div className="brandOverviewBlock marketSummary"><small>投放大区</small><div>{model.regions.map(name=><b key={name}>{name}</b>)}</div><small>投放国家</small><div>{model.countries.map(item=><span key={item.name}>{item.flag} {item.name}</span>)}</div></div>{model.aliases.length>0&&<div className="localAlias"><small>当地销售名</small>{model.aliases.map(alias=><b key={alias}>{alias}</b>)}</div>}<button className="familyDrill" onClick={()=>openFamily(model)}>查看各国版本与配置 <span>→</span></button></article>)}</section>:<div className="empty"><b>该筛选组合暂无匹配车型家族</b><p>高级筛选会先作用于各市场的版本记录，再生成车型家族汇总。可放宽尺寸、价格或动力条件后重试。</p><button onClick={reset}>清除全部筛选</button></div>):filtered.length?<section className="grid">{filtered.slice(0,visible).map(car=>{const sales=salesForCar(car);return <article className="card" key={car.id} onClick={()=>setSelected(car)} tabIndex={0} onKeyDown={e=>e.key==="Enter"&&setSelected(car)}><div className="cardTop"><span>{car.flag} {car.country} · {car.brand}</span>{car.rating==="yes"?<b className="five">5★</b>:<b className="pending">待核</b>}</div><div className="carShape"><img src={car.image} alt={`${car.brand} ${car.model} 车型实拍或官方素材`} loading="lazy"/></div><p className="type">{car.group.toUpperCase()} · {energyKey(car.energy)} · {car.drive} · {bodyTypeOf(car.model)}</p><h3>{car.model} <mark>{car.variant}</mark></h3><div className="metrics"><span><small>能源形式</small>{car.energy}</span><span><small>驱动形式</small>{car.drive}</span><span><small>官方起售价</small>{car.price}<em>{cnyPrice(car.price)}</em></span><span className={sales.matched?"salesMetric":"salesMetric missing"}><small>MarkLines 累计销量</small>{sales.matched?`${formatSales(sales.total)} 辆`:"暂无匹配"}<em>{sales.matched?`${sales.scope}口径 · 2024—2026.04`:"未按车型披露"}</em></span></div><div className="cardActions"><button onClick={e=>{e.stopPropagation();setSelected(car)}}>参数与 {car.trims.length} 个配置 <span>→</span></button><button aria-label="加入对比" className={compare.includes(car.id)?"added":""} onClick={e=>{e.stopPropagation();toggleCompare(car.id)}}>{compare.includes(car.id)?"✓":"＋"}</button></div></article>})}</section>:<div className="empty"><b>该筛选组合暂无可核验记录</b><p>可减少筛选条件；官网未公开配置、价格或当地在售目录时，看板会保留空缺，不补写推测数据。</p><button onClick={reset}>清除全部筛选</button></div>}
     {!summaryActive&&visible<filtered.length&&<button className="loadMore" onClick={()=>setVisible(v=>v+24)}>继续加载 <b>{filtered.length-visible}</b> 条记录 ↓</button>}
-    <aside className="salesMethodNote"><b>MARKLINES 销量口径</b><p>{marklinesSalesSource}，覆盖 {marklinesSalesPeriod}。销量优先按“国家 × 归一化车型家族 × 动力”匹配；同一车型动力的不同驱动与配置卡片共享销量，不可跨配置相加。玻利维亚在源表内无记录；智利、乌拉圭、匈牙利和新加坡仅有车型字段为 N/A 的品牌汇总，页面因此标为“暂无匹配”，不代表零销量。</p></aside>
+    <aside className="salesMethodNote"><b>MARKLINES 销量口径</b><p>{marklinesSalesSource}，覆盖 {marklinesSalesPeriod}。销量优先按“国家 × 归一化车型家族 × 动力”匹配；同一车型动力的不同驱动与配置卡片共享销量，不可跨配置相加。哥伦比亚、玻利维亚在源表内无记录；智利、乌拉圭、匈牙利和新加坡仅有车型字段为 N/A 的品牌汇总，页面因此标为“暂无匹配”，不代表零销量。</p></aside>
     <section className="coverage coverageBottom" id="market-insights">
       <div className="coverageTitle">
         <p>MARKET COVERAGE</p>
@@ -981,10 +1006,10 @@ export default function Home(){
       </div>
     </section>
     <footer><div className="wordmark"><span>DONGFENG</span> MARKET INTEL</div><p>东风集团主要战略市场竞品研究工具 · 价格不含上牌、保险及金融成本</p><button onClick={()=>setShowSources(true)}>数据口径与免责声明</button></footer>
-    {selected&&<div className="overlay" onMouseDown={e=>e.target===e.currentTarget&&setSelected(null)}><section className="drawer"><button className="close" onClick={()=>setSelected(null)}>×</button><div className="detailHead"><p>{selected.flag} {selected.country} · {selected.group}</p><h2>{selected.brand} <em>{selected.model}</em> <mark>{selected.variant}</mark></h2><div><span className={selected.rating==="yes"?"safeYes":"safeUnknown"}>{selected.rating==="yes"?"★ 五星安全已确认":"○ 暂无有效五星记录"}</span><small>核验 {selected.verified}</small></div></div><div className="detailHero"><div className="detailShape"><img src={selected.image} alt={`${selected.brand} ${selected.model} 官网车型图`}/></div><div><small>{selected.variant} · {selected.drive} · {bodyTypeOf(selected.model)} 官方起售价</small><strong>{selected.price}</strong>{cnyPrice(selected.price)&&<em className="cnyDetail">{cnyPrice(selected.price)}</em>}<a href={sources[selected.source]?.url} target="_blank" rel="noreferrer">查看官方来源 ↗</a></div></div><div className={`salesPanel ${selectedSales.matched?"matched":"missing"}`}><div><small>MARKLINES 销量 · {selectedSales.scope}口径</small>{selectedSales.matched?<><strong>{formatSales(selectedSales.total)}</strong><span>辆</span></>:<strong>暂无匹配</strong>}</div>{selectedSales.matched?<dl><div><dt>2024</dt><dd>{formatSales(selectedSales.y2024)}</dd></div><div><dt>2025</dt><dd>{formatSales(selectedSales.y2025)}</dd></div><div><dt>2026.1—4</dt><dd>{formatSales(selectedSales.y2026)}</dd></div></dl>:<p>MarkLines 表内没有可可靠归属到该国家、车型与动力的明细。</p>}</div><div className="specGrid"><div><small>长 × 宽 × 高</small><b>{selected.dims}</b></div><div><small>轴距</small><b>{selected.wheelbase}</b></div><div><small>车身形式</small><b>{bodyTypeOf(selected.model)}</b></div><div><small>能源形式</small><b>{selected.energy}</b></div><div><small>驱动形式</small><b>{selected.drive}</b></div><div><small>能耗</small><b>{selected.use}</b></div><div><small>续航</small><b>{selected.range}</b></div><div><small>碰撞安全</small><b>{selected.safety}</b></div></div><div className="trimBox"><div className="trimHead"><h3>{selected.variant} · {selected.drive} 配置明细</h3><span>{selected.trims.length} 个配置记录</span></div><div className="trim trimColumns"><span>配置</span><b>官方售价</b><span>电池容量</span><span>对应续航</span></div>{selected.trims.map((t,i)=>{const detail=trimEnergyDetail(selected,t);return <div className="trim" key={i}><span><i>{String(i+1).padStart(2,"0")}</i>{t.name}</span><b>{t.price}{cnyPrice(t.price)&&<em>{cnyPrice(t.price)}</em>}</b><span>{detail.battery}</span><span>{detail.range}</span></div>})}</div><button className={`drawerCompare ${compare.includes(selected.id)?"added":""}`} onClick={()=>toggleCompare(selected.id)}>{compare.includes(selected.id)?"已加入对比 ✓":"加入车型对比 ＋"}</button><p className="footnote">* 人民币价格按 2026-08-23 汇率快照估算；MarkLines 销量覆盖 {marklinesSalesPeriod}，同一车型动力的不同驱动与配置共享销量，请勿跨配置相加；续航/能耗以当地官方最终销售资料为准。</p></section></div>}
+    {selected&&<div className="overlay" onMouseDown={e=>e.target===e.currentTarget&&setSelected(null)}><section className="drawer"><button className="close" onClick={()=>setSelected(null)}>×</button><div className="detailHead"><p>{selected.flag} {selected.country} · {selected.group}</p><h2>{selected.brand} <em>{selected.model}</em> <mark>{selected.variant}</mark></h2><div><span className={selected.rating==="yes"?"safeYes":"safeUnknown"}>{selected.rating==="yes"?"★ 五星安全已确认":"○ 暂无有效五星记录"}</span><small>核验 {selected.verified}</small></div></div><div className="detailHero"><div className="detailShape"><img src={selected.image} alt={`${selected.brand} ${selected.model} 官网车型图`}/></div><div><small>{selected.variant} · {selected.drive} · {bodyTypeOf(selected.model)} 官方起售价</small><strong>{selected.price}</strong>{cnyPrice(selected.price)&&<em className="cnyDetail">{cnyPrice(selected.price)}</em>}<a href={sources[selected.source]?.url} target="_blank" rel="noreferrer">查看官方来源 ↗</a></div></div><div className={`salesPanel ${selectedSales.matched?"matched":"missing"}`}><div><small>MARKLINES 销量 · {selectedSales.scope}口径</small>{selectedSales.matched?<><strong>{formatSales(selectedSales.total)}</strong><span>辆</span></>:<strong>暂无匹配</strong>}</div>{selectedSales.matched?<dl><div><dt>2024</dt><dd>{formatSales(selectedSales.y2024)}</dd></div><div><dt>2025</dt><dd>{formatSales(selectedSales.y2025)}</dd></div><div><dt>2026.1—4</dt><dd>{formatSales(selectedSales.y2026)}</dd></div></dl>:<p>MarkLines 表内没有可可靠归属到该国家、车型与动力的明细。</p>}</div><div className="specGrid"><div><small>长 × 宽 × 高</small><b>{selected.dims}</b></div><div><small>轴距</small><b>{selected.wheelbase}</b></div><div><small>车身形式</small><b>{bodyTypeOf(selected.model)}</b></div><div><small>能源形式</small><b>{selected.energy}</b></div><div><small>驱动形式</small><b>{selected.drive}</b></div><div><small>能耗</small><b>{selected.use}</b></div><div><small>续航</small><b>{selected.range}</b></div><div><small>碰撞安全</small><b>{selected.safety}</b></div></div><div className="trimBox"><div className="trimHead"><h3>{selected.variant} · {selected.drive} 配置明细</h3><span>{selected.trims.length} 个配置记录</span></div><div className="trim trimColumns"><span>配置</span><b>官方售价</b><span>电池容量</span><span>对应续航</span></div>{selected.trims.map((t,i)=>{const detail=trimEnergyDetail(selected,t);return <div className="trim" key={i}><span><i>{String(i+1).padStart(2,"0")}</i>{t.name}</span><b>{t.price}{cnyPrice(t.price)&&<em>{cnyPrice(t.price)}</em>}</b><span>{detail.battery}</span><span>{detail.range}</span></div>})}</div><button className={`drawerCompare ${compare.includes(selected.id)?"added":""}`} onClick={()=>toggleCompare(selected.id)}>{compare.includes(selected.id)?"已加入对比 ✓":"加入车型对比 ＋"}</button><p className="footnote">* 人民币价格采用既有汇率快照，COP 采用 2026-09-30 快照；MarkLines 销量覆盖 {marklinesSalesPeriod}，同一车型动力的不同驱动与配置共享销量，请勿跨配置相加；续航/能耗以当地官方最终销售资料为准。</p></section></div>}
     {selectedFamily&&<div className="overlay" onMouseDown={e=>e.target===e.currentTarget&&closeFamily()}><section className="familyDrawer" role="dialog" aria-modal="true" aria-label={`${selectedFamily.brand} ${selectedFamily.name} 各国版本`}><button className="close" aria-label="关闭车型家族详情" onClick={closeFamily}>×</button><p className="eyebrow">GLOBAL MODEL FAMILY</p><div className="familyHeader"><div><small>{groupLabels[selectedFamily.group]} · {selectedFamily.brand} · 归一化车型家族</small><h2>{selectedFamily.name}</h2><p>{selectedFamily.powers.length} 种动力 · {selectedFamily.countries.length} 个国家 · {selectedFamily.regions.length} 个大区</p></div><img src={selectedFamily.image} alt={`${selectedFamily.brand} ${selectedFamily.name} 官网车型图`}/></div><div className={`familySalesPanel ${focusedFamilySales.matched?"matched":"missing"}`}><div><small>MARKLINES · 当前筛选范围累计销量</small>{focusedFamilySales.matched?<><strong>{formatSales(focusedFamilySales.total)}</strong><span>辆</span></>:<strong>暂无匹配</strong>}</div>{focusedFamilySales.matched?<p>2024 {formatSales(focusedFamilySales.y2024)} · 2025 {formatSales(focusedFamilySales.y2025)} · 2026.1—4 {formatSales(focusedFamilySales.y2026)} · {focusedFamilySales.scope}口径</p>:<p>源表未提供可可靠归属到当前国家、车型与动力的明细。</p>}</div>{selectedFamily.aliases.length>0&&<div className="familyAliases"><small>当地销售名</small>{selectedFamily.aliases.map(alias=><b key={alias}>{alias}</b>)}</div>}{familyFocus&&<div className="familyFocus"><div><small>当前查看</small><b>{familyFocus.power}{familyFocus.config&&` · ${familyFocus.config}`}</b><span>{familyMarkets.length} 个投放国家</span></div><button onClick={()=>setFamilyFocus(null)}>查看全部版本</button></div>}<div className="familyMarketList">{familyMarkets.map(market=><article className="familyMarket" key={market.name}><header><div><small>{market.region}</small><h3>{market.flag} {market.name}</h3>{market.aliases.length>0&&<p>当地销售名：{market.aliases.join(" / ")}</p>}</div><b>{market.records.length} 条动力 / 驱动记录</b></header><div className="familyRecordHead"><span>动力与驱动</span><span>主要配置</span><span>官方起售价</span><span>销量</span><span>来源</span></div>{market.records.map(record=>{const sales=salesForCar(record);return <div className="familyRecord" key={record.id}><span><b>{record.variant}</b><small>{record.drive}</small></span><span>{record.trims.slice(0,4).map(trim=><em className={familyFocus?.config===trim.name?"active":""} key={trim.name}>{trim.name}</em>)}{record.trims.length>4&&<em>+{record.trims.length-4} 项</em>}</span><span><b>{record.price}</b>{cnyPrice(record.price)&&<small>{cnyPrice(record.price)}</small>}</span><span className="familyRecordSales"><b>{sales.matched?`${formatSales(sales.total)} 辆`:"暂无匹配"}</b><small>{sales.matched?`${sales.scope}口径`:"MarkLines"}</small></span><a href={sources[record.source]?.url} target="_blank" rel="noreferrer">官网 ↗</a></div>})}</article>)}</div></section></div>}
     {showCompare&&<div className="overlay compareOverlay"><section className="compareSheet"><button className="close" onClick={()=>setShowCompare(false)}>×</button><p className="eyebrow">SIDE-BY-SIDE</p><h2>车型横向对比</h2>{compared.length?<div className="compareGrid"><div className="compareLabels"><b>车型 / 动力</b><span>市场</span><span>官方起售价</span><span>能源</span><span>驱动</span><span>尺寸</span><span>轴距</span><span>能耗</span><span>续航</span><span>安全</span></div>{compared.map(c=><div className="compareCol" key={c.id}><b>{c.brand}<br/><em>{c.model} · {c.variant}</em></b><span>{c.flag} {c.country}</span><span className="comparePrice">{c.price}<em>{cnyPrice(c.price)}</em></span><span>{c.energy}</span><span>{c.drive}</span><span>{c.dims}</span><span>{c.wheelbase}</span><span>{c.use}</span><span>{c.range}</span><span className={c.rating==="yes"?"green":""}>{c.safety}</span><button onClick={()=>toggleCompare(c.id)}>移出对比</button></div>)}</div>:<div className="empty">尚未选择车型</div>}</section></div>}
-  {showSources&&<div className="overlay" onMouseDown={e=>e.target===e.currentTarget&&setShowSources(false)}><section className="sourceDrawer"><button className="close" onClick={()=>setShowSources(false)}>×</button><p className="eyebrow">DATA NOTES</p><h2>数据口径与来源</h2><div className="note"><b>本轮升级</b><p>研究范围扩展为 4 个区域、25 个国家和 10 个汽车集团；欧洲包含匈牙利，澳新仅含澳大利亚与新西兰。补充 Omoda 7、Omoda 9，并增加西班牙 EBRO 等当地销售名称与原车型家族的对应关系。</p></div><div className="note"><b>市场口径</b><p>优先采用当地品牌官网目录；当地站点不可读取时，使用品牌欧洲或区域官网确认车型范围，并将未见本地公开售价的配置标为“询价”。区域目录可证明官方产品范围，不代表每家门店均有现车。</p></div><div className="note"><b>价格口径</b><p>优先采用当地品牌官网公开售价或当月价格表；仅有起售价时保留“从”价；没有公开版本价时标为“询价”。促销、金融奖金和税费可能改变终端成交价。</p></div><div className="note"><b>汇率口径</b><p>人民币估算采用 2026-08-21 欧洲央行最新工作日参考汇率交叉换算，CLP 沿用 2026-08-23 快照，并按金额量级取整。页面仍显示原币价格，人民币仅用于横向比较。</p></div><div className="note"><b>安全口径</b><p>“五星”仅在 Euro NCAP、Latin NCAP 或 ANCAP 可对应到该车型/代际时确认。未找到有效结果会标为“待核”，不代表安全表现较差。</p></div><div className="note"><b>参数口径</b><p>尺寸按全球或当地销售版本整理。动力与驱动按当地公开配置拆分；同一车型存在不同能源、驱动或配置组合时会建立独立记录。配置表中的电池容量与续航按同一版本对应；官网未逐版本披露时明确标为“未公布”。续航与能耗保留测试循环差异，带 * 项目需结合当地配置表复核。</p></div><div className="note"><b>图片口径</b><p>车型图片优先采用品牌官网车型页、官网车型导航及官方媒体素材；官网未提供可用素材时使用开放媒体图库。同一车型的不同动力版本共享对应外观图，仅用于车型识别。</p></div><h3>主要公开来源</h3><div className="sourceList">{Object.entries(sources).map(([id,s])=><a href={s.url} target="_blank" rel="noreferrer" key={id}><span>{s.name}</span><b>↗</b></a>)}</div><div className="safetySources"><a href="https://www.latinncap.com" target="_blank" rel="noreferrer">Latin NCAP ↗</a><a href="https://www.euroncap.com" target="_blank" rel="noreferrer">Euro NCAP ↗</a><a href="https://www.ancap.com.au" target="_blank" rel="noreferrer">ANCAP ↗</a><a href="https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html" target="_blank" rel="noreferrer">ECB 汇率 ↗</a></div><p className="footnote">研究快照：2026-08-28。车型在售状态与价格变化频繁，采购决策前请再次向当地品牌方或经销商核验。</p></section></div>}
+  {showSources&&<div className="overlay" onMouseDown={e=>e.target===e.currentTarget&&setShowSources(false)}><section className="sourceDrawer"><button className="close" onClick={()=>setShowSources(false)}>×</button><p className="eyebrow">DATA NOTES</p><h2>数据口径与来源</h2><div className="note"><b>本轮升级</b><p>研究范围为 4 个区域、26 个国家和 10 个汽车集团。本轮加入哥伦比亚，复查原有市场官方目录并补充已确认车型；仅意向登记和即将上市车型不计入本轮新增。哥伦比亚 E5、iCAR 03T、NEVO Q05、GAC S7 为官方预售，配置名明确标注。</p></div><div className="note"><b>市场口径</b><p>优先采用当地品牌官网目录；当地站点不可读取时，使用品牌欧洲或区域官网确认车型范围，并将未见本地公开售价的配置标为“询价”。区域目录可证明官方产品范围，不代表每家门店均有现车。</p></div><div className="note"><b>价格口径</b><p>优先采用当地品牌官网公开售价或当月价格表；仅有起售价时保留“从”价；没有公开版本价时标为“询价”。促销、金融奖金和税费可能改变终端成交价。</p></div><div className="note"><b>汇率口径</b><p>人民币估算采用 2026-08-21 欧洲央行最新工作日参考汇率交叉换算，CLP 沿用 2026-08-23 快照，并按金额量级取整。页面仍显示原币价格，人民币仅用于横向比较。COP 单独采用 ExchangeRate-API 2026-09-30 快照交叉换算（1 USD = 3366.901593 COP；1 USD = 6.717859 CNY）。</p></div><div className="note"><b>安全口径</b><p>“五星”仅在 Euro NCAP、Latin NCAP 或 ANCAP 可对应到该车型/代际时确认。未找到有效结果会标为“待核”，不代表安全表现较差。</p></div><div className="note"><b>参数口径</b><p>尺寸按全球或当地销售版本整理。动力与驱动按当地公开配置拆分；同一车型存在不同能源、驱动或配置组合时会建立独立记录。配置表中的电池容量与续航按同一版本对应；官网未逐版本披露时明确标为“未公布”。续航与能耗保留测试循环差异，带 * 项目需结合当地配置表复核。</p></div><div className="note"><b>图片口径</b><p>车型图片优先采用品牌官网车型页、官网车型导航及官方媒体素材；官网未提供可用素材时使用开放媒体图库。同一车型的不同动力版本共享对应外观图，仅用于车型识别。</p></div><h3>主要公开来源</h3><div className="sourceList">{Object.entries(sources).map(([id,s])=><a href={s.url} target="_blank" rel="noreferrer" key={id}><span>{s.name}</span><b>↗</b></a>)}</div><div className="safetySources"><a href="https://www.latinncap.com" target="_blank" rel="noreferrer">Latin NCAP ↗</a><a href="https://www.euroncap.com" target="_blank" rel="noreferrer">Euro NCAP ↗</a><a href="https://www.ancap.com.au" target="_blank" rel="noreferrer">ANCAP ↗</a><a href="https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html" target="_blank" rel="noreferrer">ECB 汇率 ↗</a></div><p className="footnote">目录扫描：2026-10-01。原有 175 个官方来源中 120 个可直接读取；其余存在访问限制、失效或动态加载问题。仅已人工确认的新增/更新记录修改核验日期，未确认记录保留原日期。扫描结果不等于全部配置均已复核。车型在售状态与价格变化频繁，采购决策前请再次向当地品牌方或经销商核验。</p></section></div>}
     {compare.length>0&&!showCompare&&<button className="floatingCompare" onClick={()=>setShowCompare(true)}>对比 {compare.length}/3 <span>↑</span></button>}
   </main>
 }
