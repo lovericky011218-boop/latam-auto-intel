@@ -30,7 +30,7 @@ test("server-renders the four-region strategic-market dashboard", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>东风集团主要战略市场竞品车型看板/);
-  assert.match(html, /<h1>主要战略市场/);
+  assert.match(html, /<h1>全市场 · 单一品牌车型投放规模/);
   assert.match(html, /集团覆盖密度/);
   assert.match(html, /DONGFENG/);
   assert.match(html, /LEAPMOTOR/);
@@ -47,11 +47,11 @@ test("server-renders the four-region strategic-market dashboard", async () => {
   assert.match(html, /覆盖密度大区选择/);
   assert.match(html, /车型动力记录数 · 点击柱条筛选/);
   assert.match(html, /按母集团筛选品牌/);
-  assert.match(html, /全部母集团/);
+  assert.doesNotMatch(html, /全部母集团|class="heroStrategy"/);
   assert.match(html, /南美<!-- --> · 集团覆盖密度/);
   assert.match(html, /单一品牌车型投放规模/);
   assert.match(html, /全市场 · 单一品牌车型投放规模/);
-  assert.match(html, /不随上方大区选择变化/);
+  assert.match(html, /统计全部战略市场内各品牌投放的独立车型数/);
   assert.match(html, /相同车型的多个动力形式只计 1 款/);
   assert.match(html, /车身形式构成/);
   assert.match(html, /车身形式与总车型数使用相同去重口径/);
@@ -116,7 +116,7 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.match(page, /"全部区域",\.\.\.regionCountries\.map/);
   assert.match(page, /coverageRegion,setCoverageRegion\]=useState\("南美"\)/);
   assert.match(page, /coverageMarket,setCoverageMarket\]=useState\("巴西"\)/);
-  assert.match(page, /footprintGroup,setFootprintGroup\]=useState\("全部集团"\)/);
+  assert.match(page, /footprintGroup,setFootprintGroup\]=useState\("东风集团"\)/);
   assert.match(page, /coverageCountries=countries\.filter/);
   assert.match(page, /className="coverageRegions"/);
   assert.match(page, /className="coverageMarketTabs"/);

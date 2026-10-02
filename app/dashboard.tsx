@@ -846,7 +846,7 @@ const summarizeModelRecords=(records:Car[]):BrandModelOverview=>{
 };
 
 export default function Home(){
-  const [coverageRegion,setCoverageRegion]=useState("南美"),[coverageMarket,setCoverageMarket]=useState("巴西"),[footprintGroup,setFootprintGroup]=useState("全部集团"),[region,setRegion]=useState("全部区域"),[country,setCountry]=useState("全部市场"),[group,setGroup]=useState("全部集团"),[brand,setBrand]=useState("全部品牌"),[body,setBody]=useState("全部车身"),[energy,setEnergy]=useState("全部能源"),[drive,setDrive]=useState("全部驱动"),[priceMin,setPriceMin]=useState(0),[priceMax,setPriceMax]=useState(priceCeiling),[lengthMin,setLengthMin]=useState(lengthFloor),[lengthMax,setLengthMax]=useState(lengthCeiling),[sortBy,setSortBy]=useState<SortKey>("default"),[safe,setSafe]=useState(false),[query,setQuery]=useState(""),[selected,setSelected]=useState<Car|null>(null),[compare,setCompare]=useState<string[]>([]),[showCompare,setShowCompare]=useState(false),[showSources,setShowSources]=useState(false),[visible,setVisible]=useState(24),[overviewBrand,setOverviewBrand]=useState<string|null>(null),[selectedFamily,setSelectedFamily]=useState<BrandModelOverview|null>(null),[familyFocus,setFamilyFocus]=useState<FamilyFocus|null>(null),[showAdvancedFilters,setShowAdvancedFilters]=useState(false),[showRawRecords,setShowRawRecords]=useState(false);
+  const [coverageRegion,setCoverageRegion]=useState("南美"),[coverageMarket,setCoverageMarket]=useState("巴西"),[footprintGroup,setFootprintGroup]=useState("东风集团"),[region,setRegion]=useState("全部区域"),[country,setCountry]=useState("全部市场"),[group,setGroup]=useState("全部集团"),[brand,setBrand]=useState("全部品牌"),[body,setBody]=useState("全部车身"),[energy,setEnergy]=useState("全部能源"),[drive,setDrive]=useState("全部驱动"),[priceMin,setPriceMin]=useState(0),[priceMax,setPriceMax]=useState(priceCeiling),[lengthMin,setLengthMin]=useState(lengthFloor),[lengthMax,setLengthMax]=useState(lengthCeiling),[sortBy,setSortBy]=useState<SortKey>("default"),[safe,setSafe]=useState(false),[query,setQuery]=useState(""),[selected,setSelected]=useState<Car|null>(null),[compare,setCompare]=useState<string[]>([]),[showCompare,setShowCompare]=useState(false),[showSources,setShowSources]=useState(false),[visible,setVisible]=useState(24),[overviewBrand,setOverviewBrand]=useState<string|null>(null),[selectedFamily,setSelectedFamily]=useState<BrandModelOverview|null>(null),[familyFocus,setFamilyFocus]=useState<FamilyFocus|null>(null),[showAdvancedFilters,setShowAdvancedFilters]=useState(false),[showRawRecords,setShowRawRecords]=useState(false);
   const brandOptions=group==="全部集团"?Object.values(brandsByGroup).flat():brandsByGroup[group]||[];
   const countryOptions=region==="全部区域"?countries:countries.filter(([name])=>regionOfCountry(name)===region);
   const priceActive=priceMin>0||priceMax<priceCeiling;
@@ -903,7 +903,7 @@ export default function Home(){
   const selectedCoverage=coverage.find(item=>item.name===coverageMarket)||coverage[0];
   const coverageBars=selectedCoverage?groups.map(groupName=>({group:groupName,label:groupLabels[groupName],count:Number((selectedCoverage as Record<string,unknown>)[groupName])||0})).sort((a,b)=>b.count-a.count||groups.indexOf(a.group)-groups.indexOf(b.group)):[];
   const coverageMax=Math.max(1,...coverageBars.map(item=>item.count));
-  const visibleBrandFootprint=footprintGroup==="全部集团"?brandFootprint:brandFootprint.filter(item=>item.group===footprintGroup);
+  const visibleBrandFootprint=brandFootprint.filter(item=>item.group===footprintGroup);
   const allBasicFilters=region==="全部区域"&&country==="全部市场"&&group==="全部集团"&&brand==="全部品牌";
   const globalSummaryActive=allBasicFilters&&!showRawRecords;
   const overviewActive=Boolean(overviewBrand&&brand===overviewBrand&&region==="全部区域"&&country==="全部市场");
@@ -954,18 +954,15 @@ export default function Home(){
   },[selectedFamily,focusedFamilyRecords]);
   return <main className="shell">
     <header className="topbar"><button className="wordmark" onClick={reset}><span>DONGFENG</span> MARKET INTEL</button><nav><button onClick={()=>document.getElementById("lineup")?.scrollIntoView({behavior:"smooth"})}>车型库</button><button onClick={()=>document.getElementById("market-insights")?.scrollIntoView({behavior:"smooth"})}>市场洞察</button><button onClick={()=>setShowSources(true)}>数据来源</button></nav><div className="fresh"><i/>目录扫描至 {marketRefreshDate.replaceAll("-",".")}</div></header>
-    <section className="heroStrategy" aria-label="东风集团主要战略市场竞品车型看板"><div><p>GLOBAL COMPETITOR VEHICLE INTELLIGENCE</p><h1>主要战略市场<br/><em>竞品车型看板</em></h1><span>覆盖南美、欧洲、澳新与东南亚，按市场、集团、子品牌、动力和驱动形式拆分官方车型目录，预售车型单独标注。</span><div className="heroActions"><button onClick={()=>document.getElementById("lineup")?.scrollIntoView({behavior:"smooth"})}>直接进入车型库 ↓</button></div></div></section>
-    <section className="marketInsights">
       <section className="brandFootprint" aria-label="全市场单一品牌车型投放规模">
-        <div className="brandFootprintHead"><p>BRAND MODEL FOOTPRINT</p><h2>全市场 · 单一品牌车型投放规模</h2><span>统计全部战略市场内各品牌投放的独立车型数，不随上方大区选择变化。相同车型的多个动力形式只计 1 款；不同市场名称指向同一实际车型时合并计数。</span></div>
+        <div className="brandFootprintHead"><p>BRAND MODEL FOOTPRINT</p><h1>全市场 · 单一品牌车型投放规模</h1><span>统计全部战略市场内各品牌投放的独立车型数。相同车型的多个动力形式只计 1 款；不同市场名称指向同一实际车型时合并计数。</span></div>
         <div className="footprintGroupFilter" aria-label="按母集团筛选品牌">
-          {["全部集团",...groups].map(item=>{const count=item==="全部集团"?brandFootprint.length:brandFootprint.filter(card=>card.group===item).length;return <button className={footprintGroup===item?"active":""} onClick={()=>setFootprintGroup(item)} key={item}>{item==="全部集团"?"全部母集团":groupLabels[item]}<span>{count}</span></button>})}
+          {groups.map(item=>{const count=brandFootprint.filter(card=>card.group===item).length;return <button className={footprintGroup===item?"active":""} aria-pressed={footprintGroup===item} onClick={()=>setFootprintGroup(item)} key={item}>{groupLabels[item]}<span>{count}</span></button>})}
         </div>
         <small className="footprintFilterStatus">当前显示 {visibleBrandFootprint.length} 个品牌</small>
         <div className="brandFootprintGrid">{visibleBrandFootprint.map(item=><button key={`${item.group}-${item.brand}`} title={item.models.join(" · ")} onClick={()=>{setRegion("全部区域");setCountry("全部市场");setGroup(item.group);setBrand(item.brand);setBody("全部车身");setEnergy("全部能源");setDrive("全部驱动");setPriceMin(0);setPriceMax(priceCeiling);setLengthMin(lengthFloor);setLengthMax(lengthCeiling);setSortBy("default");setSafe(false);setQuery("");setOverviewBrand(item.brand);setVisible(24)}}><small>{groupLabels[item.group]} GROUP</small><b>{item.brand}</b><strong>{item.count}<em>款</em></strong><div className="bodyMix" aria-label={`${item.brand} 车身形式构成`}><span>轿车 <i>{item.bodyCounts["轿车"]}</i></span><span>SUV <i>{item.bodyCounts.SUV}</i></span><span>MPV <i>{item.bodyCounts.MPV}</i></span><span>皮卡 <i>{item.bodyCounts["皮卡"]}</i></span></div><span>查看该品牌车型 →</span></button>)}</div>
         <p className="brandFootprintNote">车身形式与总车型数使用相同去重口径。归一示例：Dolphin Mini / Dolphin Surf / Atto 1、Yuan Plus / Atto 3、Song Plus / Seal U / Sealion 6、Omoda 5 / E5、Dongfeng BOX / Nammi；西班牙 EBRO s400 / s700 / s800 / s900 分别计入 Chery 对应车型族。</p>
       </section>
-    </section>
     <section className="filterPanel" id="lineup">
       <div className="search"><span>⌕</span><input value={query} onChange={e=>{setQuery(e.target.value);setVisible(24)}} placeholder="搜索品牌或车型…"/></div>
       <div className="filterRow regionRow"><span className="filterLabel">区域</span><div className="pills">{["全部区域",...regionCountries.map(x=>x.name)].map(x=><button className={region===x?"active":""} onClick={()=>{setRegion(x);setCountry("全部市场");setVisible(24)}} key={x}>{x.replace("全部区域","全部")}</button>)}</div></div>
