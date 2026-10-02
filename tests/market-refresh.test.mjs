@@ -16,8 +16,36 @@ const [strategic, refresh] = modules;
 const page = await readFile(new URL("app/dashboard.tsx", root), "utf8");
 const prefix = compile(page.slice(0, page.indexOf("export default function Home()"))).replace(/^import[\s\S]*?;\n/gm, "");
 const context = vm.createContext({...Object.assign({}, ...modules), process:{env:{}}, console});
-vm.runInContext(prefix + "\nglobalThis.audit={cars,baseCars,latamRaw,strategicRaw,marketRefreshRaw,sources,cnyValue,lengthValue,trimEnergyDetail,canonicalModel,bodyTypeOf,salesForRecords};", context);
+vm.runInContext(prefix + "\nglobalThis.audit={cars,baseCars,latamRaw,strategicRaw,marketRefreshRaw,sources,cnyValue,lengthValue,trimEnergyDetail,canonicalModel,bodyTypeOf,salesForRecords,familyLengthLabel,summarizeModelRecords};", context);
 export const audit = context.audit;
+
+test("body styles are explicit, shared across aliases, and unknown models are not SUVs", () => {
+  for(const name of ["VOYAH Passion","VOYAH Passion L","Alsvin"]) assert.equal(audit.bodyTypeOf(name),"轿车",name);
+  assert.equal(audit.bodyTypeOf("Unverified new model"),"待核验");
+  const families=new Map();
+  for(const car of audit.cars){
+    const type=audit.bodyTypeOf(car.model);
+    assert.notEqual(type,"待核验",`${car.brand} ${car.model} needs an explicit body style`);
+    const key=`${car.brand}|${audit.canonicalModel(car.brand,car.model)}`;
+    if(families.has(key)) assert.equal(type,families.get(key),`aliases disagree: ${key}`);
+    else families.set(key,type);
+  }
+  const voyah=[...families].filter(([key])=>key.startsWith("VOYAH|"));
+  assert.equal(voyah.length,5);
+  assert.equal(voyah.filter(([,type])=>type==="轿车").length,2);
+  assert.equal(voyah.filter(([,type])=>type==="SUV").length,2);
+  assert.equal(voyah.filter(([,type])=>type==="MPV").length,1);
+});
+
+test("compact family summaries retain all configs and expose honest length ranges", () => {
+  const records=audit.cars.filter(car=>car.brand==="Omoda"&&car.model==="Omoda 7");
+  const summary=audit.summarizeModelRecords(records);
+  for(const power of summary.powers) assert.equal(power.configs.length,power.total);
+  assert.ok(summary.powers.some(power=>power.configs.length>8));
+  assert.equal(audit.familyLengthLabel([{dims:"未公布"}]),"车长待公布");
+  assert.equal(audit.familyLengthLabel([{dims:"4,500 × 1,800 mm"},{dims:"4,600 × 1,800 mm"}]),"4,500–4,600 mm");
+  assert.equal(audit.familyLengthLabel([{dims:"4,500 mm"},{dims:"未公布"}]),"4,500 mm · 部分版本待核");
+});
 
 test("Colombia is the 26th market, and refreshed catalogue rows have valid sources", () => {
   assert.equal(strategic.regionCountries.flatMap(r=>r.countries).length, 26);

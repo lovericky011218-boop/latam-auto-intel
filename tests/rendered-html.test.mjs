@@ -55,7 +55,14 @@ test("server-renders the four-region strategic-market dashboard", async () => {
   assert.match(html, /相同车型的多个动力形式只计 1 款/);
   assert.match(html, /车身形式构成/);
   assert.match(html, /车身形式与总车型数使用相同去重口径/);
-  assert.match(html, /展开车身 \/ 尺寸 \/ 价格 \/ 动力 \/ 驱动 \/ 安全筛选/);
+  assert.match(html, /class="filterRow regionRow"/);
+  assert.match(html, /class="filterRow brandRow"/);
+  assert.doesNotMatch(html, /class="compactFilterBar"|aria-label="选择市场"|aria-label="选择品牌或集团"/);
+  assert.match(html, /aria-expanded="false" aria-controls="advanced-filters"/);
+  assert.match(html, /高级筛选/);
+  assert.equal((html.match(/class="brandOverviewCard compactFamilyCard"/g)||[]).length,24);
+  assert.doesNotMatch(html, /class="familySales |class="configChoice"/);
+  assert.match(html, /class="familyDimensions"/);
   assert.match(html, /价格：低 → 高/);
   assert.match(html, /销量：高 → 低/);
   assert.match(html, /销量：低 → 高/);
@@ -114,6 +121,9 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.match(page, /同一车型动力的不同驱动与配置卡片共享销量/);
   assert.match(page, /资料更新时间：新 → 旧/);
   assert.match(page, /"全部区域",\.\.\.regionCountries\.map/);
+  assert.match(page, /countryOptions\.map/);
+  assert.match(page, /brandOptions\.map/);
+  assert.match(css, /\.brandFootprint \+ \.filterPanel\{margin-top:12px\}/);
   assert.match(page, /coverageRegion,setCoverageRegion\]=useState\("南美"\)/);
   assert.match(page, /coverageMarket,setCoverageMarket\]=useState\("巴西"\)/);
   assert.match(page, /footprintGroup,setFootprintGroup\]=useState\("东风集团"\)/);
@@ -178,7 +188,7 @@ test("keeps expanded group data, region filters, and official source links in so
   assert.match(page, /高级筛选已作用于底层版本与汇总结果/);
   assert.match(page, /查看 \{filtered\.length\} 条版本记录/);
   assert.match(page, /返回车型家族汇总/);
-  assert.match(page, /summaryModels\.map/);
+  assert.match(page, /summaryModels\.slice\(0,visible\)\.map/);
   assert.match(page, /selectedFamily\.brand/);
   assert.doesNotMatch(page, /coverageCountryNames/);
   assert.doesNotMatch(page, /"--heat"/);
